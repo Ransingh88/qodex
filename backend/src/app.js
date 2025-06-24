@@ -34,8 +34,10 @@ app.get("/healthCheck", (req, res) => {
 
 // routesImport
 import { errorHandler } from "./utils/errorHandler.js"
-import userRouter from "./routers/user.route.js"
+import authRouter from "./routers/auth.route.js"
+import userRouter from "./routers/user.routes.js"
 
+app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", userRouter)
 
 // error handler
