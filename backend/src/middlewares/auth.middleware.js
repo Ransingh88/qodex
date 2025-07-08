@@ -29,3 +29,20 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
   req.user = user
   next()
 })
+
+export const authorizedRole = (...roles) =>
+  asyncHandler(async (req, res, next) => {
+
+    if (!req.user.role) {
+      const user = await User.findById(req.user._id)
+      req.user.role = user.role
+    }
+
+    if (!roles.includes(req.user.role)) {
+      throw new APIError(
+        403,
+        "Forbidden: You do not have access to this resource"
+      )
+    }
+    next()
+  })

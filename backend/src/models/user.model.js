@@ -1,6 +1,8 @@
 import mongoose from "mongoose"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import { Problem } from "./problem.model.js"
+import { USER_ROLES } from "../config/constant/constants.js"
 
 const userSchema = new mongoose.Schema(
   {
@@ -24,8 +26,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      enum: Object.values(USER_ROLES),
+      default: USER_ROLES.USER,
     },
     refreshToken: {
       type: String,
@@ -33,6 +35,12 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
+    problems: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Problem",
+      },
+    ],
   },
   {
     timestamps: true,
@@ -78,5 +86,11 @@ userSchema.methods.generateRefreshToken = function () {
     }
   )
 }
+
+// remove user related problems when user is deleted
+userSchema.pre("remove", async function (next) {
+  await Problem.deleteMany({ createdBy: this._id })
+  next()
+})
 
 export const User = mongoose.model("User", userSchema)

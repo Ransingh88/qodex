@@ -36,9 +36,11 @@ app.get("/healthCheck", (req, res) => {
 import { errorHandler } from "./utils/errorHandler.js"
 import authRouter from "./routers/auth.route.js"
 import userRouter from "./routers/user.routes.js"
+import problemRouter from "./routers/problem.route.js"
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", userRouter)
+app.use("/api/v1/problem", problemRouter)
 
 // error handler
 app.use(errorHandler) // must be the last middleware
