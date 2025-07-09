@@ -6,3 +6,7 @@ export const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET
 export const ACCESS_TOKEN_EXPIRY = process.env.ACCESS_TOKEN_EXPIRY
 export const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET
 export const REFRESH_TOKEN_EXPIRY = process.env.REFRESH_TOKEN_EXPIRY
+// export const JUDGE0_API_URL = process.env.JUDGE0_API_URL || "http://localhost:2358"
+export const JUDGE0_API_URL = process.env.JUDGE0_SULU_API_URL
+export const JUDGE0_SULU_API_URL = process.env.JUDGE0_SULU_API_URL
+export const JUDGE0_SULU_API_KEY = process.env.JUDGE0_SULU_API_KEY

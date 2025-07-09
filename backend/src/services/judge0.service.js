@@ -1,11 +1,11 @@
-import axios from "axios"
+import { judge0Axios } from "../config/axios.js"
 
 export const getLanguageId = (language) => {
   const languageMap = {
     c: 50,
     cpp: 54,
     java: 62,
-    python3: 71,
+    python: 71,
     javascript: 63,
     ruby: 72,
     go: 60,
@@ -24,6 +24,37 @@ export const getLanguageId = (language) => {
 }
 
 export const getLanguages = async () => {
-  const response = await axios.get("http://172.22.131.145:2358/languages")
+  const response = await judge0Axios.get(`/languages`)
   return response.data
+}
+
+export const batchSubmit = async (submissions) => {
+  const response = await judge0Axios.post(
+    `/submissions/batch?base64_encoded=false`,
+    { submissions }
+  )
+  return response.data
+}
+
+export const pollingBatchResults = async (tokens) => {
+  while (true) {
+    const response = await judge0Axios.get(`/submissions/batch`, {
+      params: {
+        tokens: tokens.join(","),
+        base64_encoded: false,
+      },
+    })
+
+    const isAllDone = response.data.submissions.every(
+      (submission) => submission.status.id !== 1 && submission.status.id !== 2
+    )
+
+    console.log(response.data.submissions, "----", isAllDone)
+
+    if (isAllDone) {
+      return response.data.submissions
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+  }
 }
