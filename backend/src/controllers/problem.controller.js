@@ -61,7 +61,7 @@ const createProblem = asyncHandler(async (req, res) => {
         throw new APIError(400, `Submission failed for test case ${i + 1}`)
       }
     }
-  } 
+  }
 
   const problemPayload = {
     title,
@@ -91,13 +91,79 @@ const createProblem = asyncHandler(async (req, res) => {
 })
 
 const getAllProblems = asyncHandler(async (req, res) => {
-  res.send("Get All Problems Endpoint")
+  const allProblems = await Problem.find()
+
+  if (!allProblems) {
+    throw new APIError(404, "Problem not found")
+  }
+
+  res
+    .status(200)
+    .json(new APIResponse(200, "successfully fetch all problems", allProblems))
 })
 const getProblemDetails = asyncHandler(async (req, res) => {
-  res.send("Get Problem Details Endpoint")
+  const { id } = req.params || req.body
+
+  if (!id) {
+    throw new APIError(400, "problem id not found")
+  }
+
+  const problem = await Problem.findById({ _id: id })
+
+  if (!problem) {
+    throw new APIError(404, "Problem not found")
+  }
+
+  res
+    .status(200)
+    .json(new APIResponse(200, "problem details fetch successfully", problem))
 })
 const updateProblem = asyncHandler(async (req, res) => {
-  res.send("Update Problem Endpoint")
+  const { id } = req.params || req.body
+
+  const {
+    title,
+    description,
+    difficulty,
+    tags,
+    topics,
+    examples,
+    constrains,
+    hints,
+    editorial,
+    testcases,
+    codeSnippets,
+    referenceSolutions,
+  } = req.body
+
+  const updateProblemPayload = {
+    title,
+    description,
+    difficulty,
+    tags,
+    topics,
+    examples,
+    constrains,
+    hints,
+    editorial,
+    testcases,
+    codeSnippets,
+    referenceSolutions,
+  }
+
+  const updatedProblem = await Problem.findByIdAndUpdate(
+    { _id: id },
+    req.body,
+    { new: true }
+  )
+
+  if (!updatedProblem) {
+    throw new APIError(400, "something went wrong while updation the problem")
+  }
+
+  res
+    .status(200)
+    .json(new APIResponse(200, "problem updated successfully", updateProblem))
 })
 const deleteProblem = asyncHandler(async (req, res) => {
   res.send("Delete Problem Endpoint")

@@ -18,7 +18,7 @@ const router = express.Router()
 router.route("/create").post(verifyJWT, authorizedRole(ADMIN), createProblem)
 router.route("/getAllProblems").get(verifyJWT, authorizedRole(ADMIN, USER), getAllProblems)
 router.route("/getDetails/:id").get(verifyJWT, authorizedRole(ADMIN, USER), getProblemDetails)
-router.route("/update/:id").patch(verifyJWT, authorizedRole(ADMIN), updateProblem)
+router.route("/update/:id").patch(updateProblem)
 router.route("/delete/:id").delete(verifyJWT, authorizedRole(ADMIN), deleteProblem)
 router.route("/getSolvedProblem/:id").get(verifyJWT, authorizedRole(ADMIN, USER), getSolvedProblem)
 

@@ -9,7 +9,7 @@ Follow these steps to run the project locally:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/qodex.git
+git clone https://github.com/Ransingh88/qodex.git
 cd qodex
 ```
 
@@ -56,17 +56,25 @@ Create a `.env` file in the root directory with the following sample content:
 
 ```env
 # Server configuration
-PORT=5000
+PORT=8000
 
 # Database configuration
-DB_HOST=localhost
-DB_PORT=27017
+MONGODB_URI=mongodb://localhost:27017
 DB_NAME=qodex
-DB_USER=your_db_user
-DB_PASS=your_db_password
 
-# JWT Secret
-JWT_SECRET=your_jwt_secret
+# CORS configuration
+CORS_ORIGIN=http://localhost:3000
 
-# Other environment variables as needed
+# JWT/Token configuration
+ACCESS_TOKEN_SECRET=your_access_token_secret
+ACCESS_TOKEN_EXPIRY=1h
+REFRESH_TOKEN_SECRET=your_refresh_token_secret
+REFRESH_TOKEN_EXPIRY=7d
+
+# Judge0 API configuration
+JUDGE0_API_URL=http://localhost:2358
+JUDGE0_SULU_API_URL=http://localhost:2358
+JUDGE0_SULU_API_KEY=your_judge0_sulu_api_key
 ```
+
+> **Note:** Update the values as needed for your local or production environment.
