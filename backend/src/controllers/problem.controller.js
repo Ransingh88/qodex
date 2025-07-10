@@ -1,4 +1,3 @@
-import axios from "axios"
 import {
   batchSubmit,
   getLanguageId,
@@ -9,6 +8,7 @@ import { asyncHandler } from "../utils/asyncHandler.js"
 import { APIResponse } from "../utils/APIResponse.js"
 import { APIError } from "../utils/APIError.js"
 import { Problem } from "../models/problem.model.js"
+import { User } from "../models/user.model.js"
 
 const createProblem = asyncHandler(async (req, res) => {
   const {
@@ -85,6 +85,10 @@ const createProblem = asyncHandler(async (req, res) => {
     throw new APIError(500, "Problem could not be created")
   }
 
+  await User.findByIdAndUpdate(req.user._id, {
+    $push: { problems: createdProblem._id },
+  })
+
   res
     .status(201)
     .json(new APIResponse(201, "Problem created successfully", createdProblem))
@@ -101,12 +105,9 @@ const getAllProblems = asyncHandler(async (req, res) => {
     .status(200)
     .json(new APIResponse(200, "successfully fetch all problems", allProblems))
 })
+
 const getProblemDetails = asyncHandler(async (req, res) => {
   const { id } = req.params || req.body
-
-  if (!id) {
-    throw new APIError(400, "problem id not found")
-  }
 
   const problem = await Problem.findById({ _id: id })
 
@@ -116,8 +117,9 @@ const getProblemDetails = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json(new APIResponse(200, "problem details fetch successfully", problem))
+    .json(new APIResponse(200, "problem details fetched successfully", problem))
 })
+
 const updateProblem = asyncHandler(async (req, res) => {
   const { id } = req.params || req.body
 
@@ -136,10 +138,64 @@ const updateProblem = asyncHandler(async (req, res) => {
     referenceSolutions,
   } = req.body
 
+  const existingProblem = await Problem.findById({ _id: id })
+
+  if (!existingProblem) {
+    throw new APIError(404, "Problem not found")
+  }
+
+  if (
+    JSON.stringify(referenceSolutions) !==
+      JSON.stringify(existingProblem.referenceSolutions) ||
+    JSON.stringify(codeSnippets) !==
+      JSON.stringify(existingProblem.codeSnippets) ||
+    JSON.stringify(testcases) !== JSON.stringify(existingProblem.testcases)
+  ) {
+    for (const [language, solutionCode] of Object.entries(referenceSolutions)) {
+      if (!solutionCode) {
+        return res.status(400).json({
+          message: `Reference solution for ${language} is required`,
+        })
+      }
+
+      const languageId = await getLanguageId(language)
+
+      if (!languageId) {
+        throw new APIError(400, `The language: ${language} is not supported`)
+      }
+
+      const submissions = testcases.map(({ input, output }) => ({
+        language_id: languageId,
+        source_code: solutionCode,
+        stdin: input,
+        expected_output: output,
+      }))
+
+      const submissionResponse = await batchSubmit(submissions)
+
+      const tokens = submissionResponse.map((res) => res.token)
+
+      const result = await pollingBatchResults(tokens)
+
+      for (let i = 0; i < result.length; i++) {
+        const submission = result[i]
+
+        if (submission.status.id !== 3) {
+          throw new APIError(
+            400,
+            `Submission failed for ${language.toUpperCase()} - test case ${
+              i + 1
+            }`
+          )
+        }
+      }
+    }
+  }
+
   const updateProblemPayload = {
     title,
     description,
-    difficulty,
+    difficulty: difficulty.toLowerCase(),
     tags,
     topics,
     examples,
@@ -153,21 +209,35 @@ const updateProblem = asyncHandler(async (req, res) => {
 
   const updatedProblem = await Problem.findByIdAndUpdate(
     { _id: id },
-    req.body,
+    updateProblemPayload,
     { new: true }
   )
 
   if (!updatedProblem) {
-    throw new APIError(400, "something went wrong while updation the problem")
+    throw new APIError(400, "something went wrong while updating the problem")
   }
 
   res
     .status(200)
-    .json(new APIResponse(200, "problem updated successfully", updateProblem))
+    .json(new APIResponse(200, "problem updated successfully", updatedProblem))
 })
+
 const deleteProblem = asyncHandler(async (req, res) => {
-  res.send("Delete Problem Endpoint")
+  const { id } = req.params
+
+  const deletedProblem = await Problem.findByIdAndDelete({ _id: id })
+
+  if (!deletedProblem) {
+    throw new APIError(400, "something went wrong while deletion the problem")
+  }
+
+  await User.findByIdAndUpdate(deletedProblem.createdBy, {
+    $pull: { problems: deletedProblem._id },
+  })
+
+  res.status(200).json(new APIResponse(200, "problem deleted successfully"))
 })
+
 const getSolvedProblem = asyncHandler(async (req, res) => {
   res.send("Get Solved Problem Endpoint")
 })
