@@ -41,6 +41,18 @@ const userSchema = new mongoose.Schema(
         ref: "Problem",
       },
     ],
+    solvedProblems: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Problem",
+      },
+    ],
+    submissions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Submission",
+      },
+    ],
   },
   {
     timestamps: true,

@@ -58,3 +58,19 @@ export const pollingBatchResults = async (tokens) => {
     await new Promise((resolve) => setTimeout(resolve, 1000))
   }
 }
+
+export const submitCode = async (languageId, sourceCode, stdin) => {
+  const response = await judge0Axios.post(`/submissions?base64_encoded=false`, {
+    language_id: languageId,
+    source_code: sourceCode,
+    stdin,
+  })
+  return response.data
+}
+
+export const getSubmission = async (token) => {
+  const response = await judge0Axios.get(`/submissions/${token}`)
+  return response.data
+}
+
+

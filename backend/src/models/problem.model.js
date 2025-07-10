@@ -24,7 +24,7 @@ const problemSchema = new mongoose.Schema(
       type: String,
     },
     examples: {
-      type: Object,
+      type: JSON,
     },
     constrains: {
       type: String,
@@ -53,6 +53,12 @@ const problemSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+      },
+    ],
+    submissions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Submission",
       },
     ],
   },

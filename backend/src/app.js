@@ -37,10 +37,12 @@ import { errorHandler } from "./utils/errorHandler.js"
 import authRouter from "./routers/auth.route.js"
 import userRouter from "./routers/user.routes.js"
 import problemRouter from "./routers/problem.route.js"
+import executionRouter from "./routers/execution.route.js"
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/problem", problemRouter)
+app.use("/api/v1/execution", executionRouter)
 
 // error handler
 app.use(errorHandler) // must be the last middleware
