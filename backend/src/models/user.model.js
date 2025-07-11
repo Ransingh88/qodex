@@ -53,6 +53,10 @@ const userSchema = new mongoose.Schema(
         ref: "Submission",
       },
     ],
+    playlist: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Playlist",
+    },
   },
   {
     timestamps: true,

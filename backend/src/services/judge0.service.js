@@ -23,6 +23,16 @@ export const getLanguageId = (language) => {
   return languageMap[language.toLowerCase()] || null
 }
 
+export const getLanguageName = async (languageId) => {
+  const languageMap = {
+    62: "java",
+    71: "python",
+    63: "javascript",
+  }
+
+  return languageMap[languageId]
+}
+
 export const getLanguages = async () => {
   const response = await judge0Axios.get(`/languages`)
   return response.data
@@ -72,5 +82,3 @@ export const getSubmission = async (token) => {
   const response = await judge0Axios.get(`/submissions/${token}`)
   return response.data
 }
-
-

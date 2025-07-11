@@ -1,10 +1,6 @@
 import mongoose from "mongoose"
 
 const testcaseSchema = new mongoose.Schema({
-  submissionId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Submission",
-  },
   testcaseNo: {
     type: Number,
     default: 1,
