@@ -19,7 +19,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 const updateUserProfile = asyncHandler(async (req, res) => {
   const { fullName, email, username } = req.body;
-  const { _id } = req.user;
 
   if (!fullName || !email || !username) {
     throw new APIError(400, "Please provide all required fields");
