@@ -35,28 +35,6 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
-    problems: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Problem",
-      },
-    ],
-    solvedProblems: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Problem",
-      },
-    ],
-    submissions: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Submission",
-      },
-    ],
-    playlist: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Playlist",
-    },
   },
   {
     timestamps: true,

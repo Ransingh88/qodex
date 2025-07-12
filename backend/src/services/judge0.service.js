@@ -30,7 +30,7 @@ export const getLanguageName = async (languageId) => {
     63: "javascript",
   }
 
-  return languageMap[languageId]
+  return languageMap[languageId] || null
 }
 
 export const getLanguages = async () => {
@@ -58,8 +58,6 @@ export const pollingBatchResults = async (tokens) => {
     const isAllDone = response.data.submissions.every(
       (submission) => submission.status.id !== 1 && submission.status.id !== 2
     )
-
-    console.log(response.data.submissions, "----", isAllDone)
 
     if (isAllDone) {
       return response.data.submissions

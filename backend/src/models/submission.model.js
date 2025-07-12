@@ -64,11 +64,11 @@ const submissionSchema = new mongoose.Schema(
       required: true,
     },
     stdin: {
-      type: String,
+      type: [],
       required: true,
     },
     stdout: {
-      type: String,
+      type: [],
       required: true,
     },
     stderr: {

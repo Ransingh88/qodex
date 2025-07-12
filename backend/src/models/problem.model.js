@@ -17,7 +17,7 @@ const problemSchema = new mongoose.Schema(
       default: DIFFICULTIES.MEDIUM,
     },
     tags: {
-      type: [String],
+      type: [],
       default: [],
     },
     topics: {
