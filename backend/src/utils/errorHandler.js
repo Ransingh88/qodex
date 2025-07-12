@@ -1,6 +1,6 @@
 import { APIError } from "./APIError.js"
 
-export const errorHandler = (err, req, res) => {
+export const errorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500 // Default to 500 if no status code is set
 
   console.error(err)

@@ -4,12 +4,11 @@ import {
   deleteProblem,
   getAllProblems,
   getProblemDetails,
-  getSolvedProblem,
+  getSolvedProblems,
   updateProblem,
 } from "../controllers/problem.controller.js"
 import { authorizedRole, verifyJWT } from "../middlewares/auth.middleware.js"
 import { USER_ROLES } from "../config/constant/constants.js"
-
 
 const { USER, ADMIN } = USER_ROLES
 
@@ -20,6 +19,6 @@ router.route("/getAllProblems").get(verifyJWT, authorizedRole(ADMIN, USER), getA
 router.route("/getDetails/:id").get(verifyJWT, authorizedRole(ADMIN, USER), getProblemDetails)
 router.route("/update/:id").patch(verifyJWT, authorizedRole(ADMIN), updateProblem)
 router.route("/delete/:id").delete(verifyJWT, authorizedRole(ADMIN), deleteProblem)
-router.route("/getSolvedProblem/:id").get(verifyJWT, authorizedRole(ADMIN, USER), getSolvedProblem)
+router.route("/getSolvedProblems").get(verifyJWT, authorizedRole(ADMIN, USER), getSolvedProblems)
 
 export default router

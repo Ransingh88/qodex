@@ -19,11 +19,11 @@ const testcaseSchema = new mongoose.Schema({
   },
   stderr: {
     type: String,
-    required: true,
+    // required: true,
   },
   compileOutput: {
     type: String,
-    required: true,
+    // required: true,
   },
   expectedOutput: {
     type: String,
@@ -73,11 +73,11 @@ const submissionSchema = new mongoose.Schema(
     },
     stderr: {
       type: String,
-      required: true,
+      // required: true,
     },
     compileOutput: {
       type: String,
-      required: true,
+      // required: true,
     },
     status: {
       type: String,

@@ -35,6 +35,10 @@ const problemSchema = new mongoose.Schema(
     editorial: {
       type: String,
     },
+    isPublic: {
+      type: Boolean,
+      default: true,
+    },
     testcases: {
       type: JSON,
     },
