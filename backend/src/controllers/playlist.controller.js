@@ -36,24 +36,44 @@ const createPlaylist = asyncHandler(async (req, res) => {
 const addProblemToPlaylist = asyncHandler(async (req, res) => {
   const { playlistId, problemIds } = req.body
 
+  if (!Array.isArray(problemIds) || problemIds.length === 0) {
+    throw new APIError(400, "problemIds must be a non-empty array")
+  }
+
   const existedPlaylist = await Playlist.findById(playlistId)
 
   if (!existedPlaylist) {
     throw new APIError(404, "playlist not found")
   }
 
+  const existingIds = existedPlaylist.problems.map((p) => p.toString())
+  const alreadyExists = problemIds.filter((id) => existingIds.includes(id.toString()))
+
+  if (alreadyExists.length === problemIds.length) {
+    throw new APIError(400, "All problems already exist in playlist", {
+      existingProblems: alreadyExists,
+    })
+  }
+
+  const newProblemIds = problemIds.filter((id) => !existingIds.includes(id.toString()))
+
   const playlist = await Playlist.findByIdAndUpdate(
     playlistId,
-    { $addToSet: { problems: { $each: problemIds } } },
-    { upsert: true, new: true }
+    { $addToSet: { problems: { $each: newProblemIds } } },
+    { new: true }
   )
 
   if (!playlist) {
     throw new APIError(500, "something went wrong while adding problem to playlist")
   }
 
-  res.status(200).json(new APIResponse(200, "Problem added to playlist successfully"))
+  res
+    .status(200)
+    .json(
+      new APIResponse(200, "Problem added to playlist successfully", { added: newProblemIds, skipped: alreadyExists })
+    )
 })
+
 const getAllPlaylists = asyncHandler(async (req, res) => {
   const { id } = req.user
 
@@ -65,6 +85,7 @@ const getAllPlaylists = asyncHandler(async (req, res) => {
 
   res.status(200).json(new APIResponse(200, "Successfully fetched all playlists", playlist))
 })
+
 const getPlaylistDetails = asyncHandler(async (req, res) => {
   const { playlistId } = req.params
 
@@ -80,22 +101,26 @@ const getPlaylistDetails = asyncHandler(async (req, res) => {
 
   res.status(200).json(new APIResponse(200, "Successfully fetched playlist details", playlist))
 })
+
 const updatePlaylist = asyncHandler(async (req, res) => {
   const { playlistId } = req.params
   const { title, description, problems } = req.body
 
-  const updatedPlaylist = await Playlist.updateOne(
-    { _id: playlistId },
-    { $set: { title, description, problems } },
-    { new: true }
-  )
+  const playlist = await Playlist.findById(playlistId)
+
+  if (!playlist) {
+    throw new APIError(404, "Playlist not found")
+  }
+
+  const updatedPlaylist = await Playlist.findByIdAndUpdate(playlistId, { title, description, problems }, { new: true })
 
   if (!updatedPlaylist) {
     throw new APIError(500, "something went wrong while updating playlist")
   }
 
-  res.status(200).json(new APIResponse(200, "Playlist updated successfully"))
+  res.status(200).json(new APIResponse(200, "Playlist updated successfully", updatedPlaylist))
 })
+
 const deletePlaylist = asyncHandler(async (req, res) => {
   const { playlistId } = req.params
 
