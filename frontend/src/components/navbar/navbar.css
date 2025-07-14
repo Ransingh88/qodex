@@ -1,0 +1,19 @@
+@reference '../../index.css';
+
+.navbar-container {
+  @apply bg-basebg-default text-fg-default w-full h-28 px-8 flex items-center justify-center;
+
+  .navbar {
+    @apply flex items-center justify-between w-11/12;
+
+    .logo {
+        @apply text-2xl font-bold tracking-[-0.12em];
+    }
+    .menus {
+      @apply flex items-center justify-center gap-8;
+      & > ul {
+        @apply flex items-center justify-center gap-8 lowercase;
+      }
+    }
+  }
+}
