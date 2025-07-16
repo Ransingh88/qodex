@@ -1,11 +1,16 @@
-import { api } from "../utils/axios"
+import { API } from "./api"
 
-const login = async (email, password) => {
-  const response = await api.post("/auth/login", {
+const loginUser = async (email, password) => {
+  const response = await API.post("/auth/login", {
     email,
     password,
   })
   return response
 }
 
-export { login }
+const logoutUser = async () => {
+  const response = await API.get("/auth/logout")
+  return response
+}
+
+export { loginUser, logoutUser }
