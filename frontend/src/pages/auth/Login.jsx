@@ -1,12 +1,14 @@
 import { useState } from "react"
 import { loginUser } from "../../services/auth.service"
 import { toast } from "react-toastify"
-import { handleError } from "../../utils/handleError"
+import { asyncHandler } from "../../utils/asyncHandler"
 import { useDispatch, useSelector } from "react-redux"
 import { login as lg } from "../../features/rtk/auth/authSlice"
 import { useNavigate } from "react-router"
+import { useAsyncHandler } from "../../hooks/useAsyncHandler"
 
 const Login = () => {
+  const { run, loading, error } = useAsyncHandler()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const dispatch = useDispatch()
@@ -14,17 +16,10 @@ const Login = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
 
   const handleLogin = async () => {
-    try {
-      const res = await loginUser(username, password)
-      toast.success(res.data.message)
-      dispatch(lg(res.data.data.user))
-      navigate("/")
-    } catch (err) {
-      handleError(err, {
-        toast: toast.error,
-        fallbackMessage: "Failed to login",
-      })
-    }
+    const res = await run(()=>loginUser(username, password))
+    toast.success(res.data.message)
+    dispatch(lg(res.data.data.user))
+    navigate("/")
   }
   if (isAuthenticated) return navigate("/")
   return (
@@ -45,7 +40,7 @@ const Login = () => {
           className=" text-white border border-white"
         />
         <button onClick={handleLogin} className="bg-blue-500 text-white">
-          login
+          {loading ? "Logging in..." : "Login"}
         </button>
       </div>
     </div>
