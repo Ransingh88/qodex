@@ -3,6 +3,12 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { Problem } from "./problem.model.js"
 import { USER_ROLES } from "../config/constant/constants.js"
+import {
+  ACCESS_TOKEN_EXPIRY,
+  ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_EXPIRY,
+  REFRESH_TOKEN_SECRET,
+} from "../config/config.js"
 
 const userSchema = new mongoose.Schema(
   {
@@ -56,6 +62,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 
 // generate jwt token
 userSchema.methods.generateAccessToken = function () {
+  console.log(ACCESS_TOKEN_EXPIRY, "ACCESS_TOKEN_EXPIRY")
   return jwt.sign(
     {
       _id: this._id,
@@ -63,20 +70,21 @@ userSchema.methods.generateAccessToken = function () {
       username: this.username,
       fullName: this.fullName,
     },
-    process.env.ACCESS_TOKEN_SECRET,
+    ACCESS_TOKEN_SECRET,
     {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+      expiresIn: ACCESS_TOKEN_EXPIRY,
     }
   )
 }
 userSchema.methods.generateRefreshToken = function () {
+  console.log(REFRESH_TOKEN_EXPIRY, "REFRESH_TOKEN_EXPIRY")
   return jwt.sign(
     {
       _id: this._id,
     },
-    process.env.REFRESH_TOKEN_SECRET,
+    REFRESH_TOKEN_SECRET,
     {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
+      expiresIn: REFRESH_TOKEN_EXPIRY,
     }
   )
 }
