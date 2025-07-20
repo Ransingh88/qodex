@@ -8,7 +8,7 @@ function App() {
   useAuthInit()
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <AppRoutes />
       <ToastContainer autoClose={2500} theme={"dark"} />
     </>

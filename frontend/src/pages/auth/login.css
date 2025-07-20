@@ -1,0 +1,80 @@
+@reference '../../index.css';
+
+.login_main-container {
+  @apply p-4 flex items-center justify-center gap-4 h-screen w-full bg-basebg-default text-fg-default font-head;
+}
+
+.login-container {
+  @apply w-1/2 h-full rounded-xl bg-basebg-surface border border-border-default flex justify-center items-center;
+
+  & .login-form {
+    @apply w-2/5 border border-border-muted rounded-xl flex flex-col items-center justify-center p-6 shadow-xl;
+
+    & .login-form_header {
+      @apply flex flex-col items-center justify-center gap-1 mb-4;
+      & .form_title {
+        @apply text-lg font-semibold;
+      }
+      & .form_subtitle {
+        @apply text-[9px] font-medium text-accent-fg;
+      }
+    }
+
+    & .login-form_body {
+      @apply w-full flex flex-col items-center justify-center gap-4;
+
+      & .form_input {
+        @apply w-full flex flex-col items-start justify-center gap-1;
+
+        & label {
+          @apply text-sm pl-1;
+        }
+
+        & input {
+          @apply w-full px-4 py-2 text-sm rounded-lg border border-border-muted bg-basebg-surface text-fg-default placeholder:text-fg-muted focus:outline-none focus:border-accent-fg;
+
+          &::placeholder {
+            @apply text-fg-muted text-xs;
+          }
+        }
+      }
+
+      & .form_input-actions {
+        @apply w-full flex items-center justify-between text-xs px-2;
+
+        & span {
+          @apply flex items-center gap-1;
+        }
+        & p {
+          @apply text-accent-fg font-medium cursor-pointer hover:text-accent-emphasis;
+        }
+      }
+
+      & .form_button {
+        @apply w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-accent-fg text-[#f8f8f8] hover:bg-accent-emphasis cursor-pointer;
+      }
+    }
+
+    & .login-form_devider {
+      @apply w-full flex items-center justify-center my-6;
+      & .devider_text {
+        @apply px-4 text-xs text-fg-muted;
+      }
+      & .devider_line {
+        @apply w-full h-px bg-border-muted;
+      }
+    }
+
+    & .login-social {
+      @apply w-full flex flex-col items-center justify-center gap-2;
+
+      & .social-login_button {
+        @apply w-full flex items-center justify-center gap-2 py-2 text-xs rounded-lg border border-border-muted text-fg-default hover:bg-accent-subtle cursor-pointer;
+      }
+    }
+  }
+}
+
+.login-slideshow {
+  @apply w-1/2 h-full rounded-xl  bg-gradient-to-br from-indigo-900 from-0% via-violet-500 via-50% to-fuchsia-300 to-100%;
+}
