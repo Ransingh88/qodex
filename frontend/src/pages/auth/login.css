@@ -5,10 +5,10 @@
 }
 
 .login-container {
-  @apply w-1/2 h-full rounded-xl bg-basebg-surface border border-border-default flex justify-center items-center;
+  @apply w-1/2 h-full rounded-xl  flex justify-center items-center relative;
 
   & .login-form {
-    @apply w-2/5 border border-border-muted rounded-xl flex flex-col items-center justify-center p-6 shadow-xl;
+    @apply w-2/5 rounded-xl flex flex-col items-center justify-center p-6;
 
     & .login-form_header {
       @apply flex flex-col items-center justify-center gap-1 mb-4;
@@ -31,7 +31,7 @@
         }
 
         & input {
-          @apply w-full px-4 py-2 text-sm rounded-lg border border-border-muted bg-basebg-surface text-fg-default placeholder:text-fg-muted focus:outline-none focus:border-accent-fg;
+          @apply w-full px-4 py-2 text-sm rounded-lg border border-border-muted  text-fg-default placeholder:text-fg-muted focus:outline-none focus:border-accent-fg;
 
           &::placeholder {
             @apply text-fg-muted text-xs;
@@ -66,15 +66,18 @@
     }
 
     & .login-social {
-      @apply w-full flex flex-col items-center justify-center gap-2;
+      @apply w-full flex flex-col items-center justify-center gap-2 mt-2;
 
       & .social-login_button {
-        @apply w-full flex items-center justify-center gap-2 py-2 text-xs rounded-lg border border-border-muted text-fg-default hover:bg-accent-subtle cursor-pointer;
+        @apply w-full flex items-center justify-center gap-2 py-2 text-sm rounded-lg border border-border-muted text-fg-default hover:bg-accent-subtle cursor-pointer;
       }
     }
   }
 }
+.logo{
+  @apply absolute top-10 left-10 font-head;
+}
 
 .login-slideshow {
-  @apply w-1/2 h-full rounded-xl  bg-gradient-to-br from-indigo-900 from-0% via-violet-500 via-50% to-fuchsia-300 to-100%;
+  @apply w-3/6 h-full rounded-xl  bg-gradient-to-br from-indigo-900 from-0% via-violet-500 via-50% to-fuchsia-300 to-100%;
 }

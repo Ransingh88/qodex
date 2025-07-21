@@ -4,7 +4,7 @@ import { loginUser } from "../../services/auth.service"
 import { toast } from "react-toastify"
 import { useDispatch, useSelector } from "react-redux"
 import { login as lg } from "../../features/rtk/auth/authSlice"
-import { useNavigate } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { useAsyncHandler } from "../../hooks/useAsyncHandler"
 
 const Login = () => {
@@ -25,10 +25,13 @@ const Login = () => {
   return (
     <div className="login_main-container">
       <div className="login-container">
+        <h3 className="logo">
+          <Link to="/">qodex.</Link>
+        </h3>
         <div className="login-form">
           <div className="login-form_header">
             <p className="form_title">Sign in to Account</p>
-            <span className="form_subtitle">Start your 14 days free trial</span>
+            {/* <span className="form_subtitle">Start your 14 days free trial</span> */}
           </div>
           <div className="login-form_body">
             <span className="form_input">
@@ -66,17 +69,17 @@ const Login = () => {
               {loading ? "Logging in..." : "Login"}
             </button>
           </div>
-          <div className="login-form_devider">
+          {/* <div className="login-form_devider">
             <span className="devider_line"></span>
             <span className="devider_text">OR</span>
             <span className="devider_line"></span>
-          </div>
+          </div> */}
           <div className="login-social">
             <button className="social-login_button">Sign in with Google</button>
-            <button className="social-login_button">Sign in with Github</button>
-            <button className="social-login_button">
+            {/* <button className="social-login_button">Sign in with Github</button> */}
+            {/* <button className="social-login_button">
               Sign in with Linked In
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
