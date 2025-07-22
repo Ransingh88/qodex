@@ -1,0 +1,38 @@
+@reference "@/index.css";
+
+.authLayout-main_container {
+  @apply w-full h-screen bg-basebg-default text-fg-default relative;
+}
+
+.authLayout-container {
+  @apply w-full h-full flex flex-col items-center;
+}
+
+.authLayout-navbar {
+  @apply w-full h-32 flex items-center justify-between px-24;
+
+  & .authLayout-navbar_logo {
+    @apply text-2xl font-head font-semibold tracking-tighter;
+  }
+  & .authLayout-navbar_menus {
+    @apply flex items-center justify-center gap-8;
+
+    & > ul {
+      @apply flex items-center justify-center gap-8 capitalize;
+    }
+  }
+}
+
+.authLayout-footer {
+  @apply text-xs text-fg-muted font-head self-start p-8 lowercase;
+}
+
+.abck {
+  @apply absolute -top-40 left-1/2 -translate-x-1/2  w-1/2 h-[500px] bg-[linear-gradient(#424242_1px,transparent_1px),linear-gradient(to_right,#424242_1px,transparent_1px)] 
+              bg-[size:35px_35px] opacity-30 mix-blend-lighten;
+
+  .abck-radial {
+    @apply pointer-events-none absolute inset-0 z-30 
+              bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_40%,rgba(0,0,0,1)_80%)];
+  }
+}

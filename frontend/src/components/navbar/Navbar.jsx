@@ -1,10 +1,9 @@
 import "./navbar.css"
-import ThemeToggle from "../theme/ThemeToggle"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router"
-import { logoutUser } from "../../services/auth.service"
-import { useEffect } from "react"
+import { ThemeToggle } from "@/components/theme/ThemeToggle"
 import { logout } from "../../features/rtk/auth/authSlice"
+import { logoutUser } from "../../services/auth.service"
 const Navbar = () => {
   const { isAuthenticated, user } = useSelector((state) => state.auth)
   const dispatch = useDispatch()

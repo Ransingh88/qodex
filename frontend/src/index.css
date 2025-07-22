@@ -49,3 +49,31 @@ body::-webkit-scrollbar {
     text-decoration-line: underline;
   } */
 }
+
+@layer utilities {
+  .grid-overlay {
+    @apply pointer-events-none absolute inset-0 z-50 bg-[size:40px_40px] opacity-20;
+    background-image:
+      linear-gradient(#333 1px, transparent 1px),
+      linear-gradient(to right, #333 1px, transparent 1px);
+  }
+
+  .square-radial-fade {
+    @apply pointer-events-none absolute inset-0 z-50;
+    background: radial-gradient(
+      closest-side at center,
+      rgba(0, 0, 0, 0) 30%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    mask-image: radial-gradient(
+      closest-side at center,
+      rgba(0, 0, 0, 1) 30%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    -webkit-mask-image: radial-gradient(
+      closest-side at center,
+      rgba(0, 0, 0, 1) 30%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+}

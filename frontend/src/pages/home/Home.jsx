@@ -1,6 +1,6 @@
+import Navbar from "../../components/navbar/Navbar"
 import React from "react"
 import { useSelector } from "react-redux"
-import Navbar from "../../components/navbar/Navbar"
 
 const Home = () => {
   const { isAuthenticated, user } = useSelector((state) => state.auth)

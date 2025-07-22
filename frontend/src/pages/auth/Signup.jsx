@@ -1,4 +1,4 @@
-import "./login.css"
+import "./signup.css"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router"
@@ -6,18 +6,28 @@ import { toast } from "react-toastify"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import { login as lg } from "@/features/rtk/auth/authSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
-import { loginUser } from "@/services/auth.service"
+import { registerUser } from "@/services/auth.service"
 
-const Login = () => {
+const Signup = () => {
   const { run, loading } = useAsyncHandler()
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [formData, setFormData] = useState({
+    fullname: "",
+    username: "",
+    email: "",
+    password: "",
+  })
+  const { fullname, username, email, password } = formData
+
+  const handleOnChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { isAuthenticated } = useSelector((state) => state.auth)
 
   const handleLogin = async () => {
-    const res = await run(() => loginUser(username, password))
+    const res = await run(() => registerUser(formData))
     toast.success(res.data.message)
     dispatch(lg(res.data.data.user))
     navigate("/")
@@ -28,17 +38,40 @@ const Login = () => {
       <div className="login-container">
         <div className="login-form">
           <div className="login-form_header">
-            <p className="form_title">Login to Account</p>
-            {/* <span className="form_subtitle">Start your 14 days free trial</span> */}
+            <p className="form_title">Sign Up</p>
+            <span className="form_subtitle">Start your 14 days free trial</span>
           </div>
           <div className="login-form_body">
             <span className="form_input">
-              <label>Email or Username</label>
+              <label>Fullname</label>
+              <input
+                type="text"
+                placeholder="John Doe"
+                name="fullname"
+                onChange={handleOnChange}
+                value={fullname}
+                className=""
+              />
+            </span>
+            <span className="form_input">
+              <label>Username</label>
+              <input
+                type="text"
+                placeholder="johnd2412"
+                name="username"
+                onChange={handleOnChange}
+                value={username}
+                className=""
+              />
+            </span>
+            <span className="form_input">
+              <label>Email</label>
               <input
                 type="text"
                 placeholder="username@google.com"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
+                name="email"
+                onChange={handleOnChange}
+                value={email}
                 className=""
               />
             </span>
@@ -47,33 +80,34 @@ const Login = () => {
               <input
                 type="password"
                 placeholder="********"
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                onChange={handleOnChange}
                 value={password}
                 className=""
               />
             </span>
-            <span className="form_input-actions">
+            {/* <span className="form_input-actions">
               <span>
                 <input type="checkbox" name="" id="" />
                 <label>Remember Me</label>
               </span>
               <p>Forgot password?</p>
-            </span>
+            </span> */}
             <button
               disabled={loading}
               onClick={handleLogin}
               className="form_button"
             >
-              {loading ? <LoadingSpinner /> : "Login"}
+              {loading ? <LoadingSpinner /> : "Signup"}
             </button>
           </div>
           <div className="login-social">
             <button className="social-login_button">Sign in with Google</button>
-            <button className="social-login_button">Sign in with Github</button>
+            {/* <button className="social-login_button">Sign in with Github</button> */}
           </div>
           <div className="login-form_links">
             <p>
-              Don&apos;t have an account? <Link to="/auth/signup">Sign up</Link>
+              Already have an account? <Link to="/auth/login">Log in</Link>
             </p>
           </div>
         </div>
@@ -82,4 +116,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Signup

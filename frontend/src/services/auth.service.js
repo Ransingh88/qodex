@@ -1,5 +1,14 @@
 import API from "./api"
 
+const registerUser = async ({ fullname, username, email, password }) => {
+  const response = await API.post("/auth/register", {
+    fullName: fullname,
+    username: username,
+    email: email,
+    password: password,
+  })
+  return response
+}
 const loginUser = async (email, password) => {
   const response = await API.post("/auth/login", {
     email,
@@ -13,4 +22,4 @@ const logoutUser = async () => {
   return response
 }
 
-export { loginUser, logoutUser }
+export { registerUser, loginUser, logoutUser }

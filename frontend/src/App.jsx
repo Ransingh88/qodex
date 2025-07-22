@@ -1,8 +1,9 @@
 import "./App.css"
 import { ToastContainer } from "react-toastify"
+
 import Navbar from "./components/navbar/Navbar"
-import AppRoutes from "./routes/AppRoutes"
 import useAuthInit from "./hooks/useAuthInit"
+import AppRoutes from "./routes/AppRoutes"
 
 function App() {
   useAuthInit()
