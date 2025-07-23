@@ -49,9 +49,15 @@
           @apply text-accent-fg font-medium cursor-pointer hover:text-accent-emphasis;
         }
       }
+      & .form-action-buttons {
+        @apply w-full flex justify-between items-center gap-4;
 
-      & .form_button {
-        @apply w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-accent-fg text-[#f8f8f8] hover:bg-accent-emphasis cursor-pointer;
+        & .form_button-back {
+          @apply w-full flex items-center justify-center gap-2 py-2 rounded-lg border border-border-default text-fg-default hover:bg-accent-subtle cursor-pointer;
+        }
+        & .form_button {
+          @apply w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-accent-fg text-[#f8f8f8] hover:bg-accent-emphasis cursor-pointer;
+        }
       }
     }
 

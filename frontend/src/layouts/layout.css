@@ -18,7 +18,13 @@
     @apply flex items-center justify-center gap-8;
 
     & > ul {
-      @apply flex items-center justify-center gap-8 capitalize;
+      @apply flex items-center justify-center gap-4 capitalize;
+      & .authLayout-navbar_login {
+        @apply border border-border-muted hover:bg-accent-subtle px-4 py-2 rounded-lg;
+      }
+      & .authLayout-navbar_signup {
+        @apply bg-accent-fg hover:bg-accent-emphasis text-[#f8f8f8] px-4 py-2 rounded-lg;
+      }
     }
   }
 }
@@ -27,11 +33,11 @@
   @apply text-xs text-fg-muted font-head self-start p-8 lowercase;
 }
 
-.abck {
-  @apply absolute -top-40 left-1/2 -translate-x-1/2  w-1/2 h-[500px] bg-[linear-gradient(#424242_1px,transparent_1px),linear-gradient(to_right,#424242_1px,transparent_1px)] 
+.grid-pattrn {
+  @apply absolute -top-40 left-1/2 -translate-x-1/2  w-1/2 h-[500px] bg-[linear-gradient(var(--color-grid-pattrn)_1px,transparent_1px),linear-gradient(to_right,var(--color-grid-pattrn)_1px,transparent_1px)] 
               bg-[size:35px_35px] opacity-30 mix-blend-lighten;
 
-  .abck-radial {
+  .grid-pattrn-radial {
     @apply pointer-events-none absolute inset-0 z-30 
               bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_40%,rgba(0,0,0,1)_80%)];
   }

@@ -6,8 +6,8 @@ import Navbar from "@/components/navbar/Navbar"
 const AuthLayout = () => {
   return (
     <div className="authLayout-main_container">
-      <div className="abck">
-        <div className="abck-radial"></div>
+      <div className="grid-pattrn">
+        <div className="grid-pattrn-radial"></div>
       </div>
       <div className="authLayout-container">
         <div className="authLayout-navbar">
@@ -17,15 +17,17 @@ const AuthLayout = () => {
           <div className="authLayout-navbar_menus">
             <ul>
               <Link to="/auth/login">
-                <li>Login</li>
+                <li className="authLayout-navbar_login">Login</li>
               </Link>
               <Link to="/auth/signup">
-                <li>Sign up</li>
+                <li className="authLayout-navbar_signup">Sign up</li>
               </Link>
             </ul>
           </div>
         </div>
-        <Outlet />
+        <div className="w-full h-full">
+          <Outlet />
+        </div>
         <div className="authLayout-footer">&copy; qodex. 2025 </div>
       </div>
     </div>

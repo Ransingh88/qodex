@@ -28,15 +28,18 @@
   --color-danger-emphasis: #b62320;
   --color-danger-subtle: #fddddd;
 
-  /* Warning (Optional) */
+  /* Warning */
   --color-warning-fg: #9e6a03;
   --color-warning-emphasis: #744c00;
   --color-warning-subtle: #fff4d4;
 
-  /* Info (Optional) */
+  /* Info */
   --color-info-fg: #1f6feb;
   --color-info-emphasis: #0d419d;
   --color-info-subtle: #daeaff;
+
+  /* grid-pattrn */
+    --color-grid-pattrn:#222;
 
   /* font */
   --font-head: "DM Sans", sans-serif;
@@ -84,6 +87,9 @@
     --color-info-fg: #58a6ff;
     --color-info-emphasis: #1f6feb;
     --color-info-subtle: #0d419d;
+
+    /* grid-pattrn */
+    --color-grid-pattrn:#424242;
 
     /* font */
     --font-head: "DM Sans", sans-serif;
