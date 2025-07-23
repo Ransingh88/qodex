@@ -1,5 +1,5 @@
 import "./navbar.css"
-import { CircleUser, CreditCard, Handshake, Info, LogOut } from "lucide-react"
+import { CircleUser, CreditCard, Handshake, Info, LogOut, Settings } from "lucide-react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router"
 import { ThemeToggle } from "@/components/theme/ThemeToggle"
@@ -91,7 +91,7 @@ const Navbar = () => {
                           Subscription
                         </div>
                         <div className="flex items-center gap-4 cursor-pointer hover:bg-accent-subtle px-2 py-2 rounded-lg">
-                          <CreditCard size={16} className="mt-0.5" /> Settinga
+                          <Settings size={16} className="mt-0.5" /> Settinga
                         </div>
                       </div>
                     </div>
