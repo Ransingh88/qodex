@@ -52,7 +52,7 @@ const Signup = () => {
       <div className="login-container">
         <div className="login-form">
           <div className="login-form_header">
-            <p className="form_title">Sign Up</p>
+            <p className="form_title">Create an account</p>
             <span className="form_subtitle">Start your 14 days free trial</span>
             {isEmailContinue && <span className="form_input mt-4">
               <label>{email}</label>
@@ -161,7 +161,7 @@ const Signup = () => {
                   onClick={handleEmailContinue}
                   className="form_button"
                 >
-                  {loading ? <LoadingSpinner /> : "Continue"}
+                  {loading ? <LoadingSpinner /> : "Get started"}
                 </button>
               </div>
               <div className="login-form_devider">

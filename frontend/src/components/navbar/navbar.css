@@ -1,19 +1,28 @@
-@reference '../../index.css';
+@reference '@/index.css';
+
+.navbar-main_container {
+  @apply bg-basebg-default text-fg-default w-full h-24 flex justify-center items-center fixed top-0 right-0 left-0;
+}
 
 .navbar-container {
-  @apply bg-basebg-default text-fg-default w-full h-28 px-8 flex items-center justify-center;
+  @apply w-full h-full px-24 flex justify-between items-center;
+}
 
-  .navbar {
-    @apply flex items-center justify-between w-11/12;
+.navbar-left {
+  @apply flex justify-center items-center gap-12;
 
-    .logo {
-        @apply text-2xl font-bold tracking-[-0.12em];
-    }
-    .menus {
-      @apply flex items-center justify-center gap-8;
-      & > ul {
-        @apply flex items-center justify-center gap-8 lowercase;
-      }
-    }
+  & .navbar-logo {
+    @apply text-2xl font-head font-semibold tracking-tighter;
+  }
+  & .navbar-menus {
+    @apply flex items-center justify-center gap-8 capitalize text-gray-300;
+  }
+}
+
+.navbar-right {
+  @apply flex justify-center items-center gap-8;
+
+  & .navbar-login {
+    @apply bg-accent-fg hover:bg-accent-emphasis text-[#f8f8f8] px-6 py-2 rounded-lg;
   }
 }
