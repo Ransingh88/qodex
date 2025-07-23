@@ -1,11 +1,18 @@
 import "./navbar.css"
-import { CircleUser, CreditCard, Handshake, Info, LogOut, Settings } from "lucide-react"
+import {
+  CircleUser,
+  CreditCard,
+  Handshake,
+  Info,
+  LogOut,
+  Settings,
+} from "lucide-react"
+import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router"
 import { ThemeToggle } from "@/components/theme/ThemeToggle"
 import { logout } from "../../features/rtk/auth/authSlice"
 import { logoutUser } from "../../services/auth.service"
-import { useState } from "react"
 const Navbar = () => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false)
   const { isAuthenticated, user } = useSelector((state) => state.auth)
@@ -14,7 +21,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     await logoutUser()
     dispatch(logout())
-    navigate("/")
+    navigate("/", { replace: true })
   }
 
   const menus = [
