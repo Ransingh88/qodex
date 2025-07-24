@@ -7,7 +7,7 @@ const AuthLayout = () => {
   return (
     <div className="authLayout-main_container">
       <div className="grid-pattrn">
-        <div className="grid-pattrn-radial"></div>
+        {/* <div className="grid-pattrn-radial"></div> */}
       </div>
       <div className="authLayout-container">
         <div className="authLayout-navbar">

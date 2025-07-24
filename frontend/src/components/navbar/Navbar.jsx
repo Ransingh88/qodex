@@ -62,7 +62,7 @@ const Navbar = () => {
   return (
     <div
       className={`navbar-main_container ${
-        isScrolled ? "border-b border-border-default" : ""
+        isScrolled ? "z-50 border-b border-border-default " : "z-20"
       }`}
     >
       <div className="navbar-container">
