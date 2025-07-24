@@ -7,6 +7,7 @@ import {
   LogOut,
   Settings,
 } from "lucide-react"
+import { motion } from "motion/react"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router"
@@ -93,7 +94,12 @@ const Navbar = () => {
               >
                 <p className="font-bold">{user.username[0].toUpperCase()}</p>
                 {showProfileDropdown && (
-                  <div className=" absolute top-12 right-0 min-h-62 min-w-64 bg-basebg-surface text-fg-default rounded-2xl shadow-lg border border-border-default flex flex-col items-start justify-between">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ type: "spring", bounce: 0.3 }}
+                    className=" absolute top-12 right-0 min-h-62 min-w-64 bg-basebg-surface text-fg-default rounded-2xl shadow-lg border border-border-default flex flex-col items-start justify-between"
+                  >
                     <div className="w-full box-border">
                       <div className="m-1 px-3 py-2 bg-basebg-surface2 border border-border-default rounded-xl">
                         <p>{user.fullName}</p>
@@ -133,7 +139,7 @@ const Navbar = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 )}
               </div>
             </>

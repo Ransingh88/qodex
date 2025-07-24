@@ -51,7 +51,7 @@ const Home = () => {
         {blocks}
       </div>
       <div className="home-container">
-        <div className="home-hero_section">
+        <div className="home-hero_section relative">
           <h1 className="home-hero_title">
             We love solving problems. <br /> But, what if there was a platform
             that <br /> helped you master them all?
@@ -65,6 +65,28 @@ const Home = () => {
           <div className="home-hero_action_buttons">
             <button className="home-hero_explore">Explore</button>
             <button className="home-hero_cta">Get started</button>
+          </div>
+          <div className="absolute inset-0 left-32 flex flex-col items-start justify-around">
+            <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-amber-300 ">
+              JS
+            </div>
+            <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-blue-300 absolute -left-15 ">
+              Py
+            </div>
+            <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-red-300 ">
+              Java
+            </div>
+            <div className="h-full absolute top-0 right-32 flex flex-col items-center justify-around">
+              <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-amber-300 right-10">
+                Vu
+              </div>
+              <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-blue-300 absolute left-15">
+                Node
+              </div>
+              <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-red-300 ">
+                Swift
+              </div>
+            </div>
           </div>
         </div>
       </div>
