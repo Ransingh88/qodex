@@ -35,10 +35,5 @@
 
 .grid-pattrn {
   @apply absolute -top-40 left-1/2 -translate-x-1/2  w-1/2 h-[500px] bg-[linear-gradient(var(--color-grid-pattrn)_1px,transparent_1px),linear-gradient(to_right,var(--color-grid-pattrn)_1px,transparent_1px)] 
-              bg-[size:35px_35px] opacity-30 mix-blend-lighten;
-
-  .grid-pattrn-radial {
-    @apply pointer-events-none absolute inset-0 z-30 
-              bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_40%,rgba(0,0,0,1)_80%)];
-  }
+              bg-[size:35px_35px] opacity-30 mask-x-from-70% mask-x-to-90% mask-y-from-70% mask-y-to-100%;
 }

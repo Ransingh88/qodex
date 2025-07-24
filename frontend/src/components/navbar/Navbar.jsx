@@ -7,7 +7,7 @@ import {
   LogOut,
   Settings,
 } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router"
 import { ThemeToggle } from "@/components/theme/ThemeToggle"
@@ -15,6 +15,7 @@ import { logout } from "../../features/rtk/auth/authSlice"
 import { logoutUser } from "../../services/auth.service"
 const Navbar = () => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
   const { isAuthenticated, user } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -47,8 +48,23 @@ const Navbar = () => {
     },
   ]
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+
+    // Cleanup
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   return (
-    <div className="navbar-main_container">
+    <div
+      className={`navbar-main_container ${
+        isScrolled ? "border-b border-border-default" : ""
+      }`}
+    >
       <div className="navbar-container">
         <div className="navbar-left">
           <div className="navbar-logo">
@@ -123,7 +139,7 @@ const Navbar = () => {
             </>
           ) : (
             <Link to="/auth/login" className="navbar-login">
-              login
+              Login
             </Link>
           )}
         </div>
