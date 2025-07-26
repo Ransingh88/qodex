@@ -46,11 +46,11 @@ const Home = () => {
     <div className="home-main_container">
       <div
         className="absolute -top-50 left-1/2 -translate-x-1/2  w-2/3 h-full bg-[linear-gradient(var(--color-grid-pattrn)_1px,transparent_1px),linear-gradient(to_right,var(--color-grid-pattrn)_1px,transparent_1px)] 
-              bg-[size:40px_40px] opacity-70 mask-x-from-70% mask-x-to-90% mask-y-from-60% mask-y-to-90% z-30"
+              bg-[size:40px_40px] opacity-70 mask-x-from-70% mask-x-to-90% mask-y-from-60% mask-y-to-90% pointer-events-none z-0"
       >
         {blocks}
       </div>
-      <div className="home-container">
+      <div className="home-container z-10">
         <div className="home-hero_section relative">
           <h1 className="home-hero_title">
             We love solving problems. <br /> But, what if there was a platform
@@ -66,7 +66,7 @@ const Home = () => {
             <button className="home-hero_explore">Explore</button>
             <button className="home-hero_cta">Get started</button>
           </div>
-          <div className="absolute inset-0 left-32 flex flex-col items-start justify-around">
+          {/* <div className="absolute inset-0 left-32 flex flex-col items-start justify-around">
             <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-amber-300 ">
               JS
             </div>
@@ -76,18 +76,18 @@ const Home = () => {
             <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-red-300 ">
               Java
             </div>
-            <div className="h-full absolute top-0 right-32 flex flex-col items-center justify-around">
-              <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-amber-300 right-10">
-                Vu
-              </div>
-              <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-blue-300 absolute left-15">
-                Node
-              </div>
-              <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-red-300 ">
-                Swift
-              </div>
-            </div>
           </div>
+          <div className="h-full absolute top-0 right-32 flex flex-col items-center justify-around">
+            <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-amber-300 right-10">
+              Vu
+            </div>
+            <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-blue-300 absolute left-15">
+              Node
+            </div>
+            <div className="h-10 w-10 rounded-xl bg-basebg-default border border-border-default shadow-xl flex items-center justify-center font-semibold text-sm text-red-300 ">
+              Swift
+            </div>
+          </div> */}
         </div>
       </div>
     </div>
