@@ -1,11 +1,11 @@
 @reference '@/index.css';
 
 .navbar-main_container {
-  @apply text-fg-default w-full h-24 flex justify-center items-center fixed top-0 right-0 left-0 z-20 border-b;
+  @apply text-fg-default w-full flex justify-center items-center fixed top-0 right-0 left-0 z-20 border-b overflow-hidden;
 }
 
 .navbar-container {
-  @apply w-full h-full px-24 flex justify-between items-center;
+  @apply h-full flex justify-between items-center;
 }
 
 .navbar-left {

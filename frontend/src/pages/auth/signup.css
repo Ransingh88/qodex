@@ -13,10 +13,10 @@
     & .login-form_header {
       @apply flex flex-col items-center justify-center gap-1 mb-12;
       & .form_title {
-        @apply text-2xl font-semibold;
+        @apply text-xl font-semibold;
       }
       & .form_subtitle {
-        @apply text-xs font-medium text-accent-fg;
+        @apply text-xxs font-medium text-accent-fg;
       }
     }
 

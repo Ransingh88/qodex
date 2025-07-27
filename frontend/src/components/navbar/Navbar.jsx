@@ -52,14 +52,19 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
   return (
-    <div
+    <motion.div
+      animate={{
+        height: isScrolled ? "4rem" : "6rem",
+        
+      }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
       className={`navbar-main_container ${
         isScrolled
-          ? "bg-basebg-default border-border-default "
-          : "border-transparent "
+          ? "bg-basebg-default border-border-default h-20"
+          : "border-transparent h-24 "
       }`}
     >
-      <div className="navbar-container">
+      <div className="navbar-container container-guttered">
         <div className="navbar-left">
           <div className="navbar-logo">
             <Link to="/">qodex.</Link>
@@ -94,7 +99,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

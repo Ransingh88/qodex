@@ -1,11 +1,8 @@
 import { motion } from "motion/react"
 import React from "react"
-import { useSelector } from "react-redux"
 import "./home.css"
 
 const Home = () => {
-  const { isAuthenticated, user } = useSelector((state) => state.auth)
-
   const rows = 20
   const cols = 30
   const cellSize = 40
@@ -50,7 +47,7 @@ const Home = () => {
       >
         {blocks}
       </div>
-      <div className="home-container z-10">
+      <div className="home-container container-guttered  z-10">
         <div className="home-hero_section relative">
           <h1 className="home-hero_title">
             We love solving problems. <br /> But, what if there was a platform

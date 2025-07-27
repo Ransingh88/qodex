@@ -2,8 +2,8 @@ import { Link } from "react-router"
 import "./footer.css"
 const Footer = () => {
   return (
-    <div className="footer-main_container">
-      <div className="footer-container">
+    <div className="footer-main_container ">
+      <div className="footer-container container-guttered">
         <div className="footer-body">
           <div className="footer-content">
             <div className="logo">qodex.</div>

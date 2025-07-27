@@ -1,18 +1,18 @@
 @reference '@/index.css';
 
 .footer-main_container {
-  @apply w-full flex flex-col items-center justify-center bg-basebg-surface text-fg-default;
+  @apply w-full flex flex-col items-center justify-center bg-basebg-surface text-fg-default overflow-hidden;
 }
 
 .footer-container {
-  @apply w-full px-24 py-8 flex flex-col items-center justify-center gap-4;
+  @apply py-8 flex flex-col items-center justify-center gap-4;
 }
 
 .footer-body {
   @apply w-full flex items-center justify-between;
 
   & .footer-content {
-    @apply flex flex-col gap-8 py-8 text-sm;
+    @apply flex flex-col gap-8 py-8 text-xs;
 
     & .logo {
       @apply text-3xl font-head font-semibold tracking-tighter;
@@ -23,7 +23,7 @@
   }
 
   & .footer-newslater {
-    @apply flex flex-col gap-4 text-sm;
+    @apply flex flex-col gap-4 text-xs;
 
     & .footer-newslater_title {
       @apply font-semibold pl-1;
@@ -32,7 +32,7 @@
     & .footer-newslater_form {
       @apply w-full flex items-center gap-4;
       & input {
-        @apply w-full px-4 py-2 text-sm rounded-lg border border-border-muted bg-basebg-default  text-fg-default placeholder:text-fg-muted focus:outline-none focus:border-accent-fg;
+        @apply w-full px-4 py-2 text-xs rounded-lg border border-border-muted bg-basebg-default  text-fg-default placeholder:text-fg-muted focus:outline-none focus:border-accent-fg;
       }
       &::placeholder {
         @apply text-fg-muted text-xs;
@@ -50,7 +50,7 @@
 }
 
 .footer-legal {
-  @apply w-full py-4 text-sm text-fg-muted flex justify-between items-center;
+  @apply w-full py-4 text-xs text-fg-muted flex justify-between items-center;
 
   & .footer-legal_copyright {
     @apply font-medium;

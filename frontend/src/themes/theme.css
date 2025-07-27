@@ -39,12 +39,16 @@
   --color-info-subtle: #daeaff;
 
   /* grid-pattrn */
-    --color-grid-pattrn:#888;
+  --color-grid-pattrn: #888;
 
   /* font */
   --font-head: "DM Sans", sans-serif;
   --font-body: "Manrope", sans-serif;
   --font-code: "Fira Code", monospace;
+  --text-tiny: 0.5rem;
+  --text-xxs: 0.625rem;
+
+  --breakpoint-3xl: 120rem;
 }
 
 @layer base {
@@ -89,11 +93,15 @@
     --color-info-subtle: #0d419d;
 
     /* grid-pattrn */
-    --color-grid-pattrn:#424242;
+    --color-grid-pattrn: #424242;
 
     /* font */
     --font-head: "DM Sans", sans-serif;
     --font-body: "Manrope", sans-serif;
     --font-code: "Fira Code", monospace;
+    --text-tiny: 0.5rem;
+    --text-xxs: 0.625rem;
+
+    --breakpoint-3xl: 120rem;
   }
 }
