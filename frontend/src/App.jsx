@@ -6,7 +6,7 @@ import useAuthInit from "./hooks/useAuthInit"
 import AppRoutes from "./routes/AppRoutes"
 
 function App() {
-  const selectedTheme = JSON.parse(localStorage.getItem("theme"))
+  const selectedTheme = localStorage.getItem("theme")
   useAuthInit()
   return (
     <>
