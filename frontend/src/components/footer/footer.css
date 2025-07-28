@@ -15,7 +15,7 @@
     @apply flex flex-col gap-8 py-8 text-xs;
 
     & .logo {
-      @apply text-3xl font-head font-semibold tracking-tighter;
+      @apply text-2xl font-head font-semibold tracking-tighter;
     }
     & .footer-sitemap > ul {
       @apply flex items-center gap-8 text-fg-muted font-semibold capitalize;

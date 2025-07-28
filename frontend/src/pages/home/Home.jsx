@@ -3,9 +3,9 @@ import React from "react"
 import "./home.css"
 
 const Home = () => {
+  const cellSize = 40
   const rows = 20
   const cols = 30
-  const cellSize = 40
 
   const blocks = []
 
@@ -43,11 +43,11 @@ const Home = () => {
     <div className="home-main_container">
       <div
         className="absolute -top-50 left-1/2 -translate-x-1/2  w-2/3 h-full bg-[linear-gradient(var(--color-grid-pattrn)_1px,transparent_1px),linear-gradient(to_right,var(--color-grid-pattrn)_1px,transparent_1px)] 
-              bg-[size:40px_40px] opacity-70 mask-x-from-70% mask-x-to-90% mask-y-from-60% mask-y-to-90% pointer-events-none z-0"
+              bg-[size:40px_40px] opacity-70 mask-x-from-70% mask-x-to-90% mask-y-from-60% mask-y-to-90% pointer-events-none z-0 overflow-hidden"
       >
         {blocks}
       </div>
-      <div className="home-container container-guttered  z-10">
+      <div className="home-container container-guttered z-10">
         <div className="home-hero_section relative">
           <h1 className="home-hero_title">
             We love solving problems. <br /> But, what if there was a platform

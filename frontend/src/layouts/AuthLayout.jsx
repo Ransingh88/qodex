@@ -1,9 +1,15 @@
 import React from "react"
 import "./layout.css"
-import { Link, Outlet } from "react-router"
+import { useSelector } from "react-redux"
+import { Link, Outlet, useLocation, useNavigate } from "react-router"
 import Navbar from "@/components/navbar/Navbar"
 
 const AuthLayout = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from?.pathname || "/"
+  const { isAuthenticated } = useSelector((state) => state.auth)
+  if (isAuthenticated) return navigate(from, { replace: true })
   return (
     <div className="authLayout-main_container">
       <div className="grid-pattrn">

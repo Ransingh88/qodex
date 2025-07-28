@@ -10,6 +10,7 @@ import {
 import { motion } from "motion/react"
 import React, { useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
+import { Link } from "react-router"
 
 const UserPopover = ({ logoutFn }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -41,12 +42,14 @@ const UserPopover = ({ logoutFn }) => {
   return (
     <div
       ref={popoverRef}
-      className=" h-10 w-10 rounded-full bg-accent-fg/40 text-fg-muted flex items-center justify-center relative cursor-pointer outline-2 outline-offset-2 outline-accent-subtle"
+      className=" h-9 w-9 rounded-full bg-accent-fg/40 text-fg-muted flex items-center justify-center relative cursor-pointer outline-2 outline-offset-2 outline-accent-subtle"
     >
       <button
         onClick={togglePopover}
         className="h-10 w-10 rounded-full cursor-pointer overflow-hidden"
-      >{`D`}</button>
+      >
+        {user?.fullName[0]?.toUpperCase()}
+      </button>
       {isOpen && (
         <motion.div
           initial={{ opacity: 0, scale: 0 }}
@@ -60,10 +63,12 @@ const UserPopover = ({ logoutFn }) => {
               <p className="text-sm font-light text-fg-muted">{user?.email}</p>
             </div>
             <div className="p-2 flex flex-col">
-              <div className="flex items-center gap-4 cursor-pointer hover:bg-accent-subtle px-2 py-2 rounded-lg ">
-                <CircleUser size={16} className="mt-0.5" />
-                Profile
-              </div>
+              <Link to="/profile">
+                <div className="flex items-center gap-4 cursor-pointer hover:bg-accent-subtle px-2 py-2 rounded-lg ">
+                  <CircleUser size={16} className="mt-0.5" />
+                  Profile
+                </div>
+              </Link>
               <div className="flex items-center gap-4 cursor-pointer hover:bg-accent-subtle px-2 py-2 rounded-lg">
                 <Handshake size={16} className="mt-0.5" /> Community
               </div>

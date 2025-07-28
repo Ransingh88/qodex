@@ -9,7 +9,7 @@
 }
 
 .home-hero_section {
-  @apply w-full py-14 text-center flex flex-col items-center justify-center gap-6 ;
+  @apply w-full py-20 text-center flex flex-col items-center justify-center gap-6 ;
 
   & > h1 {
     @apply text-xl  md:text-3xl lg:text-5xl font-bold;

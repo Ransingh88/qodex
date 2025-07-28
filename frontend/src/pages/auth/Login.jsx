@@ -1,7 +1,7 @@
 import "./login.css"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, useNavigate } from "react-router"
+import { Link, useLocation, useNavigate } from "react-router"
 import { toast } from "react-toastify"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import { login as lg } from "@/features/rtk/auth/authSlice"
@@ -14,15 +14,16 @@ const Login = () => {
   const [password, setPassword] = useState("")
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from?.pathname || "/"
   const { isAuthenticated } = useSelector((state) => state.auth)
 
   const handleLogin = async () => {
     const res = await run(() => loginUser(username, password))
     toast.success(res.data.message)
     dispatch(lg(res.data.data.user))
-    navigate("/")
+    navigate(from, { replace: true })
   }
-  if (isAuthenticated) return navigate("/")
   return (
     <div className="login_main-container">
       <div className="login-container">

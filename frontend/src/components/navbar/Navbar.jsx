@@ -19,11 +19,11 @@ const Navbar = () => {
   }
 
   const menus = [
-    {
-      label: "dashboard",
-      url: "/dashboard",
-      protected: true,
-    },
+    // {
+    //   label: "dashboard",
+    //   url: "/dashboard",
+    //   protected: true,
+    // },
     {
       label: "problems",
       url: "/problems",
@@ -55,7 +55,6 @@ const Navbar = () => {
     <motion.div
       animate={{
         height: isScrolled ? "4rem" : "6rem",
-        
       }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className={`navbar-main_container ${

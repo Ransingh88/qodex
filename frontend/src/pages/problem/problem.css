@@ -1,0 +1,9 @@
+@reference '@/index.css';
+
+.problem-main_container {
+  @apply bg-basebg-default text-fg-default;
+}
+
+.problem-container{
+    
+}
