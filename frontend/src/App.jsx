@@ -6,12 +6,22 @@ import useAuthInit from "./hooks/useAuthInit"
 import AppRoutes from "./routes/AppRoutes"
 
 function App() {
+  const selectedTheme = JSON.parse(localStorage.getItem("theme"))
   useAuthInit()
   return (
     <>
       {/* <Navbar /> */}
       <AppRoutes />
-      <ToastContainer autoClose={2500} theme={"dark"} />
+      <ToastContainer
+        theme={selectedTheme || "dark"}
+        position="bottom-right"
+        autoClose={1000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        draggable
+        pauseOnHover
+      />
     </>
   )
 }
