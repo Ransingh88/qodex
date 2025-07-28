@@ -16,6 +16,7 @@ const Navbar = () => {
     await logoutUser()
     dispatch(logout())
     navigate("/", { replace: true })
+    window.location.reload()
   }
 
   const menus = [
