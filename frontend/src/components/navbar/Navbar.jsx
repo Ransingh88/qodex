@@ -52,6 +52,12 @@ const Navbar = () => {
     // Cleanup
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  useEffect(() => {
+    if (!isAuthenticated && location.pathname !== "/") {
+      navigate("/", { replace: true })
+    }
+  }, [isAuthenticated, navigate])
   return (
     <motion.div
       animate={{
