@@ -9,14 +9,13 @@ import { logoutUser } from "../../services/auth.service"
 import UserPopover from "../popover/UserPopover"
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [logoutSuccess, setLogoutSuccess] = useState(false)
   const { isAuthenticated } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const handleLogout = async () => {
     await logoutUser()
     dispatch(logout())
-    setLogoutSuccess(true)
+    navigate("/", { replace: true })
   }
 
   const menus = [
@@ -52,12 +51,6 @@ const Navbar = () => {
     // Cleanup
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
-
-  useEffect(() => {
-    if (logoutSuccess) {
-      navigate("/", { replace: true })
-    }
-  }, [logoutSuccess, navigate])
 
   return (
     <motion.div
