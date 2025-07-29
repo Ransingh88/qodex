@@ -1,0 +1,25 @@
+@reference '@/index.css';
+
+.profile-main_container {
+  @apply w-full h-full bg-basebg-surface text-fg-default mt-4 flex justify-center items-center gap-2;
+}
+
+.profile-profile_info {
+  @apply w-1/4 h-full border border-border-muted/30 rounded overflow-hidden;
+}
+
+.user-info {
+  @apply w-full min-h-52;
+
+  & .user-details {
+    @apply w-full min-h-32 p-4 flex justify-start bg-basebg-surface items-end gap-4 overflow-hidden relative;
+
+    & .user-avatar {
+      @apply w-16 h-16 text-2xl font-semibold rounded-full bg-indigo-900 text-gray-300 flex items-center justify-center relative cursor-pointer outline-2 outline-offset-2 outline-accent-emphasis/50;
+    }
+  }
+}
+
+.profile-performance {
+  @apply w-3/4 h-full border border-border-muted/30 rounded;
+}
