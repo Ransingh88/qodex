@@ -10,6 +10,7 @@ import Home from "@/pages/home/Home"
 import Problem from "@/pages/problem/Problem"
 import Profile from "@/pages/profile/Profile"
 import ProtectedRoute from "./ProtectedRoute"
+import ProblemDetails from "@/pages/problem/ProblemDetails"
 
 const AppRoutes = () => {
   return (
@@ -26,7 +27,7 @@ const AppRoutes = () => {
       </Route>
 
       <Route path="/problem" element={<ProblemLayout />}>
-        <Route path=":id" element={<>ProblemDetails</>} />
+        <Route path=":id" element={<ProblemDetails/>} />
       </Route>
 
       {/* Protected routes */}
