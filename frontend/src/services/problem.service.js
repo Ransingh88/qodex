@@ -5,4 +5,9 @@ const getAllProblems = async () => {
   return response
 }
 
-export { getAllProblems }
+const getProblemDetails = async (problemId) => {
+  const response = await API.get(`/problem/getDetails/${problemId}`)
+  return response
+}
+
+export { getAllProblems, getProblemDetails }
