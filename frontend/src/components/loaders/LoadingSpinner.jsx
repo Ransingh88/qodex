@@ -1,9 +1,9 @@
 import { LoaderCircle } from "lucide-react"
 
-export default function LoadingSpinner() {
+export default function LoadingSpinner({ size = 20 }) {
   return (
     <div className="flex items-center justify-center">
-      <LoaderCircle size={20} className="animate-spin text-white" />
+      <LoaderCircle size={size} className="animate-spin text-white" />
     </div>
   )
 }

@@ -58,7 +58,7 @@ const executeCode = asyncHandler(async (req, res) => {
 
   const submissionPayload = {
     problem: problemId,
-    user: req.user.id,
+    user: req?.user?.id || null,
     language: await getLanguageName(languageId),
     sourceCode: sourceCode,
     stdin: stdInput,
@@ -85,7 +85,7 @@ const executeCode = asyncHandler(async (req, res) => {
       await Problem.findByIdAndUpdate(
         { _id: problemId },
         {
-          $addToSet: { solvedBy: req.user.id },
+          $addToSet: { solvedBy: req?.user?.id || null },
         },
         { upsert: true, new: true }
       )

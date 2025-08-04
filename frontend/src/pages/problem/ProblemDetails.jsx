@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react"
-import "./problemDetails.css"
-import { useParams } from "react-router"
-import CodeEditor from "@/components/editor/CodeEditor"
-import { getProblemDetails } from "@/services/problem.service"
 import {
+  Bookmark,
   BookText,
+  CircleCheckBig,
+  CircleX,
   Ellipsis,
   FileText,
   History,
@@ -17,12 +15,23 @@ import {
   SquareDashedBottomCode,
   SquareTerminalIcon,
 } from "lucide-react"
+import React, { useEffect, useState } from "react"
+import "./problemDetails.css"
+import { useParams } from "react-router"
+import { toast } from "react-toastify"
+import CodeEditor from "@/components/editor/CodeEditor"
+import LoadingSpinner from "@/components/loaders/LoadingSpinner"
+import { useAsyncHandler } from "@/hooks/useAsyncHandler"
+import { executeCode } from "@/services/execution.service"
+import { getProblemDetails } from "@/services/problem.service"
 
 const ProblemDetails = () => {
   const [problemDetails, setProblemDetails] = useState({})
+  const [problemOutput, setProblemOutput] = useState({})
   const { id } = useParams()
+  const { run, loading } = useAsyncHandler()
 
-  const [problemInfoTab, setProblemInfoTab] = useState([
+  const [problemInfoTab] = useState([
     {
       id: "tab1",
       label: "Description",
@@ -48,7 +57,7 @@ const ProblemDetails = () => {
       icon: <Lightbulb size={14} />,
     },
   ])
-  const [editorTab, setEditorTab] = useState([
+  const [editorTab] = useState([
     {
       id: "tab1",
       label: "Code Editor",
@@ -64,7 +73,7 @@ const ProblemDetails = () => {
       icon: <SquareDashedBottomCode size={14} />,
     },
   ])
-  const [outputTab, setOutputTab] = useState([
+  const [outputTab] = useState([
     {
       id: "tab1",
       label: "Testcase",
@@ -96,6 +105,22 @@ const ProblemDetails = () => {
     setProblemDetails(response.data.data)
   }
 
+  const handleCodeExecution = async () => {
+    const payload = {
+      languageId: 63,
+      sourceCode: problemDetails?.codeSnippets?.JAVASCRIPT,
+      stdInput: problemDetails?.testcases?.map((tc) => tc?.input),
+      expectedOutput: problemDetails?.testcases?.map((tc) => tc?.output),
+      problemId: problemDetails._id,
+      isSubmit: false,
+    }
+    const response = await run(() => executeCode(payload))
+    if (response.data.success) {
+      toast.success(response.data.message)
+    }
+    setProblemOutput(response.data.data)
+  }
+
   console.log(problemDetails, "ProblemDetails")
   useEffect(() => {
     handleGetProblemDetails(id)
@@ -124,31 +149,78 @@ const ProblemDetails = () => {
         {activeProblemInfoTab.type === "desc" && (
           <div className="p-4">
             <div className="flex justify-between items-center">
-              <h3>{problemDetails.title} </h3>
-              <div>
+              <h3 className="">{problemDetails.title} </h3>
+              <div className="flex justify-center items-center gap-1">
+                <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
+                  {problemDetails.tags && problemDetails?.tags[0]}
+                </span>
+                <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
+                  {problemDetails.tags && problemDetails?.tags[1]}
+                </span>
                 <span
-                  className={`text-xxs px-1.5 py-1 border rounded ${
+                  className={`text-xxs px-1 py-0.5 border rounded capitalize font-medium opacity-70 ${
                     problemDetails.difficulty === "easy"
-                      ? "bg-success-subtle/50 border-success-emphasis"
+                      ? "bg-success-subtle/50 text-green-200 border-success-emphasis"
                       : problemDetails.difficulty === "medium"
-                      ? "bg-warning-subtle/50 border-warning-emphasis"
-                      : "bg-danger-subtle/50 border-danger-emphasis"
+                      ? "bg-warning-subtle/50 text-yellow-200 border-warning-emphasis"
+                      : "bg-danger-subtle/50 text-red-200 border-danger-emphasis"
                   }`}
                 >
-                  {problemDetails.difficulty}
+                  {problemDetails?.difficulty}
                 </span>
+                <button className="cursor-pointer">
+                  <Bookmark size={18} />
+                </button>
               </div>
             </div>
-            <p className="mt-2 py-2">Problem Description</p>
-            <div className="p-2 rounded h-full">
-              <p>{problemDetails.description}</p>
-              <div className="mt-2">
-                <p>
-                  Explanation:
-                  <br /> {problemDetails?.examples?.JAVASCRIPT?.explanation}
+            <h6 className="mt-2 py-2">Problem Description</h6>
+            <div className="p-2 rounded h-full border border-border-default overflow-auto text-sm font-body">
+              <p className="whitespace-pre-wrap text-fg-default/80">
+                {problemDetails.description}
+              </p>
+              {/* <p className="my-2 text-fg-default/80">
+                Explanation: {problemDetails?.examples?.JAVASCRIPT?.explanation}
+              </p> */}
+              <div className="my-6 border divide-y divide-border-default flex flex-col border-border-default rounded py-1 px-4 font-code">
+                <p className="py-2">
+                  <span className="font-semibold block">Input</span>{" "}
+                  <span className="text-fg-default/80">
+                    {problemDetails?.examples?.JAVASCRIPT?.input}
+                  </span>
                 </p>
-                <p>Input: {problemDetails?.examples?.JAVASCRIPT?.input}</p>
-                <p>Output: {problemDetails?.examples?.JAVASCRIPT?.output}</p>
+                <p className="py-2">
+                  <span className="font-semibold block">Output</span>
+                  <span className="pt-2 text-fg-default/80">
+                    {problemDetails?.examples?.JAVASCRIPT?.output}
+                  </span>
+                </p>
+              </div>
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col px-4 py-2 bg-basebg-surface rounded font-code">
+                  <p className="font-semibold mb-2">Example 1</p>
+                  <p>
+                    <span className="font-semibold text-fg-default/70">
+                      Input:
+                    </span>{" "}
+                    {problemDetails?.examples?.JAVASCRIPT?.input}
+                  </p>
+                  <span>
+                    <p>
+                      <span className="font-semibold text-fg-default/70">
+                        Output:
+                      </span>{" "}
+                      {problemDetails?.examples?.JAVASCRIPT?.output}
+                    </p>
+                  </span>
+                  <span>
+                    <p>
+                      <span className="font-semibold text-fg-default/70">
+                        Explanation:
+                      </span>{" "}
+                      {problemDetails?.examples?.JAVASCRIPT?.explanation}
+                    </p>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -179,9 +251,18 @@ const ProblemDetails = () => {
               ))}
             </ul>
             <div className="px-2 flex items-center gap-2 text-xs">
-              <button className="px-2 py-1 rounded bg-accent-fg text-[#f8f8f8] flex justify-center items-center gap-0.5 hover:bg-accent-emphasis cursor-pointer">
-                <Play size={14} />
-                Run
+              <button
+                onClick={handleCodeExecution}
+                disabled={loading}
+                className=" h-6 w-12 rounded bg-accent-fg text-[#f8f8f8] flex justify-center items-center gap-0.5 hover:bg-accent-emphasis cursor-pointer"
+              >
+                {loading ? (
+                  <LoadingSpinner size={14} />
+                ) : (
+                  <>
+                    <Play size={14} /> Run
+                  </>
+                )}
               </button>
               <button>
                 <Ellipsis size={14} />
@@ -222,10 +303,6 @@ const ProblemDetails = () => {
               ))}
             </ul>
             <div className="px-2 flex items-center gap-2 text-xs">
-              {/* <button className="px-2 py-1 rounded bg-accent-fg text-[#f8f8f8] flex justify-center items-center gap-0.5 hover:bg-accent-emphasis cursor-pointer">
-                <Play size={14} />
-                Run
-              </button> */}
               <button>
                 <PanelTopOpen size={14} />
               </button>
@@ -235,7 +312,46 @@ const ProblemDetails = () => {
             </div>
           </div>
           {activeOutputTab.type === "testcase" && (
-            <div className="p-2">Test Cases</div>
+            <div className="p-2">
+              <div
+                className={`font-semibold ${
+                  problemOutput.status === "Accepted"
+                    ? "text-success-fg"
+                    : problemOutput.status === "Partially Accepted"
+                    ? "text-warning-fg"
+                    : "text-danger-fg"
+                }`}
+              >
+                {problemOutput?.status}
+              </div>
+              <div className="flex flex-col gap-2 py-2">
+                {problemOutput?.testCases?.map((testCase) => (
+                  <div
+                    key={testCase.testcaseNo}
+                    className="bg-basebg-surface border border-border-default px-4 py-2 rounded inline-block"
+                  >
+                    <div className="font-semibold flex justify-start items-center gap-1">
+                      Testcase {testCase.testcaseNo}
+                      <span
+                        className={`  ${
+                          testCase.isPassed
+                            ? "text-success-fg"
+                            : "text-danger-fg"
+                        }`}
+                      >
+                        {testCase.isPassed ? (
+                          <CircleCheckBig size={16} color="green" />
+                        ) : (
+                          <CircleX size={16} color="red" />
+                        )}
+                      </span>
+                    </div>
+                    {/* <div>Stdin: {testCase.stdin}</div>
+                    <div>Stdout: {testCase.stdout}</div> */}
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
           {activeOutputTab.type === "console" && (
             <div className="p-2">Console</div>
