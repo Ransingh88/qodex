@@ -135,113 +135,109 @@ const ProblemDetails = () => {
   }, [id])
   return (
     <div className="p-1.5 h-[calc(100vh-3rem)] w-full flex flex-row justify-center items-start gap-1.5">
-      {loading ? (
-        "Loading..."
-      ) : (
-        <div className="h-full w-1/2 bg-[#1e1e1e] rounded-lg border border-border-default overflow-hidden">
-          <div className="h-8 w-full flex justify-between items-center border-b border-border-default">
-            <ul className="flex h-full text-xs items-center">
-              {problemInfoTab.map((tab) => (
-                <li
-                  key={tab.id}
-                  onClick={() => setActiveProblemInfoTabId(tab.id)}
-                  className={`px-2 h-full flex justify-center items-center cursor-pointer gap-1 ${
-                    tab.id === activeProblemInfoTabId
-                      ? "bg-basebg-surface2 border-b-2 border-accent-emphasis border-t border-t-transparent border-x border-x-transparent"
-                      : "border border-border-default"
+      <div className="h-full w-1/2 bg-[#1e1e1e] rounded-lg border border-border-default overflow-hidden">
+        <div className="h-8 w-full flex justify-between items-center border-b border-border-default">
+          <ul className="flex h-full text-xs items-center">
+            {problemInfoTab.map((tab) => (
+              <li
+                key={tab.id}
+                onClick={() => setActiveProblemInfoTabId(tab.id)}
+                className={`px-2 h-full flex justify-center items-center cursor-pointer gap-1 ${
+                  tab.id === activeProblemInfoTabId
+                    ? "bg-basebg-surface2 border-b-2 border-accent-emphasis border-t border-t-transparent border-x border-x-transparent"
+                    : "border border-border-default"
+                }`}
+              >
+                {tab.icon}
+                {tab.label}
+              </li>
+            ))}
+          </ul>
+        </div>
+        {activeProblemInfoTab.type === "desc" && (
+          <div className="p-4">
+            <div className="flex justify-between items-center">
+              <h3 className="">{problemDetails.title} </h3>
+              <div className="flex justify-center items-center gap-1">
+                <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
+                  {problemDetails.tags && problemDetails?.tags[0]}
+                </span>
+                <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
+                  {problemDetails.tags && problemDetails?.tags[1]}
+                </span>
+                <span
+                  className={`text-xxs px-1 py-0.5 border rounded capitalize font-medium opacity-70 ${
+                    problemDetails.difficulty === "easy"
+                      ? "bg-success-subtle/50 text-green-200 border-success-emphasis"
+                      : problemDetails.difficulty === "medium"
+                      ? "bg-warning-subtle/50 text-yellow-200 border-warning-emphasis"
+                      : "bg-danger-subtle/50 text-red-200 border-danger-emphasis"
                   }`}
                 >
-                  {tab.icon}
-                  {tab.label}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {activeProblemInfoTab.type === "desc" && (
-            <div className="p-4">
-              <div className="flex justify-between items-center">
-                <h3 className="">{problemDetails.title} </h3>
-                <div className="flex justify-center items-center gap-1">
-                  <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
-                    {problemDetails.tags && problemDetails?.tags[0]}
-                  </span>
-                  <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
-                    {problemDetails.tags && problemDetails?.tags[1]}
-                  </span>
-                  <span
-                    className={`text-xxs px-1 py-0.5 border rounded capitalize font-medium opacity-70 ${
-                      problemDetails.difficulty === "easy"
-                        ? "bg-success-subtle/50 text-green-200 border-success-emphasis"
-                        : problemDetails.difficulty === "medium"
-                        ? "bg-warning-subtle/50 text-yellow-200 border-warning-emphasis"
-                        : "bg-danger-subtle/50 text-red-200 border-danger-emphasis"
-                    }`}
-                  >
-                    {problemDetails?.difficulty}
-                  </span>
-                  <button className="cursor-pointer">
-                    <Bookmark size={18} />
-                  </button>
-                </div>
+                  {problemDetails?.difficulty}
+                </span>
+                <button className="cursor-pointer">
+                  <Bookmark size={18} />
+                </button>
               </div>
-              <h6 className="mt-2 py-2">Problem Description</h6>
-              <div className="p-2 rounded h-full border border-border-default overflow-auto text-sm font-body">
-                <p className="whitespace-pre-wrap text-fg-default/80">
-                  {problemDetails.description}
-                </p>
-                {/* <p className="my-2 text-fg-default/80">
+            </div>
+            <h6 className="mt-2 py-2">Problem Description</h6>
+            <div className="p-2 rounded h-full border border-border-default overflow-auto text-sm font-body">
+              <p className="whitespace-pre-wrap text-fg-default/80">
+                {problemDetails.description}
+              </p>
+              {/* <p className="my-2 text-fg-default/80">
                 Explanation: {problemDetails?.examples?.JAVASCRIPT?.explanation}
               </p> */}
-                <div className="my-6 border divide-y divide-border-default flex flex-col border-border-default rounded py-1 px-4 font-code">
-                  <p className="py-2">
-                    <span className="font-semibold block">Input</span>{" "}
-                    <span className="text-fg-default/80">
-                      {problemDetails?.examples?.JAVASCRIPT?.input}
-                    </span>
+              <div className="my-6 border divide-y divide-border-default flex flex-col border-border-default rounded py-1 px-4 font-code">
+                <p className="py-2">
+                  <span className="font-semibold block">Input</span>{" "}
+                  <span className="text-fg-default/80">
+                    {problemDetails?.examples?.JAVASCRIPT?.input}
+                  </span>
+                </p>
+                <p className="py-2">
+                  <span className="font-semibold block">Output</span>
+                  <span className="pt-2 text-fg-default/80">
+                    {problemDetails?.examples?.JAVASCRIPT?.output}
+                  </span>
+                </p>
+              </div>
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col px-4 py-2 bg-basebg-surface rounded font-code">
+                  <p className="font-semibold mb-2">Example 1</p>
+                  <p>
+                    <span className="font-semibold text-fg-default/70">
+                      Input:
+                    </span>{" "}
+                    {problemDetails?.examples?.JAVASCRIPT?.input}
                   </p>
-                  <p className="py-2">
-                    <span className="font-semibold block">Output</span>
-                    <span className="pt-2 text-fg-default/80">
-                      {problemDetails?.examples?.JAVASCRIPT?.output}
-                    </span>
-                  </p>
-                </div>
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-col px-4 py-2 bg-basebg-surface rounded font-code">
-                    <p className="font-semibold mb-2">Example 1</p>
+                  <span>
                     <p>
                       <span className="font-semibold text-fg-default/70">
-                        Input:
+                        Output:
                       </span>{" "}
-                      {problemDetails?.examples?.JAVASCRIPT?.input}
+                      {problemDetails?.examples?.JAVASCRIPT?.output}
                     </p>
-                    <span>
-                      <p>
-                        <span className="font-semibold text-fg-default/70">
-                          Output:
-                        </span>{" "}
-                        {problemDetails?.examples?.JAVASCRIPT?.output}
-                      </p>
-                    </span>
-                    <span>
-                      <p>
-                        <span className="font-semibold text-fg-default/70">
-                          Explanation:
-                        </span>{" "}
-                        {problemDetails?.examples?.JAVASCRIPT?.explanation}
-                      </p>
-                    </span>
-                  </div>
+                  </span>
+                  <span>
+                    <p>
+                      <span className="font-semibold text-fg-default/70">
+                        Explanation:
+                      </span>{" "}
+                      {problemDetails?.examples?.JAVASCRIPT?.explanation}
+                    </p>
+                  </span>
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {activeProblemInfoTab.type === "solution" && <div>Solution</div>}
-          {activeProblemInfoTab.type === "submitions" && <div>Submittion</div>}
-          {activeProblemInfoTab.type === "hint" && <div>Hints</div>}
-        </div>
-      )}
+        {activeProblemInfoTab.type === "solution" && <div>Solution</div>}
+        {activeProblemInfoTab.type === "submitions" && <div>Submittion</div>}
+        {activeProblemInfoTab.type === "hint" && <div>Hints</div>}
+      </div>
       <div className="h-full w-1/2 rounded-lg flex flex-col justify-start items-start gap-1.5 ">
         {/* Editor */}
         <div className="h-2/3 w-full rounded-lg overflow-hidden flex flex-col bg-[#1e1e1e] border border-border-default">
