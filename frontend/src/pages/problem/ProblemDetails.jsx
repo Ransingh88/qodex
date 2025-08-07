@@ -28,6 +28,7 @@ import { getProblemDetails } from "@/services/problem.service"
 const ProblemDetails = () => {
   const [problemDetails, setProblemDetails] = useState({})
   const [problemOutput, setProblemOutput] = useState({})
+  const [programCode, setProgramCode] = useState("")
   const { id } = useParams()
   const { run, loading } = useAsyncHandler()
 
@@ -103,12 +104,13 @@ const ProblemDetails = () => {
   const handleGetProblemDetails = async (problemId) => {
     const response = await getProblemDetails(problemId)
     setProblemDetails(response.data.data)
+    setProgramCode(response.data.data?.codeSnippets?.JAVASCRIPT || "")
   }
 
   const handleCodeExecution = async () => {
     const payload = {
       languageId: 63,
-      sourceCode: problemDetails?.codeSnippets?.JAVASCRIPT,
+      sourceCode: programCode,
       stdInput: problemDetails?.testcases?.map((tc) => tc?.input),
       expectedOutput: problemDetails?.testcases?.map((tc) => tc?.output),
       problemId: problemDetails._id,
@@ -119,6 +121,12 @@ const ProblemDetails = () => {
       toast.success(response.data.message)
     }
     setProblemOutput(response.data.data)
+  }
+
+  const handleCodeChange = (code) => {
+    setProgramCode(code)
+
+    console.log("Code changed:", code)
   }
 
   console.log(problemDetails, "ProblemDetails")
@@ -273,6 +281,7 @@ const ProblemDetails = () => {
             {activeEditorTab.type === "code" && (
               <CodeEditor
                 sourceCode={problemDetails?.codeSnippets?.JAVASCRIPT}
+                onChange={handleCodeChange}
               />
             )}
             {activeEditorTab.type === "diff" && <div>Diff Edior</div>}

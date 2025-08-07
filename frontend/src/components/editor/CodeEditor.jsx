@@ -1,9 +1,10 @@
 import Editor from "@monaco-editor/react"
 
-const CodeEditor = ({ sourceCode }) => {
+const CodeEditor = ({ sourceCode, onChange }) => {
   return (
     <Editor
       // height="90%"
+      onChange={onChange}
       theme="vs-dark"
       defaultLanguage="javascript"
       defaultValue={sourceCode}
