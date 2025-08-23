@@ -1,8 +1,13 @@
 import {
   Bookmark,
   BookText,
+  CircleCheck,
   CircleCheckBig,
   CircleX,
+  ClipboardCheck,
+  Clock,
+  Cpu,
+  Dot,
   Ellipsis,
   FileText,
   History,
@@ -25,15 +30,18 @@ import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { executeCode } from "@/services/execution.service"
 import { getProblemDetails } from "@/services/problem.service"
 import { useDispatch, useSelector } from "react-redux"
-import { fetchProblemDetails } from "@/features/rtk/problem/problemSlice"
+import {
+  fetchProblemDetails,
+  executeProblems,
+} from "@/features/rtk/problem/problemSlice"
 
 const ProblemDetails = () => {
-  // const [problemDetails, setProblemDetails] = useState({})
-  const [problemOutput, setProblemOutput] = useState({})
   const [programCode, setProgramCode] = useState("")
   const { id } = useParams()
   const { run, loading } = useAsyncHandler()
-  const { problemDetails } = useSelector((state) => state.problem)
+  const { problemDetails, problemOutput } = useSelector(
+    (state) => state.problem
+  )
 
   const dispatch = useDispatch()
 
@@ -71,13 +79,13 @@ const ProblemDetails = () => {
       language: "javascript",
       icon: <SquareCode size={14} />,
     },
-    {
-      id: "tab2",
-      label: "Diff Editor",
-      type: "diff",
-      language: "javascript",
-      icon: <SquareDashedBottomCode size={14} />,
-    },
+    // {
+    //   id: "tab2",
+    //   label: "Diff Editor",
+    //   type: "diff",
+    //   language: "javascript",
+    //   icon: <SquareDashedBottomCode size={14} />,
+    // },
   ])
   const [outputTab] = useState([
     {
@@ -88,6 +96,12 @@ const ProblemDetails = () => {
     },
     {
       id: "tab2",
+      label: "Test Results",
+      type: "testresult",
+      icon: <ClipboardCheck size={14} />,
+    },
+    {
+      id: "tab3",
       label: "Console",
       type: "console",
       icon: <SquareTerminalIcon size={14} />,
@@ -99,6 +113,7 @@ const ProblemDetails = () => {
   )
   const [activeEdiorTabId, setActiveEditorTabId] = useState(editorTab[0].id)
   const [activeOutputTabId, setActiveOutputTabId] = useState(outputTab[0].id)
+  const [testcaseActiveTabId, setTestcaseActiveTabId] = useState(0)
 
   const activeProblemInfoTab = problemInfoTab.find(
     (tab) => tab.id === activeProblemInfoTabId
@@ -125,7 +140,8 @@ const ProblemDetails = () => {
     if (response.data.success) {
       toast.success(response.data.message)
     }
-    setProblemOutput(response.data.data)
+    dispatch(executeProblems(response.data.data))
+    setActiveOutputTabId("tab2")
   }
 
   const handleCodeChange = (code) => {
@@ -135,6 +151,7 @@ const ProblemDetails = () => {
   }
 
   console.log(problemDetails, "ProblemDetails")
+  console.log(problemOutput, "ProblemOutput")
   useEffect(() => {
     handleGetProblemDetails(id)
   }, [id])
@@ -326,45 +343,189 @@ const ProblemDetails = () => {
             </div>
           </div>
           {activeOutputTab.type === "testcase" && (
+            // <div className="p-2">
+            //   <div
+            //     className={`font-semibold ${
+            //       problemOutput.status === "Accepted"
+            //         ? "text-success-fg"
+            //         : problemOutput.status === "Partially Accepted"
+            //         ? "text-warning-fg"
+            //         : "text-danger-fg"
+            //     }`}
+            //   >
+            //     {problemOutput?.status}
+            //   </div>
+            //   <div className="flex flex-col gap-2 py-2">
+            //     {problemOutput?.testCases?.map((testCase) => (
+            //       <div
+            //         key={testCase.testcaseNo}
+            //         className="bg-basebg-surface border border-border-default px-4 py-2 rounded inline-block"
+            //       >
+            //         <div className="font-semibold flex justify-start items-center gap-1">
+            //           Testcase {testCase.testcaseNo}
+            //           <span
+            //             className={`  ${
+            //               testCase.isPassed
+            //                 ? "text-success-fg"
+            //                 : "text-danger-fg"
+            //             }`}
+            //           >
+            //             {testCase.isPassed ? (
+            //               <CircleCheckBig size={16} color="green" />
+            //             ) : (
+            //               <CircleX size={16} color="red" />
+            //             )}
+            //           </span>
+            //         </div>
+            //         {/* <div>Stdin: {testCase.stdin}</div>
+            //         <div>Stdout: {testCase.stdout}</div> */}
+            //       </div>
+            //     ))}
+            //   </div>
+            // </div>
             <div className="p-2">
-              <div
-                className={`font-semibold ${
-                  problemOutput.status === "Accepted"
-                    ? "text-success-fg"
-                    : problemOutput.status === "Partially Accepted"
-                    ? "text-warning-fg"
-                    : "text-danger-fg"
-                }`}
-              >
-                {problemOutput?.status}
-              </div>
-              <div className="flex flex-col gap-2 py-2">
-                {problemOutput?.testCases?.map((testCase) => (
-                  <div
-                    key={testCase.testcaseNo}
-                    className="bg-basebg-surface border border-border-default px-4 py-2 rounded inline-block"
-                  >
-                    <div className="font-semibold flex justify-start items-center gap-1">
-                      Testcase {testCase.testcaseNo}
-                      <span
-                        className={`  ${
-                          testCase.isPassed
-                            ? "text-success-fg"
-                            : "text-danger-fg"
-                        }`}
-                      >
-                        {testCase.isPassed ? (
-                          <CircleCheckBig size={16} color="green" />
-                        ) : (
-                          <CircleX size={16} color="red" />
-                        )}
-                      </span>
+              <div className="flex justify-between gap-2">
+                <div className="flex gap-2 p-2">
+                  {problemDetails?.testcases?.map((testcase, index) => (
+                    <div
+                      key={index}
+                      className={`px-2 py-1 bg-basebg-surface2 rounded text-xs cursor-pointer hover:bg-basebg-surface ${
+                        testcaseActiveTabId === index
+                          ? "border-s border-accent-fg/50 "
+                          : ""
+                      } `}
+                      onClick={() => setTestcaseActiveTabId(index)}
+                    >
+                      <p>Case {index + 1}</p>
                     </div>
-                    {/* <div>Stdin: {testCase.stdin}</div>
-                    <div>Stdout: {testCase.stdout}</div> */}
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <div>
+                  {loading ? (
+                    <div className="flex items-center gap-2 text-fg-muted text-xs">
+                      <LoadingSpinner size={14} /> Running...{" "}
+                    </div>
+                  ) : null}
+                </div>
               </div>
+              <div className="p-1 flex flex-col gap-2">
+                <div>
+                  <p className="font-semibold text-fg-muted">Input</p>
+                  <p className="py-1.5 px-2 mt-1 bg-basebg-surface border border-border-default rounded">
+                    {problemDetails.testcases &&
+                      problemDetails?.testcases[testcaseActiveTabId]?.input}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-fg-muted">Output</p>
+                  <p className="py-1.5 px-2 mt-1 bg-basebg-surface border border-border-default rounded">
+                    {problemDetails.testcases &&
+                      problemDetails?.testcases[testcaseActiveTabId]?.output}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          {activeOutputTab.type === "testresult" && (
+            <div className="p-2 h-full">
+              {problemOutput.status ? (
+                <>
+                  <div className="flex justify-between gap-2">
+                    <div className="flex gap-2 p-2">
+                      {problemOutput?.testCases?.map((testcase, index) => (
+                        <div
+                          key={index}
+                          className={`px-2 py-1 bg-basebg-surface2 rounded text-xs cursor-pointer hover:bg-basebg-surface flex items-center ${
+                            testcaseActiveTabId === index
+                              ? "border-s border-accent-fg/50"
+                              : ""
+                          }`}
+                          onClick={() => setTestcaseActiveTabId(index)}
+                        >
+                          <span
+                            className={`h-1 w-1 rounded-full mr-2 ${
+                              testcase.isPassed
+                                ? "bg-success-fg"
+                                : "bg-danger-fg"
+                            }`}
+                          ></span>
+                          <p>Case {testcase.testcaseNo}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div
+                      className={`font-semibold ${
+                        problemOutput.status === "Accepted"
+                          ? "text-success-fg"
+                          : problemOutput.status === "Partially Accepted"
+                          ? "text-warning-fg"
+                          : "text-danger-fg"
+                      }`}
+                    >
+                      {loading ? (
+                        <div className="flex items-center gap-2 text-fg-muted text-xs">
+                          <LoadingSpinner size={14} /> Running...{" "}
+                        </div>
+                      ) : (
+                        <div className="flex gap-2 items-center">
+                          <p className="text-fg-muted text-xs flex items-center gap-1">
+                            <Clock size={12} /> {problemOutput?.time}
+                          </p>
+                          <p className="text-fg-muted text-xs flex items-center gap-1">
+                            <Cpu size={12} /> {problemOutput?.memory}
+                          </p>
+                          <p className="flex items-center gap-1">
+                            {problemOutput?.status === "Accepted" ? (
+                              <CircleCheck size={12} />
+                            ) : (
+                              <CircleX size={12} />
+                            )}{" "}
+                            {problemOutput?.status}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="mx-2 py-1 px-2 bg-basebg-surface rounded border border-border-default">
+                    <div className="flex gap-4 text-xs text-fg-muted">
+                      <p>
+                        Status:{" "}
+                        {problemOutput?.testCases[testcaseActiveTabId]?.status}
+                      </p>
+                      <p>
+                        Memory:{" "}
+                        {problemOutput?.testCases[testcaseActiveTabId]?.memory}{" "}
+                        bit
+                      </p>
+                      <p>
+                        Time:{" "}
+                        {problemOutput?.testCases[testcaseActiveTabId]?.time} ms
+                      </p>
+                    </div>
+                    <div className="mt-2 flex flex-col gap-1">
+                      <p>
+                        Input:{" "}
+                        {problemOutput?.testCases[testcaseActiveTabId]?.stdin}
+                      </p>
+                      <p>
+                        Output:{" "}
+                        {problemOutput?.testCases[testcaseActiveTabId]?.stdout}
+                      </p>
+                      <p>
+                        Expected Output:{" "}
+                        {
+                          problemOutput?.testCases[testcaseActiveTabId]
+                            ?.expectedOutput
+                        }
+                      </p>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="mt-5 text-fg-muted flex justify-center items-center">
+                  Run test cases
+                </div>
+              )}
             </div>
           )}
           {activeOutputTab.type === "console" && (

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialState = {
   problems: [],
   problemDetails: {},
+  problemOutput: {},
   isLoading: false,
   error: null,
 }
@@ -27,9 +28,13 @@ const problemSlice = createSlice({
       state.isLoading = false
       state.problemDetails = action.payload
     },
+    executeProblems(state, action) {
+      state.isLoading = false
+      state.problemOutput = action.payload
+    },
   },
 })
 
-export const { fetchProblems, fetchProblemDetails } = problemSlice.actions
+export const { fetchProblems, fetchProblemDetails, executeProblems } = problemSlice.actions
 
 export default problemSlice.reducer
