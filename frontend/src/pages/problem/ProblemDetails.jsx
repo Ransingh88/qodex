@@ -2,12 +2,10 @@ import {
   Bookmark,
   BookText,
   CircleCheck,
-  CircleCheckBig,
   CircleX,
   ClipboardCheck,
   Clock,
   Cpu,
-  Dot,
   Ellipsis,
   FileText,
   History,
@@ -22,18 +20,18 @@ import {
 } from "lucide-react"
 import React, { useEffect, useState } from "react"
 import "./problemDetails.css"
+import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router"
 import { toast } from "react-toastify"
 import CodeEditor from "@/components/editor/CodeEditor"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
-import { useAsyncHandler } from "@/hooks/useAsyncHandler"
-import { executeCode } from "@/services/execution.service"
-import { getProblemDetails } from "@/services/problem.service"
-import { useDispatch, useSelector } from "react-redux"
 import {
   fetchProblemDetails,
   executeProblems,
 } from "@/features/rtk/problem/problemSlice"
+import { useAsyncHandler } from "@/hooks/useAsyncHandler"
+import { executeCode } from "@/services/execution.service"
+import { getProblemDetails } from "@/services/problem.service"
 
 const ProblemDetails = () => {
   const [programCode, setProgramCode] = useState("")
@@ -180,6 +178,7 @@ const ProblemDetails = () => {
           <div className="p-4">
             <div className="flex justify-between items-center">
               <h3 className="">{problemDetails.title} </h3>
+
               <div className="flex justify-center items-center gap-1">
                 <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
                   {problemDetails.tags && problemDetails?.tags[0]}
@@ -203,6 +202,15 @@ const ProblemDetails = () => {
                 </button>
               </div>
             </div>
+            <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
+              AskedBy:{" "}
+              {problemDetails.askedBy &&
+                problemDetails?.askedBy.map((org) => (
+                  <span key={org} className="text-fg-default/80">
+                    {org}
+                  </span>
+                ))}
+            </span>
             <h6 className="mt-2 py-2">Problem Description</h6>
             <div className="p-2 rounded h-full border border-border-default overflow-auto text-sm font-body">
               <p className="whitespace-pre-wrap text-fg-default/80">
@@ -251,6 +259,20 @@ const ProblemDetails = () => {
                     </p>
                   </span>
                 </div>
+              </div>
+              <div className="px-4">
+                <p className="py-2">
+                  <span className="font-semibold block">Constraints</span>
+                  <span className="pt-2 text-fg-default/80">
+                    {problemDetails?.constraints}
+                  </span>
+                </p>
+                <p className="py-2">
+                  <span className="font-semibold block">Bonus</span>
+                  <span className="pt-2 text-fg-default/80">
+                    {problemDetails?.bonus?.description}
+                  </span>
+                </p>
               </div>
             </div>
           </div>
@@ -343,46 +365,6 @@ const ProblemDetails = () => {
             </div>
           </div>
           {activeOutputTab.type === "testcase" && (
-            // <div className="p-2">
-            //   <div
-            //     className={`font-semibold ${
-            //       problemOutput.status === "Accepted"
-            //         ? "text-success-fg"
-            //         : problemOutput.status === "Partially Accepted"
-            //         ? "text-warning-fg"
-            //         : "text-danger-fg"
-            //     }`}
-            //   >
-            //     {problemOutput?.status}
-            //   </div>
-            //   <div className="flex flex-col gap-2 py-2">
-            //     {problemOutput?.testCases?.map((testCase) => (
-            //       <div
-            //         key={testCase.testcaseNo}
-            //         className="bg-basebg-surface border border-border-default px-4 py-2 rounded inline-block"
-            //       >
-            //         <div className="font-semibold flex justify-start items-center gap-1">
-            //           Testcase {testCase.testcaseNo}
-            //           <span
-            //             className={`  ${
-            //               testCase.isPassed
-            //                 ? "text-success-fg"
-            //                 : "text-danger-fg"
-            //             }`}
-            //           >
-            //             {testCase.isPassed ? (
-            //               <CircleCheckBig size={16} color="green" />
-            //             ) : (
-            //               <CircleX size={16} color="red" />
-            //             )}
-            //           </span>
-            //         </div>
-            //         {/* <div>Stdin: {testCase.stdin}</div>
-            //         <div>Stdout: {testCase.stdout}</div> */}
-            //       </div>
-            //     ))}
-            //   </div>
-            // </div>
             <div className="p-2">
               <div className="flex justify-between gap-2">
                 <div className="flex gap-2 p-2">

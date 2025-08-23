@@ -26,7 +26,7 @@ const problemSchema = new mongoose.Schema(
     examples: {
       type: JSON,
     },
-    constrains: {
+    constraints: {
       type: String,
     },
     hints: {
@@ -48,10 +48,17 @@ const problemSchema = new mongoose.Schema(
     referenceSolutions: {
       type: JSON,
     },
+    askedBy: {
+      type: [String],
+      default: [],
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+    },
+    bonus: {
+      description: String,
     },
     solvedBy: [
       {
