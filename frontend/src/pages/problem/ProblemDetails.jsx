@@ -24,13 +24,18 @@ import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { executeCode } from "@/services/execution.service"
 import { getProblemDetails } from "@/services/problem.service"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchProblemDetails } from "@/features/rtk/problem/problemSlice"
 
 const ProblemDetails = () => {
-  const [problemDetails, setProblemDetails] = useState({})
+  // const [problemDetails, setProblemDetails] = useState({})
   const [problemOutput, setProblemOutput] = useState({})
   const [programCode, setProgramCode] = useState("")
   const { id } = useParams()
   const { run, loading } = useAsyncHandler()
+  const { problemDetails } = useSelector((state) => state.problem)
+
+  const dispatch = useDispatch()
 
   const [problemInfoTab] = useState([
     {
@@ -103,7 +108,7 @@ const ProblemDetails = () => {
 
   const handleGetProblemDetails = async (problemId) => {
     const response = await getProblemDetails(problemId)
-    setProblemDetails(response.data.data)
+    dispatch(fetchProblemDetails(response.data.data))
     setProgramCode(response.data.data?.codeSnippets?.JAVASCRIPT || "")
   }
 

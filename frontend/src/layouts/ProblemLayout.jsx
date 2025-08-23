@@ -8,7 +8,7 @@ const ProblemLayout = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
   const navigate = useNavigate()
   return (
-    <div className="container mx-auto overflow-hidden h-screen w-full box-border bg-basebg-default text-fg-default">
+    <div className="mx-auto overflow-hidden h-screen w-full box-border bg-basebg-default text-fg-default">
       <div className="px-8 h-12 flex justify-between items-center">
         <div>
           <button

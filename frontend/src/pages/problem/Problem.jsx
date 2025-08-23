@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import "./problem.css"
+import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router"
+import { fetchProblems } from "@/features/rtk/problem/problemSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { getAllProblems } from "@/services/problem.service"
 
 const Problem = () => {
   const { run, loading } = useAsyncHandler()
-  const [allProblems, setAllProblems] = useState([])
+  const { problems } = useSelector((state) => state.problem)
+
+  const dispatch = useDispatch()
 
   const getAllProblem = async () => {
-    const allProblems = await run(() => getAllProblems())
-    setAllProblems(allProblems.data.data)
+    const response = await run(() => getAllProblems())
+    dispatch(fetchProblems(response.data.data))
   }
 
   useEffect(() => {
@@ -24,7 +28,7 @@ const Problem = () => {
           "loading"
         ) : (
           <>
-            {allProblems.map((problem, i) => (
+            {problems.map((problem, i) => (
               <p key={i}>
                 <Link to={`/problem/${problem._id}`}>
                   {" "}
