@@ -61,7 +61,7 @@ const register = asyncHandler(async (req, res) => {
   const cookieOptions = {
     httpOnly: true,
     secure: true,
-    sameSite: "Lax",
+    sameSite: "none",
   }
 
   res
@@ -102,7 +102,7 @@ const login = asyncHandler(async (req, res) => {
   const cookieOptions = {
     httpOnly: true,
     secure: true,
-    sameSite: "Lax",
+    sameSite: "none",
   }
 
   res
