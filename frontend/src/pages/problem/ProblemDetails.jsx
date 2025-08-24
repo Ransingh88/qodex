@@ -21,7 +21,7 @@ import {
 import React, { useEffect, useState } from "react"
 import "./problemDetails.css"
 import { useDispatch, useSelector } from "react-redux"
-import { useParams } from "react-router"
+import { useOutletContext, useParams } from "react-router"
 import { toast } from "react-toastify"
 import CodeEditor from "@/components/editor/CodeEditor"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
@@ -34,6 +34,7 @@ import { executeCode } from "@/services/execution.service"
 import { getProblemDetails } from "@/services/problem.service"
 
 const ProblemDetails = () => {
+  const { registerSubmitHandler } = useOutletContext()
   const [programCode, setProgramCode] = useState("")
   const { id } = useParams()
   const { run, loading } = useAsyncHandler()
@@ -142,6 +143,24 @@ const ProblemDetails = () => {
     setActiveOutputTabId("tab2")
   }
 
+  const runCodeAndSubmit = async () => {
+    console.log("Running code & submitting...")
+    const payload = {
+      languageId: 63,
+      sourceCode: programCode,
+      stdInput: problemDetails?.testcases?.map((tc) => tc?.input),
+      expectedOutput: problemDetails?.testcases?.map((tc) => tc?.output),
+      problemId: problemDetails._id,
+      isSubmit: true,
+    }
+    const response = await run(() => executeCode(payload))
+    if (response.data.success) {
+      toast.success(response.data.message)
+    }
+    dispatch(executeProblems(response.data.data))
+    setActiveOutputTabId("tab2")
+  }
+
   const handleCodeChange = (code) => {
     setProgramCode(code)
 
@@ -150,9 +169,15 @@ const ProblemDetails = () => {
 
   console.log(problemDetails, "ProblemDetails")
   console.log(problemOutput, "ProblemOutput")
+
   useEffect(() => {
     handleGetProblemDetails(id)
   }, [id])
+
+  useEffect(() => {
+    // register the handler when this component mounts
+    registerSubmitHandler(runCodeAndSubmit)
+  }, [registerSubmitHandler])
   return (
     <div className="p-1.5 h-[calc(100vh-3rem)] w-full flex flex-row justify-center items-start gap-1.5">
       <div className="h-full w-1/2 bg-[#1e1e1e] rounded-lg border border-border-default overflow-hidden">
