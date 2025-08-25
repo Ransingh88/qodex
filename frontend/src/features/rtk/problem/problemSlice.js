@@ -28,6 +28,10 @@ const problemSlice = createSlice({
       state.isLoading = false
       state.problemDetails = action.payload
     },
+    executeProblemsStart(state) {
+      state.isLoading = true
+      state.error = null
+    },
     executeProblems(state, action) {
       state.isLoading = false
       state.problemOutput = action.payload
@@ -35,6 +39,11 @@ const problemSlice = createSlice({
   },
 })
 
-export const { fetchProblems, fetchProblemDetails, executeProblems } = problemSlice.actions
+export const {
+  fetchProblems,
+  fetchProblemDetails,
+  executeProblemsStart,
+  executeProblems,
+} = problemSlice.actions
 
 export default problemSlice.reducer

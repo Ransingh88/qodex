@@ -2,10 +2,12 @@ import { ArrowBigUpDash, ArrowLeft, BookUp, MoveLeft } from "lucide-react"
 import React, { useRef } from "react"
 import { useSelector } from "react-redux"
 import { Outlet, useNavigate } from "react-router"
+import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import UserPopover from "@/components/popover/UserPopover"
 
 const ProblemLayout = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
+  const { isLoading } = useSelector((state) => state.problem)
   const navigate = useNavigate()
 
   const submitHandlerRef = useRef(null)
@@ -32,7 +34,12 @@ const ProblemLayout = () => {
             onClick={handleSubmitClick}
             className="flex items-center gap-1 bg-success-fg/80 px-2 py-1.5 rounded cursor-pointer hover:bg-success-emphasis text-sm"
           >
-            <ArrowBigUpDash size={14} /> Submit
+            {isLoading ? (
+              <LoadingSpinner size={14} />
+            ) : (
+              <ArrowBigUpDash size={14} />
+            )}{" "}
+            Submit
           </button>
           {isAuthenticated && <UserPopover />}
         </div>

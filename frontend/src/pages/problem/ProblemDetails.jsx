@@ -15,7 +15,6 @@ import {
   Play,
   SquareChartGantt,
   SquareCode,
-  SquareDashedBottomCode,
   SquareTerminalIcon,
 } from "lucide-react"
 import React, { useEffect, useState } from "react"
@@ -28,6 +27,7 @@ import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import {
   fetchProblemDetails,
   executeProblems,
+  executeProblemsStart,
 } from "@/features/rtk/problem/problemSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { executeCode } from "@/services/execution.service"
@@ -41,7 +41,6 @@ const ProblemDetails = () => {
   const { problemDetails, problemOutput } = useSelector(
     (state) => state.problem
   )
-
   const dispatch = useDispatch()
 
   const [problemInfoTab] = useState([
@@ -144,7 +143,7 @@ const ProblemDetails = () => {
   }
 
   const runCodeAndSubmit = async () => {
-    console.log("Running code & submitting...")
+    dispatch(executeProblemsStart())
     const payload = {
       languageId: 63,
       sourceCode: programCode,
@@ -157,6 +156,7 @@ const ProblemDetails = () => {
     if (response.data.success) {
       toast.success(response.data.message)
     }
+
     dispatch(executeProblems(response.data.data))
     setActiveOutputTabId("tab2")
   }
@@ -176,8 +176,8 @@ const ProblemDetails = () => {
 
   useEffect(() => {
     // register the handler when this component mounts
-    registerSubmitHandler(runCodeAndSubmit)
-  }, [registerSubmitHandler])
+    registerSubmitHandler(() => runCodeAndSubmit(programCode))
+  }, [registerSubmitHandler, programCode])
   return (
     <div className="p-1.5 h-[calc(100vh-3rem)] w-full flex flex-row justify-center items-start gap-1.5">
       <div className="h-full w-1/2 bg-[#1e1e1e] rounded-lg border border-border-default overflow-hidden">
