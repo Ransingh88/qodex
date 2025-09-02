@@ -108,23 +108,6 @@ const ProblemDetails = () => {
     },
   ])
 
-  const [editorLayout, setEditorLayout] = useState({
-    codeeditor: {
-      height: "2/3",
-      width: "100%",
-      isFull: false,
-    },
-    testcase: {
-      height: "1/3",
-      width: "100%",
-      isFull: false,
-    },
-    desc: {
-      height: "100%",
-      width: "1/2",
-    },
-  })
-
   const [activeProblemInfoTabId, setActiveProblemInfoTabId] = useState(
     problemInfoTab[0].id
   )
@@ -182,24 +165,6 @@ const ProblemDetails = () => {
 
   const handleCodeChange = (code) => {
     setProgramCode(code)
-
-    console.log("Code changed:", code)
-  }
-
-  const handleLayoutChange = (layout) => {
-    if (layout == "t") {
-      setEditorLayout((prev) => ({
-        ...prev,
-        codeeditor: {
-          height: editorLayout.codeeditor.isFull ? "1/3" : "full",
-          isFull: !editorLayout.codeeditor.isFull,
-        },
-        testcase: {
-          height: editorLayout.testcase.isFull ? "2/3" : "0",
-          isFull: !editorLayout.testcase.isFull,
-        },
-      }))
-    }
   }
 
   console.log(problemDetails, "ProblemDetails")
@@ -359,7 +324,7 @@ const ProblemDetails = () => {
       <div className="h-full w-1/2 rounded-lg flex flex-col justify-start items-start gap-1.5 ">
         {/* Editor */}
         <div
-          className={`min-h-8 h-${editorLayout.codeeditor.height} w-full rounded-lg overflow-hidden flex flex-col bg-[#1e1e1e] border border-border-default`}
+          className={`min-h-8 h-2/3 w-full rounded-lg overflow-hidden flex flex-col bg-[#1e1e1e] border border-border-default`}
         >
           <div className="h-8 w-full flex justify-between items-center border-b border-border-default">
             <ul className="flex h-full text-xs items-center">
@@ -415,7 +380,7 @@ const ProblemDetails = () => {
           </div>
         </div>
         <div
-          className={`min-h-8 h-${editorLayout.testcase.height} w-full rounded-lg bg-[#1e1e1e] border border-border-default overflow-hidden`}
+          className={`min-h-8 h-1/3 w-full rounded-lg bg-[#1e1e1e] border border-border-default overflow-hidden`}
         >
           <div className="h-8 w-full flex justify-between items-center border-b border-border-default">
             <ul className="flex h-full text-xs items-center">
@@ -434,9 +399,8 @@ const ProblemDetails = () => {
               ))}
             </ul>
             <div className="px-2 flex items-center gap-2 text-xs">
-              <button onClick={() => handleLayoutChange("t")}>
-                {" "}
-                {editorLayout.testcase.isFull ? (
+              <button>
+                {true ? (
                   <PanelBottomOpen size={14} />
                 ) : (
                   <PanelBottomClose size={14} />
