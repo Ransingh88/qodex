@@ -1,0 +1,13 @@
+@reference '@/index.css';
+
+.problemDetails_desc {
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    @apply bg-basebg-surface rounded-full;
+  }
+  &::-webkit-scrollbar-thumb {
+    @apply bg-basebg-surface2 rounded-full;
+  }
+}

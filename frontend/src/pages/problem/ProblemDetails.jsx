@@ -10,6 +10,8 @@ import {
   FileText,
   History,
   Lightbulb,
+  PanelBottomClose,
+  PanelBottomOpen,
   PanelTopOpen,
   Pin,
   Play,
@@ -106,6 +108,23 @@ const ProblemDetails = () => {
     },
   ])
 
+  const [editorLayout, setEditorLayout] = useState({
+    codeeditor: {
+      height: "2/3",
+      width: "100%",
+      isFull: false,
+    },
+    testcase: {
+      height: "1/3",
+      width: "100%",
+      isFull: false,
+    },
+    desc: {
+      height: "100%",
+      width: "1/2",
+    },
+  })
+
   const [activeProblemInfoTabId, setActiveProblemInfoTabId] = useState(
     problemInfoTab[0].id
   )
@@ -167,6 +186,22 @@ const ProblemDetails = () => {
     console.log("Code changed:", code)
   }
 
+  const handleLayoutChange = (layout) => {
+    if (layout == "t") {
+      setEditorLayout((prev) => ({
+        ...prev,
+        codeeditor: {
+          height: editorLayout.codeeditor.isFull ? "1/3" : "full",
+          isFull: !editorLayout.codeeditor.isFull,
+        },
+        testcase: {
+          height: editorLayout.testcase.isFull ? "2/3" : "0",
+          isFull: !editorLayout.testcase.isFull,
+        },
+      }))
+    }
+  }
+
   console.log(problemDetails, "ProblemDetails")
   console.log(problemOutput, "ProblemOutput")
 
@@ -200,116 +235,132 @@ const ProblemDetails = () => {
           </ul>
         </div>
         {activeProblemInfoTab.type === "desc" && (
-          <div className="p-4">
-            <div className="flex justify-between items-center">
-              <h3 className="">{problemDetails.title} </h3>
+          <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+            <div className="p-4">
+              <div className="flex justify-between items-center">
+                <h3 className="">{problemDetails.title} </h3>
 
-              <div className="flex justify-center items-center gap-1">
-                <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
-                  {problemDetails.tags && problemDetails?.tags[0]}
-                </span>
-                <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
-                  {problemDetails.tags && problemDetails?.tags[1]}
-                </span>
-                <span
-                  className={`text-xxs px-1 py-0.5 border rounded capitalize font-medium opacity-70 ${
-                    problemDetails.difficulty === "easy"
-                      ? "bg-success-subtle/50 text-green-200 border-success-emphasis"
-                      : problemDetails.difficulty === "medium"
-                      ? "bg-warning-subtle/50 text-yellow-200 border-warning-emphasis"
-                      : "bg-danger-subtle/50 text-red-200 border-danger-emphasis"
-                  }`}
-                >
-                  {problemDetails?.difficulty}
-                </span>
-                <button className="cursor-pointer">
-                  <Bookmark size={18} />
-                </button>
-              </div>
-            </div>
-            <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
-              AskedBy:{" "}
-              {problemDetails.askedBy &&
-                problemDetails?.askedBy.map((org) => (
-                  <span key={org} className="text-fg-default/80">
-                    {org}
+                <div className="flex justify-center items-center gap-1">
+                  <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
+                    {problemDetails.tags && problemDetails?.tags[0]}
                   </span>
-                ))}
-            </span>
-            <h6 className="mt-2 py-2">Problem Description</h6>
-            <div className="p-2 rounded h-full border border-border-default overflow-auto text-sm font-body">
-              <p className="whitespace-pre-wrap text-fg-default/80">
-                {problemDetails.description}
-              </p>
-              {/* <p className="my-2 text-fg-default/80">
-                Explanation: {problemDetails?.examples?.JAVASCRIPT?.explanation}
-              </p> */}
-              <div className="my-6 border divide-y divide-border-default flex flex-col border-border-default rounded py-1 px-4 font-code">
-                <p className="py-2">
-                  <span className="font-semibold block">Input</span>{" "}
-                  <span className="text-fg-default/80">
-                    {problemDetails?.examples?.JAVASCRIPT?.input}
+                  <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
+                    {problemDetails.tags && problemDetails?.tags[1]}
                   </span>
-                </p>
-                <p className="py-2">
-                  <span className="font-semibold block">Output</span>
-                  <span className="pt-2 text-fg-default/80">
-                    {problemDetails?.examples?.JAVASCRIPT?.output}
+                  <span
+                    className={`text-xxs px-1 py-0.5 border rounded capitalize font-medium opacity-70 ${
+                      problemDetails.difficulty === "easy"
+                        ? "bg-success-subtle/50 text-green-200 border-success-emphasis"
+                        : problemDetails.difficulty === "medium"
+                        ? "bg-warning-subtle/50 text-yellow-200 border-warning-emphasis"
+                        : "bg-danger-subtle/50 text-red-200 border-danger-emphasis"
+                    }`}
+                  >
+                    {problemDetails?.difficulty}
                   </span>
-                </p>
-              </div>
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col px-4 py-2 bg-basebg-surface rounded font-code">
-                  <p className="font-semibold mb-2">Example 1</p>
-                  <p>
-                    <span className="font-semibold text-fg-default/70">
-                      Input:
-                    </span>{" "}
-                    {problemDetails?.examples?.JAVASCRIPT?.input}
-                  </p>
-                  <span>
-                    <p>
-                      <span className="font-semibold text-fg-default/70">
-                        Output:
-                      </span>{" "}
-                      {problemDetails?.examples?.JAVASCRIPT?.output}
-                    </p>
-                  </span>
-                  <span>
-                    <p>
-                      <span className="font-semibold text-fg-default/70">
-                        Explanation:
-                      </span>{" "}
-                      {problemDetails?.examples?.JAVASCRIPT?.explanation}
-                    </p>
-                  </span>
+                  <button className="cursor-pointer">
+                    <Bookmark size={18} />
+                  </button>
                 </div>
               </div>
-              <div className="px-4">
-                <p className="py-2">
-                  <span className="font-semibold block">Constraints</span>
-                  <span className="pt-2 text-fg-default/80">
-                    {problemDetails?.constraints}
-                  </span>
+              <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
+                AskedBy:{" "}
+                {problemDetails.askedBy &&
+                  problemDetails?.askedBy.map((org) => (
+                    <span key={org} className="text-fg-default/80">
+                      {org}
+                    </span>
+                  ))}
+              </span>
+              <h6 className="mt-2 py-2">Problem Description</h6>
+              <div className="p-2 rounded h-full border border-border-default overflow-auto text-sm font-body">
+                <p className="whitespace-pre-wrap text-fg-default/80">
+                  {problemDetails.description}
                 </p>
-                <p className="py-2">
-                  <span className="font-semibold block">Bonus</span>
-                  <span className="pt-2 text-fg-default/80">
-                    {problemDetails?.bonus?.description}
-                  </span>
-                </p>
+                {/* <p className="my-2 text-fg-default/80">
+                Explanation: {problemDetails?.examples?.JAVASCRIPT?.explanation}
+              </p> */}
+                <div className="my-6 border divide-y divide-border-default flex flex-col border-border-default rounded py-1 px-4 font-code">
+                  <p className="py-2">
+                    <span className="font-semibold block">Input</span>{" "}
+                    <span className="text-fg-default/80">
+                      {problemDetails?.examples?.JAVASCRIPT?.input}
+                    </span>
+                  </p>
+                  <p className="py-2">
+                    <span className="font-semibold block">Output</span>
+                    <span className="pt-2 text-fg-default/80">
+                      {problemDetails?.examples?.JAVASCRIPT?.output}
+                    </span>
+                  </p>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col px-4 py-2 bg-basebg-surface rounded font-code">
+                    <p className="font-semibold mb-2">Example 1</p>
+                    <p>
+                      <span className="font-semibold text-fg-default/70">
+                        Input:
+                      </span>{" "}
+                      {problemDetails?.examples?.JAVASCRIPT?.input}
+                    </p>
+                    <span>
+                      <p>
+                        <span className="font-semibold text-fg-default/70">
+                          Output:
+                        </span>{" "}
+                        {problemDetails?.examples?.JAVASCRIPT?.output}
+                      </p>
+                    </span>
+                    <span>
+                      <p>
+                        <span className="font-semibold text-fg-default/70">
+                          Explanation:
+                        </span>{" "}
+                        {problemDetails?.examples?.JAVASCRIPT?.explanation}
+                      </p>
+                    </span>
+                  </div>
+                </div>
+                <div className="px-4">
+                  <p className="py-2">
+                    <span className="font-semibold block">Constraints</span>
+                    <span className="pt-2 text-fg-default/80">
+                      {problemDetails?.constraints}
+                    </span>
+                  </p>
+                  <p className="py-2">
+                    <span className="font-semibold block">Bonus</span>
+                    <span className="pt-2 text-fg-default/80">
+                      {problemDetails?.bonus?.description}
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         )}
 
-        {activeProblemInfoTab.type === "solution" && <div>Solution</div>}
-        {activeProblemInfoTab.type === "submitions" && <div>Submittion</div>}
-        {activeProblemInfoTab.type === "hint" && <div>Hints</div>}
+        {activeProblemInfoTab.type === "solution" && (
+          <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+            Solution
+          </div>
+        )}
+        {activeProblemInfoTab.type === "submitions" && (
+          <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+            Submittion
+          </div>
+        )}
+        {activeProblemInfoTab.type === "hint" && (
+          <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+            Hints
+          </div>
+        )}
       </div>
       <div className="h-full w-1/2 rounded-lg flex flex-col justify-start items-start gap-1.5 ">
         {/* Editor */}
-        <div className="h-2/3 w-full rounded-lg overflow-hidden flex flex-col bg-[#1e1e1e] border border-border-default">
+        <div
+          className={`min-h-8 h-${editorLayout.codeeditor.height} w-full rounded-lg overflow-hidden flex flex-col bg-[#1e1e1e] border border-border-default`}
+        >
           <div className="h-8 w-full flex justify-between items-center border-b border-border-default">
             <ul className="flex h-full text-xs items-center">
               {editorTab.map((tab) => (
@@ -363,7 +414,9 @@ const ProblemDetails = () => {
             <p>Javascript</p>
           </div>
         </div>
-        <div className="min-h-10 h-1/3  w-full rounded-lg bg-[#1e1e1e] border border-border-default overflow-hidden">
+        <div
+          className={`min-h-8 h-${editorLayout.testcase.height} w-full rounded-lg bg-[#1e1e1e] border border-border-default overflow-hidden`}
+        >
           <div className="h-8 w-full flex justify-between items-center border-b border-border-default">
             <ul className="flex h-full text-xs items-center">
               {outputTab.map((tab) => (
@@ -381,8 +434,13 @@ const ProblemDetails = () => {
               ))}
             </ul>
             <div className="px-2 flex items-center gap-2 text-xs">
-              <button>
-                <PanelTopOpen size={14} />
+              <button onClick={() => handleLayoutChange("t")}>
+                {" "}
+                {editorLayout.testcase.isFull ? (
+                  <PanelBottomOpen size={14} />
+                ) : (
+                  <PanelBottomClose size={14} />
+                )}
               </button>
               <button>
                 <Ellipsis size={14} />
@@ -390,153 +448,169 @@ const ProblemDetails = () => {
             </div>
           </div>
           {activeOutputTab.type === "testcase" && (
-            <div className="p-2">
-              <div className="flex justify-between gap-2">
-                <div className="flex gap-2 p-2">
-                  {problemDetails?.testcases?.map((testcase, index) => (
-                    <div
-                      key={index}
-                      className={`px-2 py-1 bg-basebg-surface2 rounded text-xs cursor-pointer hover:bg-basebg-surface ${
-                        testcaseActiveTabId === index
-                          ? "border-s border-accent-fg/50 "
-                          : ""
-                      } `}
-                      onClick={() => setTestcaseActiveTabId(index)}
-                    >
-                      <p>Case {index + 1}</p>
-                    </div>
-                  ))}
+            <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+              <div className="p-2">
+                <div className="flex justify-between gap-2">
+                  <div className="flex gap-2 p-2">
+                    {problemDetails?.testcases?.map((testcase, index) => (
+                      <div
+                        key={index}
+                        className={`px-2 py-1 bg-basebg-surface2 rounded text-xs cursor-pointer hover:bg-basebg-surface ${
+                          testcaseActiveTabId === index
+                            ? "border-s border-accent-fg/50 "
+                            : ""
+                        } `}
+                        onClick={() => setTestcaseActiveTabId(index)}
+                      >
+                        <p>Case {index + 1}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div>
+                    {loading ? (
+                      <div className="flex items-center gap-2 text-fg-muted text-xs">
+                        <LoadingSpinner size={14} /> Running...{" "}
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
-                <div>
-                  {loading ? (
-                    <div className="flex items-center gap-2 text-fg-muted text-xs">
-                      <LoadingSpinner size={14} /> Running...{" "}
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-              <div className="p-1 flex flex-col gap-2">
-                <div>
-                  <p className="font-semibold text-fg-muted">Input</p>
-                  <p className="py-1.5 px-2 mt-1 bg-basebg-surface border border-border-default rounded">
-                    {problemDetails.testcases &&
-                      problemDetails?.testcases[testcaseActiveTabId]?.input}
-                  </p>
-                </div>
-                <div>
-                  <p className="font-semibold text-fg-muted">Output</p>
-                  <p className="py-1.5 px-2 mt-1 bg-basebg-surface border border-border-default rounded">
-                    {problemDetails.testcases &&
-                      problemDetails?.testcases[testcaseActiveTabId]?.output}
-                  </p>
+                <div className="p-1 flex flex-col gap-2">
+                  <div>
+                    <p className="font-semibold text-fg-muted">Input</p>
+                    <p className="py-1.5 px-2 mt-1 bg-basebg-surface border border-border-default rounded">
+                      {problemDetails.testcases &&
+                        problemDetails?.testcases[testcaseActiveTabId]?.input}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-fg-muted">Output</p>
+                    <p className="py-1.5 px-2 mt-1 bg-basebg-surface border border-border-default rounded">
+                      {problemDetails.testcases &&
+                        problemDetails?.testcases[testcaseActiveTabId]?.output}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           )}
           {activeOutputTab.type === "testresult" && (
-            <div className="p-2 h-full">
-              {problemOutput.status ? (
-                <>
-                  <div className="flex justify-between gap-2">
-                    <div className="flex gap-2 p-2">
-                      {problemOutput?.testCases?.map((testcase, index) => (
-                        <div
-                          key={index}
-                          className={`px-2 py-1 bg-basebg-surface2 rounded text-xs cursor-pointer hover:bg-basebg-surface flex items-center ${
-                            testcaseActiveTabId === index
-                              ? "border-s border-accent-fg/50"
-                              : ""
-                          }`}
-                          onClick={() => setTestcaseActiveTabId(index)}
-                        >
-                          <span
-                            className={`h-1 w-1 rounded-full mr-2 ${
-                              testcase.isPassed
-                                ? "bg-success-fg"
-                                : "bg-danger-fg"
+            <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+              <div className="p-2 h-full">
+                {problemOutput.status ? (
+                  <>
+                    <div className="flex justify-between gap-2">
+                      <div className="flex gap-2 p-2">
+                        {problemOutput?.testCases?.map((testcase, index) => (
+                          <div
+                            key={index}
+                            className={`px-2 py-1 bg-basebg-surface2 rounded text-xs cursor-pointer hover:bg-basebg-surface flex items-center ${
+                              testcaseActiveTabId === index
+                                ? "border-s border-accent-fg/50"
+                                : ""
                             }`}
-                          ></span>
-                          <p>Case {testcase.testcaseNo}</p>
-                        </div>
-                      ))}
+                            onClick={() => setTestcaseActiveTabId(index)}
+                          >
+                            <span
+                              className={`h-1 w-1 rounded-full mr-2 ${
+                                testcase.isPassed
+                                  ? "bg-success-fg"
+                                  : "bg-danger-fg"
+                              }`}
+                            ></span>
+                            <p>Case {testcase.testcaseNo}</p>
+                          </div>
+                        ))}
+                      </div>
+                      <div
+                        className={`font-semibold ${
+                          problemOutput.status === "Accepted"
+                            ? "text-success-fg"
+                            : problemOutput.status === "Partially Accepted"
+                            ? "text-warning-fg"
+                            : "text-danger-fg"
+                        }`}
+                      >
+                        {loading ? (
+                          <div className="flex items-center gap-2 text-fg-muted text-xs">
+                            <LoadingSpinner size={14} /> Running...{" "}
+                          </div>
+                        ) : (
+                          <div className="flex gap-2 items-center">
+                            <p className="text-fg-muted text-xs flex items-center gap-1">
+                              <Clock size={12} /> {problemOutput?.time}
+                            </p>
+                            <p className="text-fg-muted text-xs flex items-center gap-1">
+                              <Cpu size={12} /> {problemOutput?.memory}
+                            </p>
+                            <p className="flex items-center gap-1">
+                              {problemOutput?.status === "Accepted" ? (
+                                <CircleCheck size={12} />
+                              ) : (
+                                <CircleX size={12} />
+                              )}{" "}
+                              {problemOutput?.status}
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div
-                      className={`font-semibold ${
-                        problemOutput.status === "Accepted"
-                          ? "text-success-fg"
-                          : problemOutput.status === "Partially Accepted"
-                          ? "text-warning-fg"
-                          : "text-danger-fg"
-                      }`}
-                    >
-                      {loading ? (
-                        <div className="flex items-center gap-2 text-fg-muted text-xs">
-                          <LoadingSpinner size={14} /> Running...{" "}
-                        </div>
-                      ) : (
-                        <div className="flex gap-2 items-center">
-                          <p className="text-fg-muted text-xs flex items-center gap-1">
-                            <Clock size={12} /> {problemOutput?.time}
-                          </p>
-                          <p className="text-fg-muted text-xs flex items-center gap-1">
-                            <Cpu size={12} /> {problemOutput?.memory}
-                          </p>
-                          <p className="flex items-center gap-1">
-                            {problemOutput?.status === "Accepted" ? (
-                              <CircleCheck size={12} />
-                            ) : (
-                              <CircleX size={12} />
-                            )}{" "}
-                            {problemOutput?.status}
-                          </p>
-                        </div>
-                      )}
+                    <div className="mx-2 py-1 px-2 bg-basebg-surface rounded border border-border-default">
+                      <div className="flex gap-4 text-xs text-fg-muted">
+                        <p>
+                          Status:{" "}
+                          {
+                            problemOutput?.testCases[testcaseActiveTabId]
+                              ?.status
+                          }
+                        </p>
+                        <p>
+                          Memory:{" "}
+                          {
+                            problemOutput?.testCases[testcaseActiveTabId]
+                              ?.memory
+                          }{" "}
+                          bit
+                        </p>
+                        <p>
+                          Time:{" "}
+                          {problemOutput?.testCases[testcaseActiveTabId]?.time}{" "}
+                          ms
+                        </p>
+                      </div>
+                      <div className="mt-2 flex flex-col gap-1">
+                        <p>
+                          Input:{" "}
+                          {problemOutput?.testCases[testcaseActiveTabId]?.stdin}
+                        </p>
+                        <p>
+                          Output:{" "}
+                          {
+                            problemOutput?.testCases[testcaseActiveTabId]
+                              ?.stdout
+                          }
+                        </p>
+                        <p>
+                          Expected Output:{" "}
+                          {
+                            problemOutput?.testCases[testcaseActiveTabId]
+                              ?.expectedOutput
+                          }
+                        </p>
+                      </div>
                     </div>
+                  </>
+                ) : (
+                  <div className="mt-5 text-fg-muted flex justify-center items-center">
+                    Run test cases
                   </div>
-                  <div className="mx-2 py-1 px-2 bg-basebg-surface rounded border border-border-default">
-                    <div className="flex gap-4 text-xs text-fg-muted">
-                      <p>
-                        Status:{" "}
-                        {problemOutput?.testCases[testcaseActiveTabId]?.status}
-                      </p>
-                      <p>
-                        Memory:{" "}
-                        {problemOutput?.testCases[testcaseActiveTabId]?.memory}{" "}
-                        bit
-                      </p>
-                      <p>
-                        Time:{" "}
-                        {problemOutput?.testCases[testcaseActiveTabId]?.time} ms
-                      </p>
-                    </div>
-                    <div className="mt-2 flex flex-col gap-1">
-                      <p>
-                        Input:{" "}
-                        {problemOutput?.testCases[testcaseActiveTabId]?.stdin}
-                      </p>
-                      <p>
-                        Output:{" "}
-                        {problemOutput?.testCases[testcaseActiveTabId]?.stdout}
-                      </p>
-                      <p>
-                        Expected Output:{" "}
-                        {
-                          problemOutput?.testCases[testcaseActiveTabId]
-                            ?.expectedOutput
-                        }
-                      </p>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="mt-5 text-fg-muted flex justify-center items-center">
-                  Run test cases
-                </div>
-              )}
+                )}
+              </div>
             </div>
           )}
           {activeOutputTab.type === "console" && (
-            <div className="p-2">Console</div>
+            <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+              <div className="p-2">Console</div>
+            </div>
           )}
         </div>
       </div>

@@ -42,7 +42,7 @@ const UserPopover = ({ logoutFn }) => {
   return (
     <div
       ref={popoverRef}
-      className=" h-9 w-9 rounded-full bg-accent-fg/40 text-fg-muted flex items-center justify-center relative cursor-pointer outline-2 outline-offset-2 outline-accent-subtle z-10"
+      className=" h-9 w-9 rounded-full bg-accent-fg/50 text-fg-muted flex items-center justify-center relative cursor-pointer outline-2 outline-offset-2 outline-accent-subtle z-10"
     >
       <button
         onClick={togglePopover}
