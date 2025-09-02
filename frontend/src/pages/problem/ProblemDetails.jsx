@@ -12,6 +12,9 @@ import {
   Lightbulb,
   PanelBottomClose,
   PanelBottomOpen,
+  PanelLeftClose,
+  PanelLeftOpen,
+  PanelTopClose,
   PanelTopOpen,
   Pin,
   Play,
@@ -19,7 +22,7 @@ import {
   SquareCode,
   SquareTerminalIcon,
 } from "lucide-react"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import "./problemDetails.css"
 import { useDispatch, useSelector } from "react-redux"
 import { useOutletContext, useParams } from "react-router"
@@ -34,6 +37,7 @@ import {
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { executeCode } from "@/services/execution.service"
 import { getProblemDetails } from "@/services/problem.service"
+import { button } from "motion/react-client"
 
 const ProblemDetails = () => {
   const { registerSubmitHandler } = useOutletContext()
@@ -44,6 +48,10 @@ const ProblemDetails = () => {
     (state) => state.problem
   )
   const dispatch = useDispatch()
+
+  const [isLeftOpen, setIsLeftOpen] = useState(true)
+  const [isCodeOpen, setIsCodeOpen] = useState(true)
+  const [isTestOpen, setIsTestOpen] = useState(true)
 
   const [problemInfoTab] = useState([
     {
@@ -167,20 +175,76 @@ const ProblemDetails = () => {
     setProgramCode(code)
   }
 
-  console.log(problemDetails, "ProblemDetails")
-  console.log(problemOutput, "ProblemOutput")
+  const rightOpenCount = (isCodeOpen ? 1 : 0) + (isTestOpen ? 1 : 0)
+
+  const codeHeight = useMemo(() => {
+    if (!isCodeOpen) return "h-0"
+    return rightOpenCount === 2 ? "h-2/3" : "h-full"
+  }, [isCodeOpen, rightOpenCount])
+
+  const testHeight = useMemo(() => {
+    if (!isTestOpen) return " h-0"
+    return rightOpenCount === 2 ? "h-1/3" : "h-full"
+  }, [isTestOpen, rightOpenCount])
+
+  const toggleCode = () => {
+    if (isCodeOpen && !isTestOpen) return
+    setIsCodeOpen((v) => !v)
+  }
+
+  const toggleTests = () => {
+    if (isTestOpen && !isCodeOpen) return
+    setIsTestOpen((v) => !v)
+  }
 
   useEffect(() => {
     handleGetProblemDetails(id)
   }, [id])
+
+  // Restore last layout
+  useEffect(() => {
+    const raw = localStorage.getItem("problemDetailLayout:v1")
+    if (!raw) return
+    try {
+      if (raw) {
+        const parsed = JSON.parse(raw)
+        setIsLeftOpen(parsed.isLeftOpen ?? true)
+        setIsCodeOpen(parsed.isCodeOpen ?? true)
+        setIsTestOpen(parsed.isTestOpen ?? true)
+      }
+    } catch {
+      // Handle error
+    }
+  }, [])
+
+  // Persist layout changes
+  useEffect(() => {
+    localStorage.setItem(
+      "problemDetailLayout:v1",
+      JSON.stringify({
+        isLeftOpen,
+        isCodeOpen,
+        isTestOpen,
+      })
+    )
+  }, [isLeftOpen, isCodeOpen, isTestOpen])
 
   useEffect(() => {
     // register the handler when this component mounts
     registerSubmitHandler(() => runCodeAndSubmit(programCode))
   }, [registerSubmitHandler, programCode])
   return (
-    <div className="p-1.5 h-[calc(100vh-3rem)] w-full flex flex-row justify-center items-start gap-1.5">
-      <div className="h-full w-1/2 bg-[#1e1e1e] rounded-lg border border-border-default overflow-hidden">
+    <div
+      className={`p-1.5 h-[calc(100vh-3rem)] w-full flex flex-row justify-start items-start ${
+        isLeftOpen ? "gap-1.5" : ""
+      }`}
+    >
+      {/* Left Pannel */}
+      <div
+        className={`h-full ${
+          isLeftOpen ? "min-w-40 w-1/2" : "w-0 border-0"
+        } bg-[#1e1e1e] rounded-lg border border-border-default overflow-hidden transition-all duration-200 ease-out`}
+      >
         <div className="h-8 w-full flex justify-between items-center border-b border-border-default">
           <ul className="flex h-full text-xs items-center">
             {problemInfoTab.map((tab) => (
@@ -198,6 +262,14 @@ const ProblemDetails = () => {
               </li>
             ))}
           </ul>
+          <div className="mx-2">
+            <button
+              onClick={() => setIsLeftOpen(false)}
+              className="cursor-pointer"
+            >
+              <PanelLeftClose size={14} />
+            </button>
+          </div>
         </div>
         {activeProblemInfoTab.type === "desc" && (
           <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
@@ -321,12 +393,13 @@ const ProblemDetails = () => {
           </div>
         )}
       </div>
-      <div className="h-full w-1/2 rounded-lg flex flex-col justify-start items-start gap-1.5 ">
+      {/* Right Pannel */}
+      <div className="h-full w-1/2 rounded-lg flex-1 flex flex-col justify-start items-start gap-1.5 ">
         {/* Editor */}
         <div
-          className={`min-h-8 h-2/3 w-full rounded-lg overflow-hidden flex flex-col bg-[#1e1e1e] border border-border-default`}
+          className={`min-h-8 ${codeHeight} w-full rounded-lg overflow-hidden flex flex-col bg-[#1e1e1e] border border-border-default transition-all duration-200 ease-out`}
         >
-          <div className="h-8 w-full flex justify-between items-center border-b border-border-default">
+          <div className="h-8 w-full flex justify-between items-center border-b border-border-default relative">
             <ul className="flex h-full text-xs items-center">
               {editorTab.map((tab) => (
                 <li
@@ -357,13 +430,28 @@ const ProblemDetails = () => {
                   </>
                 )}
               </button>
+              {!isLeftOpen && (
+                <button
+                  onClick={() => setIsLeftOpen(true)}
+                  className="cursor-pointer"
+                >
+                  <PanelLeftOpen size={14} />
+                </button>
+              )}
+              <button onClick={toggleCode}>
+                {isCodeOpen ? (
+                  <PanelTopClose size={14} />
+                ) : (
+                  <PanelTopOpen size={14} />
+                )}
+              </button>
               <button>
                 <Ellipsis size={14} />
               </button>
             </div>
           </div>
           <div className="flex-1">
-            {activeEditorTab.type === "code" && (
+            {activeEditorTab.type === "code" && isCodeOpen && (
               <CodeEditor
                 sourceCode={problemDetails?.codeSnippets?.JAVASCRIPT}
                 onChange={handleCodeChange}
@@ -371,16 +459,19 @@ const ProblemDetails = () => {
             )}
             {activeEditorTab.type === "diff" && <div>Diff Edior</div>}
           </div>
-          <div className="px-1 py-1 text-xs border-t border-border-default flex justify-between items-center">
-            <button className="flex items-center gap-1 px-2 p-1 rounded bg-basebg-surface2 cursor-pointer">
-              <History size={14} />
-              History
-            </button>
-            <p>Javascript</p>
-          </div>
+          {isCodeOpen && (
+            <div className="px-1 py-1 text-xs border-t border-border-default flex justify-between items-center">
+              <button className="flex items-center gap-1 px-2 p-1 rounded bg-basebg-surface2 cursor-pointer">
+                <History size={14} />
+                History
+              </button>
+              <p>Javascript</p>
+            </div>
+          )}
         </div>
+        {/* TestCases */}
         <div
-          className={`min-h-8 h-1/3 w-full rounded-lg bg-[#1e1e1e] border border-border-default overflow-hidden`}
+          className={`min-h-8 ${testHeight} w-full rounded-lg bg-[#1e1e1e] border border-border-default overflow-hidden transition-all duration-200 ease-out`}
         >
           <div className="h-8 w-full flex justify-between items-center border-b border-border-default">
             <ul className="flex h-full text-xs items-center">
@@ -399,11 +490,11 @@ const ProblemDetails = () => {
               ))}
             </ul>
             <div className="px-2 flex items-center gap-2 text-xs">
-              <button>
-                {true ? (
-                  <PanelBottomOpen size={14} />
-                ) : (
+              <button onClick={toggleTests}>
+                {isTestOpen ? (
                   <PanelBottomClose size={14} />
+                ) : (
+                  <PanelBottomOpen size={14} />
                 )}
               </button>
               <button>
