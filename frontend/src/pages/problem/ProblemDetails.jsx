@@ -431,7 +431,7 @@ const ProblemDetails = () => {
                   className="bg-transparent outline-none border border-border-default text-fg-default/80 text-xs rounded px-1 py-0.5"
                 >
                   {Object.entries(LANGUAGES).map(([key, lang]) => (
-                    <option key={key} value={key}>
+                    <option key={key} value={key} className="bg-basebg-default">
                       {lang.label}
                     </option>
                   ))}
@@ -487,7 +487,7 @@ const ProblemDetails = () => {
                 <History size={14} />
                 History
               </button>
-              <p>Javascript</p>
+              <p>{LANGUAGES[currentLanguage].label}</p>
             </div>
           )}
         </div>
