@@ -10,4 +10,9 @@ const getProblemDetails = async (problemId) => {
   return response
 }
 
-export { getAllProblems, getProblemDetails }
+const getProblemSubmissions = async (problemId) => {
+  const response = await API.get(`/submission/problem/${problemId}`)
+  return response
+}
+
+export { getAllProblems, getProblemDetails, getProblemSubmissions }

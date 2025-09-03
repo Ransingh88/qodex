@@ -29,20 +29,26 @@ import { useOutletContext, useParams } from "react-router"
 import { toast } from "react-toastify"
 import CodeEditor from "@/components/editor/CodeEditor"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
+import { LANGUAGES } from "@/constants/constant"
 import {
   fetchProblemDetails,
   executeProblems,
   executeProblemsStart,
+  fetchProblemSubmissionsStart,
+  fetchProblemSubmissions,
 } from "@/features/rtk/problem/problemSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
-import { executeCode } from "@/services/execution.service"
-import { getProblemDetails } from "@/services/problem.service"
 import { useCodeEditor } from "@/hooks/useCodeEditor"
-import { LANGUAGES } from "@/constants/constant"
+import { executeCode } from "@/services/execution.service"
+import {
+  getProblemDetails,
+  getProblemSubmissions,
+} from "@/services/problem.service"
+import Submission from "./submission/Submission"
 
 const ProblemDetails = () => {
   const { registerSubmitHandler } = useOutletContext()
-  const [programCode, setProgramCode] = useState("")
+  // const [programCode, setProgramCode] = useState("")
   const { id } = useParams()
   const { run, loading } = useAsyncHandler()
   const { problemDetails, problemOutput } = useSelector(
@@ -70,8 +76,8 @@ const ProblemDetails = () => {
     },
     {
       id: "tab3",
-      label: "Submitions",
-      type: "submitions",
+      label: "Submissions",
+      type: "submissions",
       icon: <Pin size={14} />,
     },
     {
@@ -137,6 +143,12 @@ const ProblemDetails = () => {
     // setProgramCode(response.data.data?.codeSnippets?.JAVASCRIPT || "")
   }
 
+  const handleGetProblemSubmissions = async (problemId) => {
+    dispatch(fetchProblemSubmissionsStart())
+    const response = await run(() => getProblemSubmissions(problemId))
+    dispatch(fetchProblemSubmissions(response.data.data))
+  }
+
   const handleCodeExecution = async () => {
     const lang = LANGUAGES[currentLanguage]
     const payload = {
@@ -173,6 +185,7 @@ const ProblemDetails = () => {
 
     dispatch(executeProblems(response.data.data))
     setActiveOutputTabId("tab2")
+    handleGetProblemSubmissions(id)
   }
 
   const handleCodeChange = (code) => {
@@ -204,6 +217,7 @@ const ProblemDetails = () => {
 
   useEffect(() => {
     handleGetProblemDetails(id)
+    handleGetProblemSubmissions(id)
   }, [id])
 
   // Restore last layout
@@ -387,11 +401,7 @@ const ProblemDetails = () => {
             Solution
           </div>
         )}
-        {activeProblemInfoTab.type === "submitions" && (
-          <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
-            Submittion
-          </div>
-        )}
+        {activeProblemInfoTab.type === "submissions" && <Submission />}
         {activeProblemInfoTab.type === "hint" && (
           <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
             Hints

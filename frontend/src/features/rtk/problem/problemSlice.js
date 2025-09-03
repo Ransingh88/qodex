@@ -4,6 +4,7 @@ const initialState = {
   problems: [],
   problemDetails: {},
   problemOutput: {},
+  problemSubmissions: [],
   isLoading: false,
   error: null,
 }
@@ -28,6 +29,14 @@ const problemSlice = createSlice({
       state.isLoading = false
       state.problemDetails = action.payload
     },
+    fetchProblemSubmissionsStart(state) {
+      state.isLoading = true
+      state.error = null
+    },
+    fetchProblemSubmissions(state, action) {
+      state.isLoading = false
+      state.problemSubmissions = action.payload
+    },
     executeProblemsStart(state) {
       state.isLoading = true
       state.error = null
@@ -40,10 +49,14 @@ const problemSlice = createSlice({
 })
 
 export const {
+  fetchProblemsStart,
   fetchProblems,
+  fetchProblemDetailsStart,
   fetchProblemDetails,
   executeProblemsStart,
   executeProblems,
+  fetchProblemSubmissionsStart,
+  fetchProblemSubmissions,
 } = problemSlice.actions
 
 export default problemSlice.reducer
