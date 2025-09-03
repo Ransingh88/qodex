@@ -8,11 +8,18 @@ import { CORS_ORIGIN } from "./config/config.js"
 // dotenv.config({ path: "./.env" })
 
 export const app = express()
+const allowedOrigins = getAllowedOrigins()
 
 // configurations
 app.use(
   cors({
-    origin: CORS_ORIGIN,
+    origin: function (origin, callback) {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, origin)
+      } else {
+        callback(new Error("Not allowed by CORS"))
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -42,6 +49,7 @@ import problemRouter from "./routers/problem.route.js"
 import executionRouter from "./routers/execution.route.js"
 import submissionRouter from "./routers/submission.route.js"
 import playlistRouter from "./routers/playlist.route.js"
+import { getAllowedOrigins } from "./config/corsConfig.js"
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", userRouter)
