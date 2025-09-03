@@ -37,7 +37,8 @@ import {
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { executeCode } from "@/services/execution.service"
 import { getProblemDetails } from "@/services/problem.service"
-import { button } from "motion/react-client"
+import { useCodeEditor } from "@/hooks/useCodeEditor"
+import { LANGUAGES } from "@/constants/constant"
 
 const ProblemDetails = () => {
   const { registerSubmitHandler } = useOutletContext()
@@ -47,6 +48,7 @@ const ProblemDetails = () => {
   const { problemDetails, problemOutput } = useSelector(
     (state) => state.problem
   )
+  const { changeLang, codes, currentLanguage, updateCode } = useCodeEditor()
   const dispatch = useDispatch()
 
   const [isLeftOpen, setIsLeftOpen] = useState(true)
@@ -132,13 +134,14 @@ const ProblemDetails = () => {
   const handleGetProblemDetails = async (problemId) => {
     const response = await getProblemDetails(problemId)
     dispatch(fetchProblemDetails(response.data.data))
-    setProgramCode(response.data.data?.codeSnippets?.JAVASCRIPT || "")
+    // setProgramCode(response.data.data?.codeSnippets?.JAVASCRIPT || "")
   }
 
   const handleCodeExecution = async () => {
+    const lang = LANGUAGES[currentLanguage]
     const payload = {
-      languageId: 63,
-      sourceCode: programCode,
+      languageId: lang.judge0ID,
+      sourceCode: codes,
       stdInput: problemDetails?.testcases?.map((tc) => tc?.input),
       expectedOutput: problemDetails?.testcases?.map((tc) => tc?.output),
       problemId: problemDetails._id,
@@ -154,9 +157,10 @@ const ProblemDetails = () => {
 
   const runCodeAndSubmit = async () => {
     dispatch(executeProblemsStart())
+    const lang = LANGUAGES[currentLanguage]
     const payload = {
-      languageId: 63,
-      sourceCode: programCode,
+      languageId: lang.judge0ID,
+      sourceCode: codes,
       stdInput: problemDetails?.testcases?.map((tc) => tc?.input),
       expectedOutput: problemDetails?.testcases?.map((tc) => tc?.output),
       problemId: problemDetails._id,
@@ -172,7 +176,8 @@ const ProblemDetails = () => {
   }
 
   const handleCodeChange = (code) => {
-    setProgramCode(code)
+    // setProgramCode(code)
+    updateCode(code)
   }
 
   const rightOpenCount = (isCodeOpen ? 1 : 0) + (isTestOpen ? 1 : 0)
@@ -231,8 +236,8 @@ const ProblemDetails = () => {
 
   useEffect(() => {
     // register the handler when this component mounts
-    registerSubmitHandler(() => runCodeAndSubmit(programCode))
-  }, [registerSubmitHandler, programCode])
+    registerSubmitHandler(() => runCodeAndSubmit(codes))
+  }, [registerSubmitHandler, codes])
   return (
     <div
       className={`p-1.5 h-[calc(100vh-3rem)] w-full flex flex-row justify-start items-start ${
@@ -417,6 +422,21 @@ const ProblemDetails = () => {
               ))}
             </ul>
             <div className="px-2 flex items-center gap-2 text-xs">
+              <div>
+                <select
+                  name="language"
+                  id="language"
+                  value={currentLanguage}
+                  onChange={(e) => changeLang(e.target.value)}
+                  className="bg-transparent outline-none border border-border-default text-fg-default/80 text-xs rounded px-1 py-0.5"
+                >
+                  {Object.entries(LANGUAGES).map(([key, lang]) => (
+                    <option key={key} value={key}>
+                      {lang.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <button
                 onClick={handleCodeExecution}
                 disabled={loading}
@@ -454,7 +474,9 @@ const ProblemDetails = () => {
             {activeEditorTab.type === "code" && isCodeOpen && (
               <CodeEditor
                 sourceCode={problemDetails?.codeSnippets?.JAVASCRIPT}
+                language={LANGUAGES[currentLanguage].monaco}
                 onChange={handleCodeChange}
+                value={codes}
               />
             )}
             {activeEditorTab.type === "diff" && <div>Diff Edior</div>}
