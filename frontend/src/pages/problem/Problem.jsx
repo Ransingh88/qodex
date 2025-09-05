@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import "./problem.css"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router"
-import { fetchProblems } from "@/features/rtk/problem/problemSlice"
+import { clearProblemDetails, fetchProblems } from "@/features/rtk/problem/problemSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { getAllProblems } from "@/services/problem.service"
 
@@ -19,6 +19,7 @@ const Problem = () => {
 
   useEffect(() => {
     getAllProblem()
+    dispatch(clearProblemDetails())
   }, [])
 
   return (

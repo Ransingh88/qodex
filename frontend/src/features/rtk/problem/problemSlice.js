@@ -18,32 +18,35 @@ const problemSlice = createSlice({
       state.error = null
     },
     fetchProblems(state, action) {
-      state.isLoading = false
       state.problems = action.payload
+      state.isLoading = false
     },
     fetchProblemDetailsStart(state) {
       state.isLoading = true
       state.error = null
     },
     fetchProblemDetails(state, action) {
-      state.isLoading = false
       state.problemDetails = action.payload
+      state.isLoading = false
+    },
+    clearProblemDetails(state) {
+      state.problemDetails = {}
     },
     fetchProblemSubmissionsStart(state) {
       state.isLoading = true
       state.error = null
     },
     fetchProblemSubmissions(state, action) {
-      state.isLoading = false
       state.problemSubmissions = action.payload
+      state.isLoading = false
     },
     executeProblemsStart(state) {
       state.isLoading = true
       state.error = null
     },
     executeProblems(state, action) {
-      state.isLoading = false
       state.problemOutput = action.payload
+      state.isLoading = false
     },
   },
 })
@@ -53,6 +56,7 @@ export const {
   fetchProblems,
   fetchProblemDetailsStart,
   fetchProblemDetails,
+  clearProblemDetails,
   executeProblemsStart,
   executeProblems,
   fetchProblemSubmissionsStart,
