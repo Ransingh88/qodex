@@ -25,7 +25,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react"
 import "./problemDetails.css"
 import { useDispatch, useSelector } from "react-redux"
-import { useOutletContext, useParams } from "react-router"
+import { Link, useOutletContext, useParams } from "react-router"
 import { toast } from "react-toastify"
 import CodeEditor from "@/components/editor/CodeEditor"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
@@ -381,7 +381,17 @@ const ProblemDetails = () => {
         )}
         {activeProblemInfoTab.type === "submissions" && (
           <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
-            <Submission />
+            {isAuthenticated ? (
+              <Submission />
+            ) : (
+              <div className="h-1/2 flex justify-center items-center ">
+                <Link to={"/auth/login"}>
+                  <button className="w-20 flex items-center justify-center gap-2 py-2 rounded-lg bg-accent-fg text-[#f8f8f8] hover:bg-accent-emphasis cursor-pointer">
+                    Login
+                  </button>
+                </Link>
+              </div>
+            )}
           </div>
         )}
         {activeProblemInfoTab.type === "hint" && (

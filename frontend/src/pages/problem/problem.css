@@ -1,9 +1,59 @@
 @reference '@/index.css';
 
 .problem-main_container {
-  @apply bg-basebg-default text-fg-default;
+  @apply w-full bg-basebg-default text-fg-default;
 }
 
-.problem-container{
-    
+.problem-container {
+  @apply w-full px-6 py-2 flex justify-between items-start gap-4;
+}
+
+.problem-sidebar {
+  @apply w-1/5;
+}
+
+.problem-content {
+  @apply w-4/5 p-2;
+
+  & .problem-header {
+    @apply w-full p-2 flex justify-between items-center gap-4;
+
+    & .problem-search_box {
+      & input {
+        @apply w-full px-4 py-2 text-sm rounded-lg border border-border-muted bg-basebg-default  text-fg-default placeholder:text-fg-muted focus:outline-none focus:border-accent-fg;
+
+        &::placeholder {
+          @apply text-fg-muted text-xs;
+        }
+      }
+    }
+  }
+
+  & .problem-list {
+    @apply w-full p-2 flex flex-col gap-2;
+
+    & .problem-item {
+      @apply flex justify-between items-center border-b border-border-default px-2 py-1.5 rounded hover:bg-accent-subtle/20 cursor-pointer duration-100 transition-all ease-in-out;
+    }
+    & .problem-item-left {
+      @apply flex items-center gap-2;
+
+      & .problem-item-check {
+        @apply w-4 text-success-fg;
+      }
+      & .problem-item-index {
+        @apply text-fg-muted;
+      }
+      & .problem-item-title {
+        @apply font-medium capitalize;
+      }
+    }
+
+    & .problem-item-right {
+      @apply text-center;
+      & .problem-item-difficulty {
+        @apply capitalize text-xs;
+      }
+    }
+  }
 }
