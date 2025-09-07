@@ -39,6 +39,9 @@ const problemSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    category: {
+      type: String,
+    },
     testcases: {
       type: JSON,
     },

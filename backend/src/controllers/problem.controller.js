@@ -89,13 +89,46 @@ const createProblem = asyncHandler(async (req, res) => {
 })
 
 const getAllProblems = asyncHandler(async (req, res) => {
-  const allProblems = await Problem.find()
+  const {
+    page = 1,
+    limit = 20,
+    sortBy = "createdAt",
+    order = "asc",
+    category,
+    tag,
+    company,
+    difficulty,
+    search,
+  } = req.query
+
+  const filter = {}
+
+  if (category) filter.category = category
+  if (tag) filter.tags = { $in: [tag] }
+  if (company) filter.askedBy = { $in: [company] }
+  if (difficulty) filter.difficulty = difficulty.toLowerCase()
+  if (search) {
+    filter.$or = [{ title: { $regex: search, $options: "i" } }, { description: { $regex: search, $options: "i" } }]
+  }
+
+  const allProblems = await Problem.find(filter)
+    .sort({ [sortBy]: order === "asc" ? 1 : -1 })
+    .skip((page - 1) * limit)
+    .limit(Number(limit))
 
   if (!allProblems) {
     throw new APIError(404, "Problem not found")
   }
+  const total = await Problem.countDocuments(filter)
 
-  res.status(200).json(new APIResponse(200, "successfully fetch all problems", allProblems))
+  res.status(200).json(
+    new APIResponse(200, "successfully fetch all problems", {
+      allProblems,
+      total,
+      page: Number(page),
+      limit: Number(limit),
+    })
+  )
 })
 
 const getProblemDetails = asyncHandler(async (req, res) => {
@@ -108,6 +141,30 @@ const getProblemDetails = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json(new APIResponse(200, "problem details fetched successfully", problem))
+})
+
+const getProblemCategory = asyncHandler(async (req, res) => {
+  const categories = await Problem.distinct("category")
+
+  res.status(200).json(new APIResponse(200, "successfully fetch all problem categories", categories))
+})
+
+const getProblemTags = asyncHandler(async (req, res) => {
+  const tags = await Problem.distinct("tags")
+
+  res.status(200).json(new APIResponse(200, "successfully fetch all problem tags", tags))
+})
+
+const getProblemCompanies = asyncHandler(async (req, res) => {
+  const companies = await Problem.distinct("askedBy")
+
+  res.status(200).json(new APIResponse(200, "successfully fetch all problem companies", companies))
+})
+
+const getProblemDifficulties = asyncHandler(async (req, res) => {
+  const difficulties = await Problem.distinct("difficulty")
+
+  res.status(200).json(new APIResponse(200, "successfully fetch all problem difficulties", difficulties))
 })
 
 const updateProblem = asyncHandler(async (req, res) => {
@@ -223,4 +280,15 @@ const getSolvedProblems = asyncHandler(async (req, res) => {
   res.status(200).json(new APIResponse(200, "successfully fetch all solved problems", solvedProblems))
 })
 
-export { createProblem, getAllProblems, getProblemDetails, deleteProblem, updateProblem, getSolvedProblems }
+export {
+  createProblem,
+  getAllProblems,
+  getProblemDetails,
+  deleteProblem,
+  updateProblem,
+  getSolvedProblems,
+  getProblemCategory,
+  getProblemTags,
+  getProblemCompanies,
+  getProblemDifficulties,
+}
