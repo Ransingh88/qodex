@@ -343,19 +343,16 @@ const ProblemDetails = () => {
                     <div className="flex flex-col px-4 py-2 bg-basebg-surface rounded font-code">
                       <p className="font-semibold mb-2">Example 1</p>
                       <p>
-                        <span className="font-semibold text-fg-default/70">Input:</span>{" "}
-                        {problemDetails?.examples?.JAVASCRIPT?.input}
+                        <span className="font-semibold text-fg-default/70">Input:</span> {problemDetails?.examples?.JAVASCRIPT?.input}
                       </p>
                       <span>
                         <p>
-                          <span className="font-semibold text-fg-default/70">Output:</span>{" "}
-                          {problemDetails?.examples?.JAVASCRIPT?.output}
+                          <span className="font-semibold text-fg-default/70">Output:</span> {problemDetails?.examples?.JAVASCRIPT?.output}
                         </p>
                       </span>
                       <span>
                         <p>
-                          <span className="font-semibold text-fg-default/70">Explanation:</span>{" "}
-                          {problemDetails?.examples?.JAVASCRIPT?.explanation}
+                          <span className="font-semibold text-fg-default/70">Explanation:</span> {problemDetails?.examples?.JAVASCRIPT?.explanation}
                         </p>
                       </span>
                     </div>
@@ -376,9 +373,7 @@ const ProblemDetails = () => {
           </div>
         )}
 
-        {activeProblemInfoTab.type === "solution" && (
-          <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">Solution</div>
-        )}
+        {activeProblemInfoTab.type === "solution" && <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">Solution</div>}
         {activeProblemInfoTab.type === "submissions" && (
           <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
             {isAuthenticated ? (
@@ -394,9 +389,7 @@ const ProblemDetails = () => {
             )}
           </div>
         )}
-        {activeProblemInfoTab.type === "hint" && (
-          <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">Hints</div>
-        )}
+        {activeProblemInfoTab.type === "hint" && <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">Hints</div>}
       </div>
       {/* Right Pannel */}
       <div className="h-full w-1/2 rounded-lg flex-1 flex flex-col justify-start items-start gap-1.5 ">
@@ -566,9 +559,7 @@ const ProblemDetails = () => {
                             }`}
                             onClick={() => setTestcaseActiveTabId(index)}
                           >
-                            <span
-                              className={`h-1 w-1 rounded-full mr-2 ${testcase.isPassed ? "bg-success-fg" : "bg-danger-fg"}`}
-                            ></span>
+                            <span className={`h-1 w-1 rounded-full mr-2 ${testcase.isPassed ? "bg-success-fg" : "bg-danger-fg"}`}></span>
                             <p>Case {testcase.testcaseNo}</p>
                           </div>
                         ))}
@@ -595,8 +586,7 @@ const ProblemDetails = () => {
                               <Cpu size={12} /> {problemOutput?.memory}
                             </p>
                             <p className="flex items-center gap-1">
-                              {problemOutput?.status === "Accepted" ? <CircleCheck size={12} /> : <CircleX size={12} />}{" "}
-                              {problemOutput?.status}
+                              {problemOutput?.status === "Accepted" ? <CircleCheck size={12} /> : <CircleX size={12} />} {problemOutput?.status}
                             </p>
                           </div>
                         )}
@@ -625,13 +615,11 @@ const ProblemDetails = () => {
             <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
               <div className="p-2">
                 <p className=" text-sm font-code">
-                  {problemOutput &&
-                    problemOutput?.testCases[0]?.stdout?.split("\n").map((line, index) => <p key={index}>{line}</p>)}
+                  {problemOutput && problemOutput?.testCases[0]?.stdout?.split("\n").map((line, index) => <p key={index}>{line}</p>)}
                 </p>
                 <p className="text-danger-fg text-sm font-code">{problemOutput && problemOutput?.testCases[0]?.status}</p>
                 <p className="text-danger-fg text-sm font-code">
-                  {problemOutput &&
-                    problemOutput?.testCases[0]?.stderr?.split("\n").map((line, index) => <p key={index}>{line}</p>)}
+                  {problemOutput && problemOutput?.testCases[0]?.stderr?.split("\n").map((line, index) => <p key={index}>{line}</p>)}
                 </p>
               </div>
             </div>

@@ -6,13 +6,8 @@ import { Link } from "react-router"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import { clearProblemDetails, fetchProblems } from "@/features/rtk/problem/problemSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
-import {
-  getAllProblems,
-  getProblemCategory,
-  getProblemCompanies,
-  getProblemDifficulties,
-  getProblemTags,
-} from "@/services/problem.service"
+import { getAllProblems, getProblemCategory, getProblemCompanies, getProblemDifficulties, getProblemTags } from "@/services/problem.service"
+import FilterPopover from "@/components/popover/FilterPopover"
 
 const Problem = () => {
   const { run, loading } = useAsyncHandler()
@@ -84,18 +79,44 @@ const Problem = () => {
           </div>
         </div>
         <div className="problem-content">
-          <div className="problem-courses">
+          {/* <div className="problem-courses">
             <div className="problem-courses_card">Problems</div>
             <div className="problem-courses_card">Contests</div>
             <div className="problem-courses_card">Solutions</div>
             <div className="problem-courses_card">Solutions</div>
-          </div>
+          </div> */}
           <div className="problem-header">
             <div className="problem-search_box">
               <input type="search" placeholder="add two numbers..." className="" value={searchText} onChange={handleSearch} />
             </div>
             <div className="problem-filter">
-              <button onClick={() => setIsSortOpen(!isSortOpen)} className="problem-filter_sort">
+              <FilterPopover icon={<ArrowDownUp size={14} />}>
+                <div className="problem-filter_sort-card p-2">
+                  <p
+                    onClick={() => {
+                      setSortBy("createdAt")
+                    }}
+                    className={`${sortBy === "createdAt" ? "bg-accent-emphasis" : ""}`}
+                  >
+                    Date{" "}
+                    <button onClick={() => handleSort("date")}>
+                      {sortOrder === "asc" ? <ArrowDownNarrowWide size={14} /> : <ArrowDownWideNarrow size={14} />}
+                    </button>
+                  </p>
+                  <p
+                    onClick={() => {
+                      setSortBy("difficulty")
+                    }}
+                    className={`${sortBy === "difficulty" ? "bg-accent-emphasis" : ""}`}
+                  >
+                    Difficulty{" "}
+                    <button onClick={() => handleSort("difficulty")}>
+                      {sortOrder === "asc" ? <ArrowDownNarrowWide size={14} /> : <ArrowDownWideNarrow size={14} />}
+                    </button>
+                  </p>
+                </div>
+              </FilterPopover>
+              {/* <button onClick={() => setIsSortOpen(!isSortOpen)} className="problem-filter_sort">
                 <ArrowDownUp size={14} />
                 {isSortOpen && (
                   <div className="problem-filter_sort-card">
@@ -123,7 +144,7 @@ const Problem = () => {
                     </p>
                   </div>
                 )}
-              </button>
+              </button> */}
               <button>
                 <Funnel size={14} />
               </button>
@@ -149,11 +170,7 @@ const Problem = () => {
                       <div className="problem-item-right">
                         <p
                           className={`problem-item-difficulty ${
-                            problem.difficulty == "easy"
-                              ? "text-success-fg"
-                              : problem.difficulty == "medium"
-                              ? "text-warning-fg"
-                              : "text-danger-fg"
+                            problem.difficulty == "easy" ? "text-success-fg" : problem.difficulty == "medium" ? "text-warning-fg" : "text-danger-fg"
                           }`}
                         >
                           {problem.difficulty}
