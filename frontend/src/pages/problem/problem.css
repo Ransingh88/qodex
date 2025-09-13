@@ -9,17 +9,24 @@
 }
 
 .problem-sidebar {
-  @apply w-1/5;
+  @apply w-1/5 h-screen border-r border-border-default pr-4;
+
+  & .problem-sidebar_section {
+    @apply bg-basebg-surface p-4 mb-4 rounded-lg border border-border-default;
+    & p {
+      @apply text-fg-muted font-semibold mb-2;
+    }
+  }
 }
 
 .problem-content {
-  @apply w-4/5 p-2;
+  @apply w-4/5;
 
   & .problem-courses {
-    @apply w-full p-2 flex items-center gap-2 overflow-x-hidden;
+    @apply w-full pb-4 flex items-center gap-4 overflow-x-hidden;
 
     & .problem-courses_card {
-      @apply h-36 w-72 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-basebg-surface border border-border-muted hover:bg-accent-subtle/20 cursor-pointer duration-100 transition-all ease-in-out;
+      @apply min-w-72 h-36 w-72 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-basebg-surface border border-border-default hover:bg-accent-subtle/20 cursor-pointer duration-100 transition-all ease-in-out;
     }
   }
 
@@ -27,8 +34,10 @@
     @apply w-full p-2 flex justify-between items-center gap-4;
 
     & .problem-search_box {
+      @apply flex items-center gap-2;
+
       & input {
-        @apply w-full px-4 py-2 text-sm rounded-lg border border-border-muted bg-basebg-default  text-fg-default placeholder:text-fg-muted focus:outline-none focus:border-accent-fg;
+        @apply px-4 py-2 text-sm rounded-lg border border-border-muted bg-basebg-default  text-fg-default placeholder:text-fg-muted focus:outline-none focus:border-accent-fg;
 
         &::placeholder {
           @apply text-fg-muted text-xs;
@@ -36,8 +45,12 @@
       }
     }
 
+    & .problem-search_box_clear {
+      @apply text-xs text-fg-muted hover:text-fg-default cursor-pointer flex items-center gap-1 border border-border-muted hover:border-border-default px-2 py-1 rounded duration-100 transition-all ease-in-out;
+    }
+
     & .problem-filter {
-      @apply flex items-center gap-2;
+      @apply flex items-center gap-2 text-fg-default;
       & > button {
         @apply h-8 w-8 rounded-full bg-basebg-surface cursor-pointer flex justify-center items-center hover:bg-basebg-subtle;
       }
@@ -46,8 +59,6 @@
         @apply relative;
 
         & .problem-filter_sort-card {
-          @apply absolute top-10 right-0 w-52 flex flex-col justify-start items-start gap-2 p-2 bg-basebg-surface border border-border-muted rounded-lg shadow-lg z-10;
-
           & p {
             @apply w-full flex items-center justify-between gap-2 px-2 py-1.5 rounded cursor-pointer duration-100 transition-all ease-in-out;
             & > button {

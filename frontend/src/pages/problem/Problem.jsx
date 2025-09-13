@@ -1,13 +1,23 @@
-import { ArrowDownNarrowWide, ArrowDownUp, ArrowDownWideNarrow, Check, Funnel } from "lucide-react"
+import {
+  ArrowDownNarrowWide,
+  ArrowDownUp,
+  ArrowDownWideNarrow,
+  CalendarDays,
+  ChartNoAxesCombined,
+  Check,
+  Funnel,
+  FunnelX,
+  TrendingUp,
+} from "lucide-react"
 import React, { useEffect, useState } from "react"
 import "./problem.css"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
+import FilterPopover from "@/components/popover/FilterPopover"
 import { clearProblemDetails, fetchProblems } from "@/features/rtk/problem/problemSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { getAllProblems, getProblemCategory, getProblemCompanies, getProblemDifficulties, getProblemTags } from "@/services/problem.service"
-import FilterPopover from "@/components/popover/FilterPopover"
 
 const Problem = () => {
   const { run, loading } = useAsyncHandler()
@@ -15,12 +25,25 @@ const Problem = () => {
   const { user, isAuthenticated } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
-  const [filters, setFilters] = useState({})
+  const [filters, setFilters] = useState()
   const [filterData, setFilterData] = useState({})
   const [searchText, setSearchText] = useState("")
-  const [isSortOpen, setIsSortOpen] = useState(false)
+  // const [isSortOpen, setIsSortOpen] = useState(false)
   const [sortOrder, setSortOrder] = useState("asc")
   const [sortBy, setSortBy] = useState("createdAt")
+
+  const sortOptions = [
+    {
+      label: "Date",
+      value: "createdAt",
+      icon: <CalendarDays size={14} />,
+    },
+    {
+      label: "Difficulty",
+      value: "difficulty",
+      icon: <ChartNoAxesCombined size={14} />,
+    },
+  ]
 
   const getAllProblem = async (filter) => {
     const response = await run(() => getAllProblems(filter))
@@ -73,81 +96,131 @@ const Problem = () => {
     <div className="problem-main_container">
       <div className="problem-container ">
         <div className="problem-sidebar">
-          <div>
-            <p>Category</p>
-            <div>{filterData.categories && filterData.categories.map((category, i) => <div key={i}>{category}</div>)}</div>
+          <div className="problem-sidebar_section">
+            <p>Library</p>
+          </div>
+          <div className="problem-sidebar_section">
+            <p>Study Plan</p>
+          </div>
+          <div className="problem-sidebar_section">
+            <p>Playlist</p>
+          </div>
+          <div className="problem-sidebar_section">
+            <p>Topics</p>
+            {filterData.tags &&
+              filterData.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="text-xs text-fg-default font-normal items-center flex-wrap hover:text-fg-default inline-block cursor-pointer px-2 py-1 rounded-lg hover:bg-accent-subtle/20 border border-border-default m-1"
+                >
+                  <p>{tag}</p>
+                </span>
+              ))}
           </div>
         </div>
         <div className="problem-content">
-          {/* <div className="problem-courses">
+          <div className="problem-courses">
             <div className="problem-courses_card">Problems</div>
             <div className="problem-courses_card">Contests</div>
             <div className="problem-courses_card">Solutions</div>
-            <div className="problem-courses_card">Solutions</div>
-          </div> */}
+            <div className="problem-courses_card">Top Interview Questions</div>
+            <div className="problem-courses_card">Javascript 30Day Challange</div>
+          </div>
           <div className="problem-header">
             <div className="problem-search_box">
               <input type="search" placeholder="add two numbers..." className="" value={searchText} onChange={handleSearch} />
+              {filters && (
+                <button onClick={() => setFilters()} className="problem-search_box_clear">
+                  {" "}
+                  <FunnelX size={14} /> Clear Filters
+                </button>
+              )}
             </div>
             <div className="problem-filter">
               <FilterPopover icon={<ArrowDownUp size={14} />}>
-                <div className="problem-filter_sort-card p-2">
-                  <p
-                    onClick={() => {
-                      setSortBy("createdAt")
-                    }}
-                    className={`${sortBy === "createdAt" ? "bg-accent-emphasis" : ""}`}
-                  >
-                    Date{" "}
-                    <button onClick={() => handleSort("date")}>
-                      {sortOrder === "asc" ? <ArrowDownNarrowWide size={14} /> : <ArrowDownWideNarrow size={14} />}
-                    </button>
-                  </p>
-                  <p
-                    onClick={() => {
-                      setSortBy("difficulty")
-                    }}
-                    className={`${sortBy === "difficulty" ? "bg-accent-emphasis" : ""}`}
-                  >
-                    Difficulty{" "}
-                    <button onClick={() => handleSort("difficulty")}>
-                      {sortOrder === "asc" ? <ArrowDownNarrowWide size={14} /> : <ArrowDownWideNarrow size={14} />}
-                    </button>
-                  </p>
+                <div className="w-64">
+                  <div className="m-1 px-3 py-4 text-center border border-border-default shadow rounded-xl">
+                    <p className=" font-semibold">Sort By</p>
+                  </div>
+                  <div className="p-2 flex flex-col gap-2">
+                    {sortOptions.map((option, index) => (
+                      <div
+                        key={index}
+                        className={` ${
+                          sortBy === option.value ? "bg-accent-fg/70" : "hover:bg-accent-subtle"
+                        } flex justify-between items-center text-fg-default gap-4 cursor-pointer  px-2 py-2 rounded-lg `}
+                        onClick={() => {
+                          setSortBy(option.value)
+                          handleSort(option.value)
+                        }}
+                      >
+                        <span className="flex items-center gap-2">
+                          {option.icon} {option.label}
+                        </span>
+                        {sortBy === option.value && (
+                          <button
+                            onClick={() => {
+                              setSortBy(option.value)
+                              handleSort(option.value)
+                            }}
+                            className={`cursor-pointer p-0.5 rounded-full  hover:bg-accent-subtle `}
+                          >
+                            {sortOrder === "asc" ? <ArrowDownNarrowWide size={14} /> : <ArrowDownWideNarrow size={14} />}
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </FilterPopover>
-              {/* <button onClick={() => setIsSortOpen(!isSortOpen)} className="problem-filter_sort">
-                <ArrowDownUp size={14} />
-                {isSortOpen && (
-                  <div className="problem-filter_sort-card">
-                    <p
-                      onClick={() => {
-                        setSortBy("createdAt")
-                      }}
-                      className={`${sortBy === "createdAt" ? "bg-accent-emphasis" : ""}`}
-                    >
-                      Date{" "}
-                      <button onClick={() => handleSort("date")}>
-                        {sortOrder === "asc" ? <ArrowDownNarrowWide size={14} /> : <ArrowDownWideNarrow size={14} />}
-                      </button>
-                    </p>
-                    <p
-                      onClick={() => {
-                        setSortBy("difficulty")
-                      }}
-                      className={`${sortBy === "difficulty" ? "bg-accent-emphasis" : ""}`}
-                    >
-                      Difficulty{" "}
-                      <button onClick={() => handleSort("difficulty")}>
-                        {sortOrder === "asc" ? <ArrowDownNarrowWide size={14} /> : <ArrowDownWideNarrow size={14} />}
-                      </button>
-                    </p>
+              <FilterPopover icon={<Funnel size={14} />}>
+                <div className="w-64">
+                  <div className="m-1 px-3 py-4 text-center border border-border-default shadow rounded-xl">
+                    <p className=" font-semibold">Filter</p>
+                    {/* <p className="text-sm font-light text-fg-muted">{user?.email}</p> */}
                   </div>
-                )}
-              </button> */}
-              <button>
-                <Funnel size={14} />
-              </button>
+                  <div className="p-2 flex flex-col gap-2 w-64">
+                    <div className="flex flex-col p-2 border-b border-border-default gap-2">
+                      <p>Difficulty</p>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {filterData.difficulties &&
+                          filterData.difficulties.map((difficulty, i) => (
+                            <div
+                              key={i}
+                              className="px-2 py-1 rounded-lg bg-basebg-surface2 border border-border-default text-fg-muted hover:bg-accent-emphasis hover:text-fg-default cursor-pointer"
+                              onClick={() => setFilters({ ...filters, difficulty })}
+                            >
+                              {difficulty}
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                    <div className="flex flex-col p-2 gap-2 ">
+                      <p>Category</p>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {filterData.categories &&
+                          filterData.categories.map((category, i) => (
+                            <div
+                              key={i}
+                              className="px-2 py-1 rounded-lg bg-basebg-surface2 border border-border-default text-fg-muted hover:bg-accent-emphasis hover:text-fg-default cursor-pointer"
+                              onClick={() => setFilters({ ...filters, category })}
+                            >
+                              {category}
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                    <div className="w-full flex items-center justify-center p-2 gap-2 ">
+                      <button className="w-full flex items-center justify-center gap-2 py-2 text-sm rounded-lg border border-border-muted text-fg-default hover:bg-accent-subtle cursor-pointer">
+                        Reset
+                      </button>
+                      <button className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-accent-fg text-[#f8f8f8] hover:bg-accent-emphasis cursor-pointer">
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </FilterPopover>
             </div>
           </div>
           <div className="problem-list">
