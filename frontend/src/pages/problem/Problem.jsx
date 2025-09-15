@@ -5,14 +5,16 @@ import {
   CalendarDays,
   ChartNoAxesCombined,
   Check,
+  Ellipsis,
   Funnel,
   FunnelX,
+  Star,
   TrendingUp,
 } from "lucide-react"
 import React, { useEffect, useState } from "react"
 import "./problem.css"
 import { useDispatch, useSelector } from "react-redux"
-import { Link } from "react-router"
+import { Link, NavLink } from "react-router"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import FilterPopover from "@/components/popover/FilterPopover"
 import { clearProblemDetails, fetchProblems } from "@/features/rtk/problem/problemSlice"
@@ -96,16 +98,22 @@ const Problem = () => {
     <div className="problem-main_container">
       <div className="problem-container ">
         <div className="problem-sidebar">
-          <div className="problem-sidebar_section">
-            <p>Library</p>
-          </div>
-          <div className="problem-sidebar_section">
-            <p>Study Plan</p>
-          </div>
-          <div className="problem-sidebar_section">
-            <p>Playlist</p>
-          </div>
-          <div className="problem-sidebar_section">
+          <NavLink to="/problems" className={({ isActive }) => (isActive ? "outline-2 outline-offset-2 outline-accent-emphasis/70 rounded-lg" : "")}>
+            <div className={`problem-sidebar_section`}>
+              <p>Library</p>
+            </div>
+          </NavLink>
+          <NavLink to="/problems/study-plan" className={({ isActive }) => (isActive ? "bg-accent-subtle/20" : "")}>
+            <div className="problem-sidebar_section">
+              <p>Study Plan</p>
+            </div>
+          </NavLink>
+          <NavLink to="/problems/playlist" className={({ isActive }) => (isActive ? "bg-accent-subtle/20" : "")}>
+            <div className="problem-sidebar_section">
+              <p>Playlist</p>
+            </div>
+          </NavLink>
+          {/* <div className="problem-sidebar_section">
             <p>Topics</p>
             {filterData.tags &&
               filterData.tags.map((tag, index) => (
@@ -116,7 +124,7 @@ const Problem = () => {
                   <p>{tag}</p>
                 </span>
               ))}
-          </div>
+          </div> */}
         </div>
         <div className="problem-content">
           <div className="problem-courses">
@@ -177,7 +185,6 @@ const Problem = () => {
                 <div className="w-64">
                   <div className="m-1 px-3 py-4 text-center border border-border-default shadow rounded-xl">
                     <p className=" font-semibold">Filter</p>
-                    {/* <p className="text-sm font-light text-fg-muted">{user?.email}</p> */}
                   </div>
                   <div className="p-2 flex flex-col gap-2 w-64">
                     <div className="flex flex-col p-2 border-b border-border-default gap-2">
@@ -241,13 +248,34 @@ const Problem = () => {
                         <p className="problem-item-title">{problem.title}</p>
                       </div>
                       <div className="problem-item-right">
-                        <p
-                          className={`problem-item-difficulty ${
-                            problem.difficulty == "easy" ? "text-success-fg" : problem.difficulty == "medium" ? "text-warning-fg" : "text-danger-fg"
+                        <div
+                          className={`px-2 py-1 rounded-lg flex items-center gap-1 bg-basebg-default border tracking-wide shadow ${
+                            problem.difficulty == "easy"
+                              ? "border-success-fg/50"
+                              : problem.difficulty == "medium"
+                              ? "border-warning-fg/50"
+                              : "border-danger-fg/50"
                           }`}
                         >
-                          {problem.difficulty}
-                        </p>
+                          <span
+                            className={`w-1 h-1 rounded-full ${
+                              problem.difficulty == "easy" ? "bg-success-fg" : problem.difficulty == "medium" ? "bg-warning-fg" : "bg-danger-fg"
+                            }`}
+                          ></span>
+                          <p
+                            className={`text-xxs ${
+                              problem.difficulty == "easy" ? "text-success-fg" : problem.difficulty == "medium" ? "text-warning-fg" : "text-danger-fg"
+                            }`}
+                          >
+                            {problem.difficulty.length > 4 ? `${problem.difficulty.slice(0, 3)}.` : problem.difficulty}
+                          </p>
+                        </div>
+                        <button className="problem-item-more text-fg-muted hover:text-fg-default" title="Add to favorites">
+                          <Star size={14} />
+                        </button>
+                        <button className="problem-item-more">
+                          <Ellipsis size={14} />
+                        </button>
                       </div>
                     </div>
                   </Link>
