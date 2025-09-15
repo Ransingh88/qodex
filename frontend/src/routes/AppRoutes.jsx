@@ -7,17 +7,22 @@ import Login from "@/pages/auth/Login"
 import Signup from "@/pages/auth/Signup"
 import Error from "@/pages/error/Error"
 import Home from "@/pages/home/Home"
+import ProblemDashboard from "@/pages/problem/dashboard/ProblemDashboard"
 import Problem from "@/pages/problem/Problem"
+import ProblemDetails from "@/pages/problem/ProblemDetails"
 import Profile from "@/pages/profile/Profile"
 import ProtectedRoute from "./ProtectedRoute"
-import ProblemDetails from "@/pages/problem/ProblemDetails"
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route element={<PublicLayout />}>
         <Route index element={<Home />} />
-        <Route path="/problems" element={<Problem />} />
+        <Route path="/problems" element={<ProblemDashboard />}>
+          <Route index element={<Problem />} />
+          <Route path="study-plan" element={<div className="px-2">Study Plan</div>} />
+          <Route path="playlist" element={<div className="px-2">Playlist</div>} />
+        </Route>
         <Route path="*" element={<Error />} />
       </Route>
 
@@ -27,7 +32,7 @@ const AppRoutes = () => {
       </Route>
 
       <Route path="/problem" element={<ProblemLayout />}>
-        <Route path=":id" element={<ProblemDetails/>} />
+        <Route path=":id" element={<ProblemDetails />} />
       </Route>
 
       {/* Protected routes */}

@@ -1,0 +1,28 @@
+@reference '@/index.css';
+
+.problem_dashboard-main_container {
+  @apply w-full bg-basebg-default text-fg-default;
+}
+
+.problem_dashboard-container {
+  @apply w-full px-4 py-2 flex justify-between items-start gap-4;
+}
+
+.problem_dashboard-sidebar {
+  @apply w-1/6 h-screen flex flex-col gap-4 px-2 box-border;
+
+  & .problem_dashboard-sidebar_section {
+    @apply bg-basebg-surface p-4 rounded-lg border border-border-default hover:border-accent-fg/50 cursor-pointer duration-100 transition-all ease-in-out;
+    & p {
+      @apply text-fg-muted font-semibold;
+    }
+  }
+}
+
+.problem_dashboard-separator {
+  @apply border-r border-border-default h-screen;
+}
+
+.problem_dashboard-content {
+  @apply w-5/6;
+}

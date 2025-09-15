@@ -1,26 +1,11 @@
 @reference '@/index.css';
 
-.problem-main_container {
-  @apply w-full bg-basebg-default text-fg-default;
-}
-
 .problem-container {
-  @apply w-full px-6 py-2 flex justify-between items-start gap-4;
-}
-
-.problem-sidebar {
-  @apply w-1/5 h-screen border-r border-border-default pr-4 flex flex-col gap-4;
-
-  & .problem-sidebar_section {
-    @apply bg-basebg-surface p-4 rounded-lg border border-border-default hover:border-accent-fg/50 cursor-pointer duration-100 transition-all ease-in-out;
-    & p {
-      @apply text-fg-muted font-semibold;
-    }
-  }
+  @apply w-full box-border px-2 flex justify-between items-start gap-6;
 }
 
 .problem-content {
-  @apply w-4/5;
+  @apply w-3/4 flex-grow-3;
 
   & .problem-courses {
     @apply w-full pb-4 flex items-center gap-4 overflow-x-hidden;
@@ -106,4 +91,8 @@
   & .problem-list > a:nth-child(even) .problem-item {
     @apply bg-basebg-surface border-y border-border-default/50 hover:bg-accent-subtle/20;
   }
+}
+
+.problem-right_sidebar {
+  @apply w-1/4 h-screen border border-border-default rounded-lg p-4;
 }
