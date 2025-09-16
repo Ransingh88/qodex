@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from "react"
 import "./problem.css"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, NavLink } from "react-router"
+import { Link } from "react-router"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import FilterPopover from "@/components/popover/FilterPopover"
 import { clearProblemDetails, fetchProblems } from "@/features/rtk/problem/problemSlice"
@@ -96,9 +96,9 @@ const Problem = () => {
     <div className="problem-container">
       <div className="problem-content">
         <div className="problem-courses">
-          <div className="problem-courses_card">Problems</div>
+          {/* <div className="problem-courses_card">Problems</div>
           <div className="problem-courses_card">Contests</div>
-          <div className="problem-courses_card">Solutions</div>
+          <div className="problem-courses_card">Solutions</div> */}
           <div className="problem-courses_card">Top Interview Questions</div>
           <div className="problem-courses_card">Javascript 30Day Challange</div>
         </div>
@@ -252,7 +252,7 @@ const Problem = () => {
           )}
         </div>
       </div>
-      <div className="problem-right_sidebar">
+      {/* <div className="problem-right_sidebar">
         <p>Top Companies</p>
         {filterData.tags &&
           filterData.tags.map((tag, index) => (
@@ -263,7 +263,7 @@ const Problem = () => {
               <p>{tag}</p>
             </span>
           ))}
-      </div>
+      </div> */}
     </div>
   )
 }

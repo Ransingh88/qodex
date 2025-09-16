@@ -7,6 +7,7 @@ const ProblemDashboard = () => {
     { name: "Library", path: "/problems" },
     { name: "Study Plan", path: "/problems/study-plan" },
     { name: "Playlist", path: "/problems/playlist" },
+    { name: "Favorites", path: "/problems/favorites" },
   ]
   return (
     <div className="problem_dashboard-main_container">

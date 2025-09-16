@@ -1,15 +1,15 @@
 @reference '@/index.css';
 
 .problem_dashboard-main_container {
-  @apply w-full bg-basebg-default text-fg-default;
+  @apply w-full box-border bg-basebg-default text-fg-default;
 }
 
 .problem_dashboard-container {
-  @apply w-full px-4 py-2 flex justify-between items-start gap-4;
+  @apply mx-4 my-2 flex justify-between items-start gap-4;
 }
 
 .problem_dashboard-sidebar {
-  @apply w-1/6 h-screen flex flex-col gap-4 px-2 box-border;
+  @apply w-1/5 h-screen flex flex-col gap-4 p-2;
 
   & .problem_dashboard-sidebar_section {
     @apply bg-basebg-surface p-4 rounded-lg border border-border-default hover:border-accent-fg/50 cursor-pointer duration-100 transition-all ease-in-out;
@@ -24,5 +24,5 @@
 }
 
 .problem_dashboard-content {
-  @apply w-5/6;
+  @apply w-4/5 p-2;
 }
