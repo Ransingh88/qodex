@@ -19,12 +19,9 @@ import FilterPopover from "@/components/popover/FilterPopover"
 import { clearProblemDetails, fetchProblems } from "@/features/rtk/problem/problemSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { getAllProblems, getProblemCategory, getProblemCompanies, getProblemDifficulties, getProblemTags } from "@/services/problem.service"
-import jsbanner from "../../assets/images/js30dayschallenge.png"
 import dsa from "../../assets/images/dsa.png"
+import jsbanner from "../../assets/images/js30dayschallenge.png"
 import tointerviewq from "../../assets/images/tointerviewq.png"
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
-import MultiitemCarousel from "@/components/carousel/MultiItemCarousel"
 
 const Problem = () => {
   const { run, loading } = useAsyncHandler()
