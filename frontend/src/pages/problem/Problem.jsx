@@ -19,6 +19,12 @@ import FilterPopover from "@/components/popover/FilterPopover"
 import { clearProblemDetails, fetchProblems } from "@/features/rtk/problem/problemSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { getAllProblems, getProblemCategory, getProblemCompanies, getProblemDifficulties, getProblemTags } from "@/services/problem.service"
+import jsbanner from "../../assets/images/js30dayschallenge.png"
+import dsa from "../../assets/images/dsa.png"
+import tointerviewq from "../../assets/images/tointerviewq.png"
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
+import MultiitemCarousel from "@/components/carousel/MultiItemCarousel"
 
 const Problem = () => {
   const { run, loading } = useAsyncHandler()
@@ -99,8 +105,15 @@ const Problem = () => {
           {/* <div className="problem-courses_card">Problems</div>
           <div className="problem-courses_card">Contests</div>
           <div className="problem-courses_card">Solutions</div> */}
-          <div className="problem-courses_card">Top Interview Questions</div>
-          <div className="problem-courses_card">Javascript 30Day Challange</div>
+          <div className="problem-courses_card">
+            <img src={jsbanner} alt="" srcset="" className="w-full h-full object-cover scale-125" />
+          </div>
+          <div className="problem-courses_card">
+            <img src={tointerviewq} alt="" srcset="" className="w-full h-full object-cover scale-150" />
+          </div>
+          <div className="problem-courses_card">
+            <img src={dsa} alt="" srcset="" className="w-full h-full object-cover scale-150" />
+          </div>
         </div>
         <div className="problem-header">
           <div className="problem-search_box">

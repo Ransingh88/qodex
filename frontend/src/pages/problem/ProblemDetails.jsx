@@ -7,6 +7,7 @@ import {
   Clock,
   Cpu,
   Ellipsis,
+  FileChartLine,
   FileText,
   History,
   Lightbulb,
@@ -18,6 +19,7 @@ import {
   PanelTopOpen,
   Pin,
   Play,
+  Sparkles,
   SquareChartGantt,
   SquareCode,
   SquareTerminalIcon,
@@ -43,12 +45,14 @@ import { useCodeEditor } from "@/hooks/useCodeEditor"
 import { executeCode } from "@/services/execution.service"
 import { getProblemDetails, getProblemSubmissions } from "@/services/problem.service"
 import Submission from "./submission/Submission"
+import { analyzeCodeComplexity } from "@/services/ai.servise"
 
 const ProblemDetails = () => {
   const { id } = useParams()
   const { run, loading } = useAsyncHandler()
   const { registerSubmitHandler } = useOutletContext()
   const { changeLang, codes, currentLanguage, updateCode } = useCodeEditor()
+  const [analysis, setAnalysis] = useState("")
 
   const dispatch = useDispatch()
   const { isAuthenticated } = useSelector((state) => state.auth)
@@ -115,6 +119,12 @@ const ProblemDetails = () => {
     },
     {
       id: "tab3",
+      label: "Complexity",
+      type: "complexity",
+      icon: <FileChartLine size={14} />,
+    },
+    {
+      id: "tab4",
       label: "Console",
       type: "console",
       icon: <SquareTerminalIcon size={14} />,
@@ -185,6 +195,12 @@ const ProblemDetails = () => {
   const handleCodeChange = (code) => {
     // setProgramCode(code)
     updateCode(code)
+  }
+
+  const handleAnalyzeCodeComplexity = async () => {
+    const ress = await run(() => analyzeCodeComplexity(codes, currentLanguage, problemDetails.description))
+    setAnalysis(ress.data)
+    console.log(ress)
   }
 
   const rightOpenCount = (isCodeOpen ? 1 : 0) + (isTestOpen ? 1 : 0)
@@ -611,17 +627,49 @@ const ProblemDetails = () => {
               </div>
             </div>
           )}
+          {activeOutputTab.type === "complexity" && (
+            <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+              {problemDetails ? (
+                <div className="p-2">
+                  <p className=" text-sm font-code">Time Complexity: {problemDetails?.complexity?.time || "Not Available"}</p>
+                  <p className=" text-sm font-code">Space Complexity: {problemDetails?.complexity?.space || "Not Available"}</p>
+                  <button
+                    onClick={handleAnalyzeCodeComplexity}
+                    className="border border-border-default px-2 py-1 rounded cursor-pointer hover:bg-basebg-surface flex items-center gap-1"
+                  >
+                    <Sparkles size={14} />
+                    Analyze
+                  </button>
+                  <p>{analysis.stringify}</p>
+                </div>
+              ) : (
+                <div className="mt-5 text-fg-muted flex justify-center items-center">
+                  <button
+                    onClick={handleAnalyzeCodeComplexity}
+                    className="border border-border-default px-2 py-1 rounded cursor-pointer hover:bg-basebg-surface flex items-center gap-1"
+                  >
+                    <Sparkles size={14} />
+                    Analyze
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
           {activeOutputTab.type === "console" && (
             <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
-              <div className="p-2">
-                <p className=" text-sm font-code">
-                  {problemOutput && problemOutput?.testCases[0]?.stdout?.split("\n").map((line, index) => <p key={index}>{line}</p>)}
-                </p>
-                <p className="text-danger-fg text-sm font-code">{problemOutput && problemOutput?.testCases[0]?.status}</p>
-                <p className="text-danger-fg text-sm font-code">
-                  {problemOutput && problemOutput?.testCases[0]?.stderr?.split("\n").map((line, index) => <p key={index}>{line}</p>)}
-                </p>
-              </div>
+              {problemOutput.length > 0 ? (
+                <div className="p-2">
+                  <p className=" text-sm font-code">
+                    {problemOutput && problemOutput?.testCases[0]?.stdout?.split("\n").map((line, index) => <p key={index}>{line}</p>)}
+                  </p>
+                  <p className="text-danger-fg text-sm font-code">{problemOutput && problemOutput?.testCases[0]?.status}</p>
+                  <p className="text-danger-fg text-sm font-code">
+                    {problemOutput && problemOutput?.testCases[0]?.stderr?.split("\n").map((line, index) => <p key={index}>{line}</p>)}
+                  </p>
+                </div>
+              ) : (
+                <div className="mt-5 text-fg-muted flex justify-center items-center">Run code to see the console output</div>
+              )}
             </div>
           )}
         </div>
