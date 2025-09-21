@@ -61,7 +61,7 @@ const Navbar = () => {
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className={`navbar-main_container ${isScrolled ? "bg-basebg-default border-border-default h-20" : "h-24 border-transparent"}`}
     >
-      <div className={`navbar-container ${location.pathname === "/problems" ? "container" : "container-guttered"}`}>
+      <div className={`navbar-container ${location.pathname.includes("problems") ? "container" : "container-guttered"}`}>
         <div className="navbar-left">
           <div className="navbar-logo">
             <Link to="/">qodex.</Link>
