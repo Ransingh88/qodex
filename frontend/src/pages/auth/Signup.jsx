@@ -40,12 +40,12 @@ const Signup = () => {
     setEmailContinue(false)
   }
 
-  const handleLogin = async () => {
-    const res = await run(() => registerUser(formData))
+  const handleLogin = run(async () => {
+    const res = await registerUser(formData)
     toast.success(res.data.message)
     dispatch(lg(res.data.data.user))
     navigate("/")
-  }
+  })
   if (isAuthenticated) return navigate("/")
   return (
     <div className="login_main-container">
@@ -54,34 +54,22 @@ const Signup = () => {
           <div className="login-form_header">
             <p className="form_title">Create an account</p>
             <span className="form_subtitle">Start your 14 days free trial</span>
-            {isEmailContinue && <span className="form_input mt-4">
-              <label>{email}</label>
-            </span>}
+            {isEmailContinue && (
+              <span className="form_input mt-4">
+                <label>{email}</label>
+              </span>
+            )}
           </div>
           {isEmailContinue ? (
             <>
               <div className="login-form_body">
                 <span className="form_input">
                   <label>Fullname</label>
-                  <input
-                    type="text"
-                    placeholder="John Doe"
-                    name="fullname"
-                    onChange={handleOnChange}
-                    value={fullname}
-                    className=""
-                  />
+                  <input type="text" placeholder="John Doe" name="fullname" onChange={handleOnChange} value={fullname} className="" />
                 </span>
                 <span className="form_input">
                   <label>Username</label>
-                  <input
-                    type="text"
-                    placeholder="johnd2412"
-                    name="username"
-                    onChange={handleOnChange}
-                    value={username}
-                    className=""
-                  />
+                  <input type="text" placeholder="johnd2412" name="username" onChange={handleOnChange} value={username} className="" />
                 </span>
                 {/* <span className="form_input">
                   <label>Email</label>
@@ -96,14 +84,7 @@ const Signup = () => {
                 </span> */}
                 <span className="form_input">
                   <label>Password</label>
-                  <input
-                    type="password"
-                    placeholder="********"
-                    name="password"
-                    onChange={handleOnChange}
-                    value={password}
-                    className=""
-                  />
+                  <input type="password" placeholder="********" name="password" onChange={handleOnChange} value={password} className="" />
                 </span>
                 {/* <span className="form_input-actions">
               <span>
@@ -113,18 +94,10 @@ const Signup = () => {
               <p>Forgot password?</p>
             </span> */}
                 <div className="form-action-buttons">
-                  <button
-                    disabled={loading}
-                    onClick={handleBack}
-                    className="form_button-back"
-                  >
+                  <button disabled={loading} onClick={handleBack} className="form_button-back">
                     <MoveLeft size={18} /> Back
                   </button>
-                  <button
-                    disabled={loading}
-                    onClick={handleLogin}
-                    className="form_button"
-                  >
+                  <button disabled={loading} onClick={handleLogin} className="form_button">
                     {loading ? <LoadingSpinner /> : "Signup"}
                   </button>
                 </div>
@@ -156,11 +129,7 @@ const Signup = () => {
                     className=""
                   />
                 </span>
-                <button
-                  disabled={loading}
-                  onClick={handleEmailContinue}
-                  className="form_button"
-                >
+                <button disabled={loading} onClick={handleEmailContinue} className="form_button">
                   {loading ? <LoadingSpinner /> : "Get started"}
                 </button>
               </div>
@@ -170,12 +139,8 @@ const Signup = () => {
                 <div className="devider_line"></div>
               </div>
               <div className="login-social">
-                <button className="social-login_button">
-                  Sign in with Google
-                </button>
-                <button className="social-login_button">
-                  Sign in with Github
-                </button>
+                <button className="social-login_button">Sign in with Google</button>
+                <button className="social-login_button">Sign in with Github</button>
               </div>
 
               <div className="login-form_links">

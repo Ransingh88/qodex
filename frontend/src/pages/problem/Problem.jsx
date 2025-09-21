@@ -49,10 +49,10 @@ const Problem = () => {
     },
   ]
 
-  const getAllProblem = async (filter) => {
-    const response = await run(() => getAllProblems(filter))
+  const getAllProblem = run(async (filter) => {
+    const response = await getAllProblems(filter)
     dispatch(fetchProblems(response.data.data.allProblems))
-  }
+  })
 
   const fetchFilters = async () => {
     const [categories, tags, companies, difficulties] = await Promise.all([
@@ -78,7 +78,11 @@ const Problem = () => {
   }
 
   const handleSort = () => {
-    setFilters({ ...filters, order: sortOrder === "asc" ? "desc" : "asc", sortBy: sortBy })
+    setFilters({
+      ...filters,
+      order: sortOrder === "asc" ? "desc" : "asc",
+      sortBy: sortBy,
+    })
     setSortOrder(sortOrder === "asc" ? "desc" : "asc")
   }
 
@@ -103,13 +107,13 @@ const Problem = () => {
           <div className="problem-courses_card">Contests</div>
           <div className="problem-courses_card">Solutions</div> */}
           <div className="problem-courses_card">
-            <img src={jsbanner} alt="" srcset="" className="w-full h-full object-cover scale-125" />
+            <img src={jsbanner} alt="" className="h-full w-full scale-125 object-cover" />
           </div>
           <div className="problem-courses_card">
-            <img src={tointerviewq} alt="" srcset="" className="w-full h-full object-cover scale-150" />
+            <img src={tointerviewq} alt="" className="h-full w-full scale-150 object-cover" />
           </div>
           <div className="problem-courses_card">
-            <img src={dsa} alt="" srcset="" className="w-full h-full object-cover scale-150" />
+            <img src={dsa} alt="" className="h-full w-full scale-150 object-cover" />
           </div>
         </div>
         <div className="problem-header">
@@ -125,16 +129,16 @@ const Problem = () => {
           <div className="problem-filter">
             <FilterPopover icon={<ArrowDownUp size={14} />}>
               <div className="w-64">
-                <div className="m-1 px-3 py-4 text-center border border-border-default shadow rounded-xl">
-                  <p className=" font-semibold">Sort By</p>
+                <div className="border-border-default m-1 rounded-xl border px-3 py-4 text-center shadow">
+                  <p className="font-semibold">Sort By</p>
                 </div>
-                <div className="p-2 flex flex-col gap-2">
+                <div className="flex flex-col gap-2 p-2">
                   {sortOptions.map((option, index) => (
                     <div
                       key={index}
                       className={` ${
                         sortBy === option.value ? "bg-accent-fg/70" : "hover:bg-accent-subtle"
-                      } flex justify-between items-center text-fg-default gap-4 cursor-pointer  px-2 py-2 rounded-lg `}
+                      } text-fg-default flex cursor-pointer items-center justify-between gap-4 rounded-lg px-2 py-2`}
                       onClick={() => {
                         setSortBy(option.value)
                         handleSort(option.value)
@@ -149,7 +153,7 @@ const Problem = () => {
                             setSortBy(option.value)
                             handleSort(option.value)
                           }}
-                          className={`cursor-pointer p-0.5 rounded-full  hover:bg-accent-subtle `}
+                          className={`hover:bg-accent-subtle cursor-pointer rounded-full p-0.5`}
                         >
                           {sortOrder === "asc" ? <ArrowDownNarrowWide size={14} /> : <ArrowDownWideNarrow size={14} />}
                         </button>
@@ -161,18 +165,18 @@ const Problem = () => {
             </FilterPopover>
             <FilterPopover icon={<Funnel size={14} />}>
               <div className="w-64">
-                <div className="m-1 px-3 py-4 text-center border border-border-default shadow rounded-xl">
-                  <p className=" font-semibold">Filter</p>
+                <div className="border-border-default m-1 rounded-xl border px-3 py-4 text-center shadow">
+                  <p className="font-semibold">Filter</p>
                 </div>
-                <div className="p-2 flex flex-col gap-2 w-64">
-                  <div className="flex flex-col p-2 border-b border-border-default gap-2">
+                <div className="flex w-64 flex-col gap-2 p-2">
+                  <div className="border-border-default flex flex-col gap-2 border-b p-2">
                     <p>Difficulty</p>
-                    <div className="flex items-center gap-2 flex-wrap">
+                    <div className="flex flex-wrap items-center gap-2">
                       {filterData.difficulties &&
                         filterData.difficulties.map((difficulty, i) => (
                           <div
                             key={i}
-                            className="px-2 py-1 rounded-lg bg-basebg-surface2 border border-border-default text-fg-muted hover:bg-accent-emphasis hover:text-fg-default cursor-pointer"
+                            className="bg-basebg-surface2 border-border-default text-fg-muted hover:bg-accent-emphasis hover:text-fg-default cursor-pointer rounded-lg border px-2 py-1"
                             onClick={() => setFilters({ ...filters, difficulty })}
                           >
                             {difficulty}
@@ -180,14 +184,14 @@ const Problem = () => {
                         ))}
                     </div>
                   </div>
-                  <div className="flex flex-col p-2 gap-2 ">
+                  <div className="flex flex-col gap-2 p-2">
                     <p>Category</p>
-                    <div className="flex items-center gap-2 flex-wrap">
+                    <div className="flex flex-wrap items-center gap-2">
                       {filterData.categories &&
                         filterData.categories.map((category, i) => (
                           <div
                             key={i}
-                            className="px-2 py-1 rounded-lg bg-basebg-surface2 border border-border-default text-fg-muted hover:bg-accent-emphasis hover:text-fg-default cursor-pointer"
+                            className="bg-basebg-surface2 border-border-default text-fg-muted hover:bg-accent-emphasis hover:text-fg-default cursor-pointer rounded-lg border px-2 py-1"
                             onClick={() => setFilters({ ...filters, category })}
                           >
                             {category}
@@ -195,11 +199,11 @@ const Problem = () => {
                         ))}
                     </div>
                   </div>
-                  <div className="w-full flex items-center justify-center p-2 gap-2 ">
-                    <button className="w-full flex items-center justify-center gap-2 py-2 text-sm rounded-lg border border-border-muted text-fg-default hover:bg-accent-subtle cursor-pointer">
+                  <div className="flex w-full items-center justify-center gap-2 p-2">
+                    <button className="border-border-muted text-fg-default hover:bg-accent-subtle flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border py-2 text-sm">
                       Reset
                     </button>
-                    <button className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-accent-fg text-[#f8f8f8] hover:bg-accent-emphasis cursor-pointer">
+                    <button className="bg-accent-fg hover:bg-accent-emphasis flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg py-2 text-[#f8f8f8]">
                       Apply
                     </button>
                   </div>
@@ -227,16 +231,16 @@ const Problem = () => {
                     </div>
                     <div className="problem-item-right">
                       <div
-                        className={`px-2 py-1 rounded-lg flex items-center gap-1 bg-basebg-default border tracking-wide shadow ${
+                        className={`bg-basebg-default flex items-center gap-1 rounded-lg border px-2 py-1 tracking-wide shadow ${
                           problem.difficulty == "easy"
                             ? "border-success-fg/50"
                             : problem.difficulty == "medium"
-                            ? "border-warning-fg/50"
-                            : "border-danger-fg/50"
+                              ? "border-warning-fg/50"
+                              : "border-danger-fg/50"
                         }`}
                       >
                         <span
-                          className={`w-1 h-1 rounded-full ${
+                          className={`h-1 w-1 rounded-full ${
                             problem.difficulty == "easy" ? "bg-success-fg" : problem.difficulty == "medium" ? "bg-warning-fg" : "bg-danger-fg"
                           }`}
                         ></span>

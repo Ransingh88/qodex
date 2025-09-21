@@ -6,33 +6,25 @@ const NotFound = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="w-full h-screen bg-basebg-default text-fg-default flex justify-center relative">
-      <div
-        className="absolute -top-40 left-1/2 -translate-x-1/2  w-1/2 h-[500px] bg-[linear-gradient(var(--color-grid-pattrn)_1px,transparent_1px),linear-gradient(to_right,var(--color-grid-pattrn)_1px,transparent_1px)] 
-              bg-[size:35px_35px] opacity-30 mask-x-from-70% mask-x-to-90% mask-y-from-70% mask-y-to-100% pointer-events-none z-0"
-      ></div>
-      <div className="w-full h-full flex flex-col items-center justify-start px-24 pt-24 gap-6 z-1">
-        <div className="px-2 py-1 rounded-lg flex items-center gap-2 bg-basebg-default border border-border-muted tracking-wide shadow">
-          <span className="w-2 h-2 bg-danger-fg rounded-full"></span>
+    <div className="bg-basebg-default text-fg-default relative flex h-screen w-full justify-center">
+      <div className="pointer-events-none absolute -top-40 left-1/2 z-0 h-[500px] w-1/2 -translate-x-1/2 bg-[linear-gradient(var(--color-grid-pattrn)_1px,transparent_1px),linear-gradient(to_right,var(--color-grid-pattrn)_1px,transparent_1px)] mask-y-from-70% mask-y-to-100% mask-x-from-70% mask-x-to-90% bg-[size:35px_35px] opacity-30"></div>
+      <div className="z-1 flex h-full w-full flex-col items-center justify-start gap-6 px-24 pt-24">
+        <div className="bg-basebg-default border-border-muted flex items-center gap-2 rounded-lg border px-2 py-1 tracking-wide shadow">
+          <span className="bg-danger-fg h-2 w-2 rounded-full"></span>
           <p className="text-xs">404 error</p>
         </div>
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-5xl">We can't find this page</h1>
-          <p className="text-sm text-fg-muted">
-            The page you are looking for doesn't exist or has been moved.
-          </p>
+          <p className="text-fg-muted text-sm">The page you are looking for doesn't exist or has been moved.</p>
         </div>
         <div className="flex items-center justify-center gap-4">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 border border-border-muted hover:bg-accent-subtle bg-basebg-default text-fg-default px-4 py-2 rounded-lg cursor-pointer"
+            className="border-border-muted hover:bg-accent-subtle bg-basebg-default text-fg-default flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2"
           >
             <MoveLeft size={18} className="mt-0.5" /> Go back
           </button>
-          <Link
-            to="/"
-            className="bg-accent-fg hover:bg-accent-emphasis text-[#f8f8f8] px-4 py-2 rounded-lg cursor-pointer"
-          >
+          <Link to="/" className="bg-accent-fg hover:bg-accent-emphasis cursor-pointer rounded-lg px-4 py-2 text-[#f8f8f8]">
             Home
           </Link>
         </div>

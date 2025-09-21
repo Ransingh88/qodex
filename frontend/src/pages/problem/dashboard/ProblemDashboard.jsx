@@ -11,14 +11,14 @@ const ProblemDashboard = () => {
   ]
   return (
     <div className="problem_dashboard-main_container">
-      <div className="problem_dashboard-container ">
+      <div className="problem_dashboard-container">
         <div className="problem_dashboard-sidebar">
           {sidebarMenu.map((item) => (
             <NavLink
               end={item.path === "/problems"}
               key={item.name}
               to={item.path}
-              className={({ isActive }) => (isActive ? "outline-2 outline-offset-2 outline-accent-emphasis/70 rounded-lg" : "")}
+              className={({ isActive }) => (isActive ? "outline-accent-emphasis/70 rounded-lg outline-2 outline-offset-2" : "")}
             >
               <div className={`problem_dashboard-sidebar_section`}>
                 <p>{item.name}</p>

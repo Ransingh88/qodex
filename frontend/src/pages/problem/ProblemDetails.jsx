@@ -140,20 +140,20 @@ const ProblemDetails = () => {
   const activeEditorTab = editorTab.find((tab) => tab.id === activeEdiorTabId)
   const activeOutputTab = outputTab.find((tab) => tab.id === activeOutputTabId)
 
-  const handleGetProblemDetails = async (problemId) => {
+  const handleGetProblemDetails = run(async (problemId) => {
     dispatch(fetchProblemDetailsStart())
     const response = await getProblemDetails(problemId)
     dispatch(fetchProblemDetails(response.data.data))
     // setProgramCode(response.data.data?.codeSnippets?.JAVASCRIPT || "")
-  }
+  })
 
-  const handleGetProblemSubmissions = async (problemId) => {
+  const handleGetProblemSubmissions = run(async (problemId) => {
     dispatch(fetchProblemSubmissionsStart())
-    const response = await run(() => getProblemSubmissions(problemId))
+    const response = await getProblemSubmissions(problemId)
     dispatch(fetchProblemSubmissions(response.data.data))
-  }
+  })
 
-  const handleCodeExecution = async () => {
+  const handleCodeExecution = run(async () => {
     const lang = LANGUAGES[currentLanguage]
     const payload = {
       languageId: lang.judge0ID,
@@ -163,15 +163,15 @@ const ProblemDetails = () => {
       problemId: problemDetails._id,
       isSubmit: false,
     }
-    const response = await run(() => executeCode(payload))
+    const response = await executeCode(payload)
     if (response.data.success) {
       toast.success(response.data.message)
     }
     dispatch(executeProblems(response.data.data))
     setActiveOutputTabId("tab2")
-  }
+  })
 
-  const runCodeAndSubmit = async () => {
+  const runCodeAndSubmit = run(async () => {
     dispatch(executeProblemsStart())
     const lang = LANGUAGES[currentLanguage]
     const payload = {
@@ -182,7 +182,7 @@ const ProblemDetails = () => {
       problemId: problemDetails._id,
       isSubmit: true,
     }
-    const response = await run(() => executeCode(payload))
+    const response = await executeCode(payload)
     if (response.data.success) {
       toast.success(response.data.message)
     }
@@ -190,18 +190,18 @@ const ProblemDetails = () => {
     dispatch(executeProblems(response.data.data))
     setActiveOutputTabId("tab2")
     handleGetProblemSubmissions(id)
-  }
+  })
 
   const handleCodeChange = (code) => {
     // setProgramCode(code)
     updateCode(code)
   }
 
-  const handleAnalyzeCodeComplexity = async () => {
-    const ress = await run(() => analyzeCodeComplexity(codes, currentLanguage, problemDetails.description))
+  const handleAnalyzeCodeComplexity = run(async () => {
+    const ress = await analyzeCodeComplexity(codes, currentLanguage, problemDetails.description)
     setAnalysis(ress.data)
     console.log(ress)
-  }
+  })
 
   const rightOpenCount = (isCodeOpen ? 1 : 0) + (isTestOpen ? 1 : 0)
 
@@ -266,23 +266,23 @@ const ProblemDetails = () => {
   }, [registerSubmitHandler, codes])
 
   return (
-    <div className={`p-1.5 h-[calc(100vh-3rem)] w-full flex flex-row justify-start items-start ${isLeftOpen ? "gap-1.5" : ""}`}>
+    <div className={`flex h-[calc(100vh-3rem)] w-full flex-row items-start justify-start p-1.5 ${isLeftOpen ? "gap-1.5" : ""}`}>
       {/* Left Pannel */}
       <div
         className={`h-full ${
-          isLeftOpen ? "min-w-40 w-1/2" : "w-0 border-0"
-        } bg-[#1e1e1e] rounded-lg border border-border-default overflow-hidden transition-all duration-200 ease-out`}
+          isLeftOpen ? "w-1/2 min-w-40" : "w-0 border-0"
+        } border-border-default overflow-hidden rounded-lg border bg-[#1e1e1e] transition-all duration-200 ease-out`}
       >
-        <div className="h-8 w-full flex justify-between items-center border-b border-border-default">
-          <ul className="flex h-full text-xs items-center">
+        <div className="border-border-default flex h-8 w-full items-center justify-between border-b">
+          <ul className="flex h-full items-center text-xs">
             {problemInfoTab.map((tab) => (
               <li
                 key={tab.id}
                 onClick={() => setActiveProblemInfoTabId(tab.id)}
-                className={`px-2 h-full flex justify-center items-center cursor-pointer gap-1 ${
+                className={`flex h-full cursor-pointer items-center justify-center gap-1 px-2 ${
                   tab.id === activeProblemInfoTabId
-                    ? "bg-basebg-surface2 border-b-2 border-accent-emphasis border-t border-t-transparent border-x border-x-transparent"
-                    : "border border-border-default"
+                    ? "bg-basebg-surface2 border-accent-emphasis border-x border-t border-b-2 border-x-transparent border-t-transparent"
+                    : "border-border-default border"
                 }`}
               >
                 {tab.icon}
@@ -297,30 +297,30 @@ const ProblemDetails = () => {
           </div>
         </div>
         {activeProblemInfoTab.type === "desc" && (
-          <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+          <div className="problemDetails_desc h-[calc(100%-2rem)] overflow-auto">
             {isLoading ? (
               <div>
                 <LoadingSpinner />
               </div>
             ) : (
               <div className="p-4">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <h3 className="">{problemDetails.title} </h3>
 
-                  <div className="flex justify-center items-center gap-1">
-                    <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
+                  <div className="flex items-center justify-center gap-1">
+                    <span className="text-xxs border-border-default bg-basebg-surface2 text-fg-default/50 rounded border px-1 py-0.5 font-medium capitalize">
                       {problemDetails.tags && problemDetails?.tags[0]}
                     </span>
-                    <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
+                    <span className="text-xxs border-border-default bg-basebg-surface2 text-fg-default/50 rounded border px-1 py-0.5 font-medium capitalize">
                       {problemDetails.tags && problemDetails?.tags[1]}
                     </span>
                     <span
-                      className={`text-xxs px-1 py-0.5 border rounded capitalize font-medium opacity-70 ${
+                      className={`text-xxs rounded border px-1 py-0.5 font-medium capitalize opacity-70 ${
                         problemDetails.difficulty === "easy"
-                          ? "bg-success-subtle/50 text-green-200 border-success-emphasis"
+                          ? "bg-success-subtle/50 border-success-emphasis text-green-200"
                           : problemDetails.difficulty === "medium"
-                          ? "bg-warning-subtle/50 text-yellow-200 border-warning-emphasis"
-                          : "bg-danger-subtle/50 text-red-200 border-danger-emphasis"
+                            ? "bg-warning-subtle/50 border-warning-emphasis text-yellow-200"
+                            : "bg-danger-subtle/50 border-danger-emphasis text-red-200"
                       }`}
                     >
                       {problemDetails?.difficulty}
@@ -330,7 +330,7 @@ const ProblemDetails = () => {
                     </button>
                   </div>
                 </div>
-                <span className="text-xxs px-1 py-0.5 border border-border-default rounded capitalize font-medium bg-basebg-surface2 text-fg-default/50">
+                <span className="text-xxs border-border-default bg-basebg-surface2 text-fg-default/50 rounded border px-1 py-0.5 font-medium capitalize">
                   AskedBy:{" "}
                   {problemDetails.askedBy &&
                     problemDetails?.askedBy.map((org) => (
@@ -340,47 +340,47 @@ const ProblemDetails = () => {
                     ))}
                 </span>
                 <h6 className="mt-2 py-2">Problem Description</h6>
-                <div className="p-2 rounded h-full border border-border-default overflow-auto text-sm font-body">
-                  <p className="whitespace-pre-wrap text-fg-default/80">{problemDetails.description}</p>
+                <div className="border-border-default font-body h-full overflow-auto rounded border p-2 text-sm">
+                  <p className="text-fg-default/80 whitespace-pre-wrap">{problemDetails.description}</p>
                   {/* <p className="my-2 text-fg-default/80">
                 Explanation: {problemDetails?.examples?.JAVASCRIPT?.explanation}
               </p> */}
-                  <div className="my-6 border divide-y divide-border-default flex flex-col border-border-default rounded py-1 px-4 font-code">
+                  <div className="divide-border-default border-border-default font-code my-6 flex flex-col divide-y rounded border px-4 py-1">
                     <p className="py-2">
-                      <span className="font-semibold block">Input</span>{" "}
+                      <span className="block font-semibold">Input</span>{" "}
                       <span className="text-fg-default/80">{problemDetails?.examples?.JAVASCRIPT?.input}</span>
                     </p>
                     <p className="py-2">
-                      <span className="font-semibold block">Output</span>
-                      <span className="pt-2 text-fg-default/80">{problemDetails?.examples?.JAVASCRIPT?.output}</span>
+                      <span className="block font-semibold">Output</span>
+                      <span className="text-fg-default/80 pt-2">{problemDetails?.examples?.JAVASCRIPT?.output}</span>
                     </p>
                   </div>
                   <div className="flex flex-col gap-4">
-                    <div className="flex flex-col px-4 py-2 bg-basebg-surface rounded font-code">
-                      <p className="font-semibold mb-2">Example 1</p>
+                    <div className="bg-basebg-surface font-code flex flex-col rounded px-4 py-2">
+                      <p className="mb-2 font-semibold">Example 1</p>
                       <p>
-                        <span className="font-semibold text-fg-default/70">Input:</span> {problemDetails?.examples?.JAVASCRIPT?.input}
+                        <span className="text-fg-default/70 font-semibold">Input:</span> {problemDetails?.examples?.JAVASCRIPT?.input}
                       </p>
                       <span>
                         <p>
-                          <span className="font-semibold text-fg-default/70">Output:</span> {problemDetails?.examples?.JAVASCRIPT?.output}
+                          <span className="text-fg-default/70 font-semibold">Output:</span> {problemDetails?.examples?.JAVASCRIPT?.output}
                         </p>
                       </span>
                       <span>
                         <p>
-                          <span className="font-semibold text-fg-default/70">Explanation:</span> {problemDetails?.examples?.JAVASCRIPT?.explanation}
+                          <span className="text-fg-default/70 font-semibold">Explanation:</span> {problemDetails?.examples?.JAVASCRIPT?.explanation}
                         </p>
                       </span>
                     </div>
                   </div>
                   <div className="px-4">
                     <p className="py-2">
-                      <span className="font-semibold block">Constraints</span>
-                      <span className="pt-2 text-fg-default/80">{problemDetails?.constraints}</span>
+                      <span className="block font-semibold">Constraints</span>
+                      <span className="text-fg-default/80 pt-2">{problemDetails?.constraints}</span>
                     </p>
                     <p className="py-2">
-                      <span className="font-semibold block">Bonus</span>
-                      <span className="pt-2 text-fg-default/80">{problemDetails?.bonus?.description}</span>
+                      <span className="block font-semibold">Bonus</span>
+                      <span className="text-fg-default/80 pt-2">{problemDetails?.bonus?.description}</span>
                     </p>
                   </div>
                 </div>
@@ -389,15 +389,15 @@ const ProblemDetails = () => {
           </div>
         )}
 
-        {activeProblemInfoTab.type === "solution" && <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">Solution</div>}
+        {activeProblemInfoTab.type === "solution" && <div className="problemDetails_desc h-[calc(100%-2rem)] overflow-auto">Solution</div>}
         {activeProblemInfoTab.type === "submissions" && (
-          <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+          <div className="problemDetails_desc h-[calc(100%-2rem)] overflow-auto">
             {isAuthenticated ? (
               <Submission />
             ) : (
-              <div className="h-1/2 flex justify-center items-center ">
+              <div className="flex h-1/2 items-center justify-center">
                 <Link to={"/auth/login"}>
-                  <button className="w-20 flex items-center justify-center gap-2 py-2 rounded-lg bg-accent-fg text-[#f8f8f8] hover:bg-accent-emphasis cursor-pointer">
+                  <button className="bg-accent-fg hover:bg-accent-emphasis flex w-20 cursor-pointer items-center justify-center gap-2 rounded-lg py-2 text-[#f8f8f8]">
                     Login
                   </button>
                 </Link>
@@ -405,24 +405,24 @@ const ProblemDetails = () => {
             )}
           </div>
         )}
-        {activeProblemInfoTab.type === "hint" && <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">Hints</div>}
+        {activeProblemInfoTab.type === "hint" && <div className="problemDetails_desc h-[calc(100%-2rem)] overflow-auto">Hints</div>}
       </div>
       {/* Right Pannel */}
-      <div className="h-full w-1/2 rounded-lg flex-1 flex flex-col justify-start items-start gap-1.5 ">
+      <div className="flex h-full w-1/2 flex-1 flex-col items-start justify-start gap-1.5 rounded-lg">
         {/* Editor */}
         <div
-          className={`min-h-8 ${codeHeight} w-full rounded-lg overflow-hidden flex flex-col bg-[#1e1e1e] border border-border-default transition-all duration-200 ease-out`}
+          className={`min-h-8 ${codeHeight} border-border-default flex w-full flex-col overflow-hidden rounded-lg border bg-[#1e1e1e] transition-all duration-200 ease-out`}
         >
-          <div className="h-8 w-full flex justify-between items-center border-b border-border-default relative">
-            <ul className="flex h-full text-xs items-center">
+          <div className="border-border-default relative flex h-8 w-full items-center justify-between border-b">
+            <ul className="flex h-full items-center text-xs">
               {editorTab.map((tab) => (
                 <li
                   key={tab.id}
                   onClick={() => setActiveEditorTabId(tab.id)}
-                  className={`px-2 h-full flex justify-center items-center cursor-pointer gap-1 ${
+                  className={`flex h-full cursor-pointer items-center justify-center gap-1 px-2 ${
                     tab.id === activeEdiorTabId
-                      ? "bg-basebg-surface2 border-b-2 border-accent-emphasis border-t border-t-transparent border-x border-x-transparent"
-                      : "border border-border-default"
+                      ? "bg-basebg-surface2 border-accent-emphasis border-x border-t border-b-2 border-x-transparent border-t-transparent"
+                      : "border-border-default border"
                   }`}
                 >
                   {tab.icon}
@@ -430,14 +430,14 @@ const ProblemDetails = () => {
                 </li>
               ))}
             </ul>
-            <div className="px-2 flex items-center gap-2 text-xs">
+            <div className="flex items-center gap-2 px-2 text-xs">
               <div>
                 <select
                   name="language"
                   id="language"
                   value={currentLanguage}
                   onChange={(e) => changeLang(e.target.value)}
-                  className="bg-transparent outline-none border border-border-default text-fg-default/80 text-xs rounded px-1 py-0.5"
+                  className="border-border-default text-fg-default/80 rounded border bg-transparent px-1 py-0.5 text-xs outline-none"
                 >
                   {Object.entries(LANGUAGES).map(([key, lang]) => (
                     <option key={key} value={key} className="bg-basebg-default">
@@ -449,7 +449,7 @@ const ProblemDetails = () => {
               <button
                 onClick={handleCodeExecution}
                 disabled={loading}
-                className=" h-6 w-12 rounded bg-accent-fg text-[#f8f8f8] flex justify-center items-center gap-0.5 hover:bg-accent-emphasis cursor-pointer"
+                className="bg-accent-fg hover:bg-accent-emphasis flex h-6 w-12 cursor-pointer items-center justify-center gap-0.5 rounded text-[#f8f8f8]"
               >
                 {loading ? (
                   <LoadingSpinner size={14} />
@@ -482,8 +482,8 @@ const ProblemDetails = () => {
             {activeEditorTab.type === "diff" && <div>Diff Edior</div>}
           </div>
           {isCodeOpen && (
-            <div className="px-1 py-1 text-xs border-t border-border-default flex justify-between items-center">
-              <button className="flex items-center gap-1 px-2 p-1 rounded bg-basebg-surface2 cursor-pointer">
+            <div className="border-border-default flex items-center justify-between border-t px-1 py-1 text-xs">
+              <button className="bg-basebg-surface2 flex cursor-pointer items-center gap-1 rounded p-1 px-2">
                 <History size={14} />
                 History
               </button>
@@ -493,25 +493,25 @@ const ProblemDetails = () => {
         </div>
         {/* TestCases */}
         <div
-          className={`min-h-8 ${testHeight} w-full rounded-lg bg-[#1e1e1e] border border-border-default overflow-hidden transition-all duration-200 ease-out`}
+          className={`min-h-8 ${testHeight} border-border-default w-full overflow-hidden rounded-lg border bg-[#1e1e1e] transition-all duration-200 ease-out`}
         >
-          <div className="h-8 w-full flex justify-between items-center border-b border-border-default">
-            <ul className="flex h-full text-xs items-center">
+          <div className="border-border-default flex h-8 w-full items-center justify-between border-b">
+            <ul className="flex h-full items-center text-xs">
               {outputTab.map((tab) => (
                 <li
                   key={tab.id}
                   onClick={() => setActiveOutputTabId(tab.id)}
-                  className={`px-2 h-full flex justify-center items-center cursor-pointer gap-1 ${
+                  className={`flex h-full cursor-pointer items-center justify-center gap-1 px-2 ${
                     tab.id === activeOutputTabId
-                      ? "bg-basebg-surface2 border-b-2 border-accent-emphasis border-t border-t-transparent border-x border-x-transparent"
-                      : "border border-border-default"
+                      ? "bg-basebg-surface2 border-accent-emphasis border-x border-t border-b-2 border-x-transparent border-t-transparent"
+                      : "border-border-default border"
                   }`}
                 >
                   {tab.icon} {tab.label}
                 </li>
               ))}
             </ul>
-            <div className="px-2 flex items-center gap-2 text-xs">
+            <div className="flex items-center gap-2 px-2 text-xs">
               <button onClick={toggleTests}>{isTestOpen ? <PanelBottomClose size={14} /> : <PanelBottomOpen size={14} />}</button>
               <button>
                 <Ellipsis size={14} />
@@ -519,15 +519,15 @@ const ProblemDetails = () => {
             </div>
           </div>
           {activeOutputTab.type === "testcase" && (
-            <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+            <div className="problemDetails_desc h-[calc(100%-2rem)] overflow-auto">
               <div className="p-2">
                 <div className="flex justify-between gap-2">
                   <div className="flex gap-2 p-2">
                     {problemDetails?.testcases?.map((testcase, index) => (
                       <div
                         key={index}
-                        className={`px-2 py-1 bg-basebg-surface2 rounded text-xs cursor-pointer hover:bg-basebg-surface ${
-                          testcaseActiveTabId === index ? "border-s border-accent-fg/50 " : ""
+                        className={`bg-basebg-surface2 hover:bg-basebg-surface cursor-pointer rounded px-2 py-1 text-xs ${
+                          testcaseActiveTabId === index ? "border-accent-fg/50 border-s" : ""
                         } `}
                         onClick={() => setTestcaseActiveTabId(index)}
                       >
@@ -537,22 +537,22 @@ const ProblemDetails = () => {
                   </div>
                   <div>
                     {loading ? (
-                      <div className="flex items-center gap-2 text-fg-muted text-xs">
+                      <div className="text-fg-muted flex items-center gap-2 text-xs">
                         <LoadingSpinner size={14} /> Running...{" "}
                       </div>
                     ) : null}
                   </div>
                 </div>
-                <div className="p-1 flex flex-col gap-2">
+                <div className="flex flex-col gap-2 p-1">
                   <div>
-                    <p className="font-semibold text-fg-muted">Input</p>
-                    <p className="py-1.5 px-2 mt-1 bg-basebg-surface border border-border-default rounded">
+                    <p className="text-fg-muted font-semibold">Input</p>
+                    <p className="bg-basebg-surface border-border-default mt-1 rounded border px-2 py-1.5">
                       {problemDetails.testcases && problemDetails?.testcases[testcaseActiveTabId]?.input}
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold text-fg-muted">Output</p>
-                    <p className="py-1.5 px-2 mt-1 bg-basebg-surface border border-border-default rounded">
+                    <p className="text-fg-muted font-semibold">Output</p>
+                    <p className="bg-basebg-surface border-border-default mt-1 rounded border px-2 py-1.5">
                       {problemDetails.testcases && problemDetails?.testcases[testcaseActiveTabId]?.output}
                     </p>
                   </div>
@@ -561,8 +561,8 @@ const ProblemDetails = () => {
             </div>
           )}
           {activeOutputTab.type === "testresult" && (
-            <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
-              <div className="p-2 h-full">
+            <div className="problemDetails_desc h-[calc(100%-2rem)] overflow-auto">
+              <div className="h-full p-2">
                 {problemOutput.status ? (
                   <>
                     <div className="flex justify-between gap-2">
@@ -570,12 +570,12 @@ const ProblemDetails = () => {
                         {problemOutput?.testCases?.map((testcase, index) => (
                           <div
                             key={index}
-                            className={`px-2 py-1 bg-basebg-surface2 rounded text-xs cursor-pointer hover:bg-basebg-surface flex items-center ${
-                              testcaseActiveTabId === index ? "border-s border-accent-fg/50" : ""
+                            className={`bg-basebg-surface2 hover:bg-basebg-surface flex cursor-pointer items-center rounded px-2 py-1 text-xs ${
+                              testcaseActiveTabId === index ? "border-accent-fg/50 border-s" : ""
                             }`}
                             onClick={() => setTestcaseActiveTabId(index)}
                           >
-                            <span className={`h-1 w-1 rounded-full mr-2 ${testcase.isPassed ? "bg-success-fg" : "bg-danger-fg"}`}></span>
+                            <span className={`mr-2 h-1 w-1 rounded-full ${testcase.isPassed ? "bg-success-fg" : "bg-danger-fg"}`}></span>
                             <p>Case {testcase.testcaseNo}</p>
                           </div>
                         ))}
@@ -585,20 +585,20 @@ const ProblemDetails = () => {
                           problemOutput.status === "Accepted"
                             ? "text-success-fg"
                             : problemOutput.status === "Partially Accepted"
-                            ? "text-warning-fg"
-                            : "text-danger-fg"
+                              ? "text-warning-fg"
+                              : "text-danger-fg"
                         }`}
                       >
                         {loading ? (
-                          <div className="flex items-center gap-2 text-fg-muted text-xs">
+                          <div className="text-fg-muted flex items-center gap-2 text-xs">
                             <LoadingSpinner size={14} /> Running...{" "}
                           </div>
                         ) : (
-                          <div className="flex gap-2 items-center">
-                            <p className="text-fg-muted text-xs flex items-center gap-1">
+                          <div className="flex items-center gap-2">
+                            <p className="text-fg-muted flex items-center gap-1 text-xs">
                               <Clock size={12} /> {problemOutput?.time}
                             </p>
-                            <p className="text-fg-muted text-xs flex items-center gap-1">
+                            <p className="text-fg-muted flex items-center gap-1 text-xs">
                               <Cpu size={12} /> {problemOutput?.memory}
                             </p>
                             <p className="flex items-center gap-1">
@@ -608,8 +608,8 @@ const ProblemDetails = () => {
                         )}
                       </div>
                     </div>
-                    <div className="mx-2 py-1 px-2 bg-basebg-surface rounded border border-border-default">
-                      <div className="flex gap-4 text-xs text-fg-muted">
+                    <div className="bg-basebg-surface border-border-default mx-2 rounded border px-2 py-1">
+                      <div className="text-fg-muted flex gap-4 text-xs">
                         <p>Status: {problemOutput?.testCases[testcaseActiveTabId]?.status}</p>
                         <p>Memory: {problemOutput?.testCases[testcaseActiveTabId]?.memory} bit</p>
                         <p>Time: {problemOutput?.testCases[testcaseActiveTabId]?.time} ms</p>
@@ -622,20 +622,20 @@ const ProblemDetails = () => {
                     </div>
                   </>
                 ) : (
-                  <div className="mt-5 text-fg-muted flex justify-center items-center">Run test cases</div>
+                  <div className="text-fg-muted mt-5 flex items-center justify-center">Run test cases</div>
                 )}
               </div>
             </div>
           )}
           {activeOutputTab.type === "complexity" && (
-            <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+            <div className="problemDetails_desc h-[calc(100%-2rem)] overflow-auto">
               {problemDetails ? (
                 <div className="p-2">
-                  <p className=" text-sm font-code">Time Complexity: {problemDetails?.complexity?.time || "Not Available"}</p>
-                  <p className=" text-sm font-code">Space Complexity: {problemDetails?.complexity?.space || "Not Available"}</p>
+                  <p className="font-code text-sm">Time Complexity: {problemDetails?.complexity?.time || "Not Available"}</p>
+                  <p className="font-code text-sm">Space Complexity: {problemDetails?.complexity?.space || "Not Available"}</p>
                   <button
                     onClick={handleAnalyzeCodeComplexity}
-                    className="border border-border-default px-2 py-1 rounded cursor-pointer hover:bg-basebg-surface flex items-center gap-1"
+                    className="border-border-default hover:bg-basebg-surface flex cursor-pointer items-center gap-1 rounded border px-2 py-1"
                   >
                     <Sparkles size={14} />
                     Analyze
@@ -643,10 +643,10 @@ const ProblemDetails = () => {
                   <p>{analysis.stringify}</p>
                 </div>
               ) : (
-                <div className="mt-5 text-fg-muted flex justify-center items-center">
+                <div className="text-fg-muted mt-5 flex items-center justify-center">
                   <button
                     onClick={handleAnalyzeCodeComplexity}
-                    className="border border-border-default px-2 py-1 rounded cursor-pointer hover:bg-basebg-surface flex items-center gap-1"
+                    className="border-border-default hover:bg-basebg-surface flex cursor-pointer items-center gap-1 rounded border px-2 py-1"
                   >
                     <Sparkles size={14} />
                     Analyze
@@ -656,19 +656,19 @@ const ProblemDetails = () => {
             </div>
           )}
           {activeOutputTab.type === "console" && (
-            <div className="h-[calc(100%-2rem)] overflow-auto problemDetails_desc">
+            <div className="problemDetails_desc h-[calc(100%-2rem)] overflow-auto">
               {problemOutput.length > 0 ? (
                 <div className="p-2">
-                  <p className=" text-sm font-code">
+                  <p className="font-code text-sm">
                     {problemOutput && problemOutput?.testCases[0]?.stdout?.split("\n").map((line, index) => <p key={index}>{line}</p>)}
                   </p>
-                  <p className="text-danger-fg text-sm font-code">{problemOutput && problemOutput?.testCases[0]?.status}</p>
-                  <p className="text-danger-fg text-sm font-code">
+                  <p className="text-danger-fg font-code text-sm">{problemOutput && problemOutput?.testCases[0]?.status}</p>
+                  <p className="text-danger-fg font-code text-sm">
                     {problemOutput && problemOutput?.testCases[0]?.stderr?.split("\n").map((line, index) => <p key={index}>{line}</p>)}
                   </p>
                 </div>
               ) : (
-                <div className="mt-5 text-fg-muted flex justify-center items-center">Run code to see the console output</div>
+                <div className="text-fg-muted mt-5 flex items-center justify-center">Run code to see the console output</div>
               )}
             </div>
           )}

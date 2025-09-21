@@ -6,11 +6,7 @@ const ProtectedRoute = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
   const location = useLocation()
 
-  return isAuthenticated ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/auth/login" replace state={{ from: location }} />
-  )
+  return isAuthenticated ? <Outlet /> : <Navigate to="/auth/login" replace state={{ from: location }} />
 }
 
 export default ProtectedRoute

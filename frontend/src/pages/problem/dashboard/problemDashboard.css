@@ -1,18 +1,18 @@
 @reference '@/index.css';
 
 .problem_dashboard-main_container {
-  @apply w-full box-border bg-basebg-default text-fg-default;
+  @apply bg-basebg-default text-fg-default box-border w-full;
 }
 
 .problem_dashboard-container {
-  @apply mx-4 my-2 flex justify-between items-start gap-4;
+  @apply mx-4 my-2 flex items-start justify-between gap-4;
 }
 
 .problem_dashboard-sidebar {
-  @apply min-w-32 w-64 h-screen flex flex-col gap-4 p-2;
+  @apply flex h-screen w-64 min-w-32 flex-col gap-4 p-2;
 
   & .problem_dashboard-sidebar_section {
-    @apply bg-basebg-surface p-4 rounded-lg border border-border-default hover:border-accent-fg/50 cursor-pointer duration-100 transition-all ease-in-out;
+    @apply bg-basebg-surface border-border-default hover:border-accent-fg/50 cursor-pointer rounded-lg border p-4 transition-all duration-100 ease-in-out;
     & p {
       @apply text-fg-muted font-semibold;
     }
@@ -20,7 +20,7 @@
 }
 
 .problem_dashboard-separator {
-  @apply border-r border-border-default h-screen;
+  @apply border-border-default h-screen border-r;
 }
 
 .problem_dashboard-content {

@@ -4,11 +4,11 @@ import { useSelector } from "react-redux"
 const Submission = () => {
   const { problemSubmissions } = useSelector((state) => state.problem)
   return (
-    <div className="overflow-x-auto mt-4">
+    <div className="mt-4 overflow-x-auto">
       {problemSubmissions.length === 0 ? (
         <p className="text-center">No submissions yet.</p>
       ) : (
-        <table className="min-w-full border border-border-default rounded-lg shadow-sm">
+        <table className="border-border-default min-w-full rounded-lg border shadow-sm">
           <thead>
             <tr>
               <th className="px-4 py-2 text-left">#</th>
@@ -27,7 +27,11 @@ const Submission = () => {
                 if (submission.status === "Accepted") statusClass = "text-green-600"
                 else if (submission.status === "Wrong Answer") statusClass = "text-red-600"
                 const dateObj = new Date(submission.createdAt)
-                const options = { month: "short", day: "2-digit", year: "numeric" }
+                const options = {
+                  month: "short",
+                  day: "2-digit",
+                  year: "numeric",
+                }
                 const formattedDate = dateObj.toLocaleDateString("en-US", options)
                 let hours = dateObj.getHours()
                 const minutes = dateObj.getMinutes().toString().padStart(2, "0")
@@ -35,12 +39,12 @@ const Submission = () => {
                 hours = hours % 12 || 12
                 const formattedTime = `${hours}:${minutes}${ampm}`
                 return (
-                  <tr key={index} className="border-t border-border-default">
+                  <tr key={index} className="border-border-default border-t">
                     <td className="px-4 py-2">{index + 1}</td>
                     <td className={`px-4 py-2 ${statusClass}`}>{submission.status}</td>
-                    <td className="px-4 py-2 flex flex-col">
+                    <td className="flex flex-col px-4 py-2">
                       <p>{formattedDate}</p>
-                      <p className="text-xs text-fg-muted">{formattedTime}</p>
+                      <p className="text-fg-muted text-xs">{formattedTime}</p>
                     </td>
                     <td className="px-4 py-2 capitalize">{submission.language}</td>
                     <td className="px-4 py-2">{submission.time}</td>

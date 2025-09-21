@@ -2,7 +2,7 @@ import "./navbar.css"
 import { motion } from "motion/react"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, NavLink, useNavigate } from "react-router"
+import { Link, NavLink, useLocation, useNavigate } from "react-router"
 import { ThemeToggle } from "@/components/theme/ThemeToggle"
 import { logout } from "../../features/rtk/auth/authSlice"
 import { logoutUser } from "../../services/auth.service"
@@ -12,6 +12,7 @@ const Navbar = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const handleLogout = async () => {
     await logoutUser()
     dispatch(logout())
@@ -58,13 +59,9 @@ const Navbar = () => {
         height: isScrolled ? "4rem" : "6rem",
       }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className={`navbar-main_container ${
-        isScrolled
-          ? "bg-basebg-default border-border-default h-20"
-          : "border-transparent h-24 "
-      }`}
+      className={`navbar-main_container ${isScrolled ? "bg-basebg-default border-border-default h-20" : "h-24 border-transparent"}`}
     >
-      <div className="navbar-container container-guttered">
+      <div className={`navbar-container ${location.pathname === "/problems" ? "container" : "container-guttered"}`}>
         <div className="navbar-left">
           <div className="navbar-logo">
             <Link to="/">qodex.</Link>
@@ -72,16 +69,7 @@ const Navbar = () => {
           <ul className="navbar-menus">
             {menus.map((menu, i) => (
               <li key={i}>
-                <NavLink
-                  to={menu.url}
-                  className={({ isActive, isPending }) =>
-                    isPending
-                      ? "navbar-pending"
-                      : isActive
-                      ? "navbar-active"
-                      : ""
-                  }
-                >
+                <NavLink to={menu.url} className={({ isActive, isPending }) => (isPending ? "navbar-pending" : isActive ? "navbar-active" : "")}>
                   {menu.label}
                 </NavLink>
               </li>

@@ -17,7 +17,7 @@ const Home = () => {
         blocks.push(
           <motion.div
             key={`${x}-${y}`}
-            className="absolute bg-border-muted/60"
+            className="bg-border-muted/60 absolute"
             style={{
               top: `${y * cellSize}px`,
               left: `${x * cellSize}px`,
@@ -41,23 +41,17 @@ const Home = () => {
   }
   return (
     <div className="home-main_container">
-      <div
-        className="absolute -top-50 left-1/2 -translate-x-1/2  w-2/3 h-full bg-[linear-gradient(var(--color-grid-pattrn)_1px,transparent_1px),linear-gradient(to_right,var(--color-grid-pattrn)_1px,transparent_1px)] 
-              bg-[size:40px_40px] opacity-70 mask-x-from-70% mask-x-to-90% mask-y-from-60% mask-y-to-90% pointer-events-none z-0 overflow-hidden"
-      >
+      <div className="pointer-events-none absolute -top-50 left-1/2 z-0 h-full w-2/3 -translate-x-1/2 overflow-hidden bg-[linear-gradient(var(--color-grid-pattrn)_1px,transparent_1px),linear-gradient(to_right,var(--color-grid-pattrn)_1px,transparent_1px)] mask-y-from-60% mask-y-to-90% mask-x-from-70% mask-x-to-90% bg-[size:40px_40px] opacity-70">
         {blocks}
       </div>
       <div className="home-container container-guttered z-10">
         <div className="home-hero_section relative">
           <h1 className="home-hero_title">
-            We love solving problems. <br /> But, what if there was a platform
-            that <br /> helped you master them all?
+            We love solving problems. <br /> But, what if there was a platform that <br /> helped you master them all?
           </h1>
           <p className="home-hero_motivation">
-            From brute force to brilliance — Daily coding, real-world patterns,
-            and structured learning — all in one smart platform built <br /> for
-            ambitious developers. Learn deeper. Code like a pro. Introducing you
-            to Qodex, AI powred code platform.
+            From brute force to brilliance — Daily coding, real-world patterns, and structured learning — all in one smart platform built <br /> for
+            ambitious developers. Learn deeper. Code like a pro. Introducing you to Qodex, AI powred code platform.
           </p>
           <div className="home-hero_action_buttons">
             <button className="home-hero_explore">Explore</button>

@@ -8,21 +8,21 @@
   /* @apply ; */
 
   & .problem-courses {
-    @apply flex items-center gap-4 mb-4;
+    @apply mb-4 flex items-center gap-4;
 
     & .problem-courses_card {
-      @apply min-w-72 h-36 w-72 flex items-center justify-center gap-2 rounded-lg bg-basebg-surface border border-border-default overflow-hidden hover:bg-accent-subtle/20 cursor-pointer duration-100 transition-all ease-in-out;
+      @apply bg-basebg-surface border-border-default hover:bg-accent-subtle/20 flex h-36 w-72 min-w-72 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg border transition-all duration-100 ease-in-out;
     }
   }
 
   & .problem-header {
-    @apply p-2 flex justify-between items-center gap-4;
+    @apply flex items-center justify-between gap-4 p-2;
 
     & .problem-search_box {
       @apply flex items-center gap-2;
 
       & input {
-        @apply px-4 py-2 text-sm rounded-lg border border-border-muted bg-basebg-default  text-fg-default placeholder:text-fg-muted focus:outline-none focus:border-accent-fg;
+        @apply border-border-muted bg-basebg-default text-fg-default placeholder:text-fg-muted focus:border-accent-fg rounded-lg border px-4 py-2 text-sm focus:outline-none;
 
         &::placeholder {
           @apply text-fg-muted text-xs;
@@ -31,13 +31,13 @@
     }
 
     & .problem-search_box_clear {
-      @apply text-xs text-fg-muted hover:text-fg-default cursor-pointer flex items-center gap-1 border border-border-muted hover:border-border-default px-2 py-1 rounded duration-100 transition-all ease-in-out;
+      @apply text-fg-muted hover:text-fg-default border-border-muted hover:border-border-default flex cursor-pointer items-center gap-1 rounded border px-2 py-1 text-xs transition-all duration-100 ease-in-out;
     }
 
     & .problem-filter {
-      @apply flex items-center gap-2 text-fg-default;
+      @apply text-fg-default flex items-center gap-2;
       & > button {
-        @apply h-8 w-8 rounded-full bg-basebg-surface cursor-pointer flex justify-center items-center hover:bg-basebg-subtle;
+        @apply bg-basebg-surface hover:bg-basebg-subtle flex h-8 w-8 cursor-pointer items-center justify-center rounded-full;
       }
 
       & .problem-filter_sort {
@@ -45,7 +45,7 @@
 
         & .problem-filter_sort-card {
           & p {
-            @apply flex items-center justify-between gap-2 px-2 py-1.5 rounded cursor-pointer duration-100 transition-all ease-in-out;
+            @apply flex cursor-pointer items-center justify-between gap-2 rounded px-2 py-1.5 transition-all duration-100 ease-in-out;
             & > button {
               @apply cursor-pointer;
             }
@@ -56,17 +56,17 @@
   }
 
   & .problem-list {
-    @apply flex flex-col gap-1 border border-border-default rounded-lg;
+    @apply border-border-default flex flex-col rounded-lg border;
 
     & .problem-item {
-      @apply flex justify-between items-center py-2 px-4  hover:bg-accent-subtle/20 cursor-pointer duration-100 transition-all ease-in-out;
+      @apply border-border-default hover:bg-accent-subtle/20 flex cursor-pointer items-center justify-between border-b px-4 py-2 transition-all duration-100 ease-in-out;
     }
 
     & .problem-item-left {
       @apply flex items-center gap-2;
 
       & .problem-item-check {
-        @apply w-4 text-success-fg;
+        @apply text-success-fg w-4;
       }
       & .problem-item-index {
         @apply text-fg-muted;
@@ -77,20 +77,20 @@
     }
 
     & .problem-item-right {
-      @apply text-center flex items-center gap-2;
+      @apply flex items-center gap-2 text-center;
 
       & .problem-item-more {
-        @apply p-1 rounded hover:bg-basebg-subtle cursor-pointer duration-100 transition-all ease-in-out;
+        @apply hover:bg-basebg-subtle cursor-pointer rounded p-1 transition-all duration-100 ease-in-out;
       }
 
       & .problem-item-difficulty {
-        @apply capitalize text-xs;
+        @apply text-xs capitalize;
       }
     }
   }
-  & .problem-list > a:nth-child(even) .problem-item {
+  /* & .problem-list > a:nth-child(even) .problem-item {
     @apply bg-basebg-surface border-y border-border-default/50 hover:bg-accent-subtle/20;
-  }
+  } */
 }
 
 /* .problem-right_sidebar {

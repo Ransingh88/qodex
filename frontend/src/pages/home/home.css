@@ -1,30 +1,30 @@
 @reference '@/index.css';
 
 .home-main_container {
-  @apply w-full h-screen bg-basebg-default text-fg-default relative;
+  @apply bg-basebg-default text-fg-default relative h-screen w-full;
 }
 
 .home-container {
-  @apply h-full w-full flex flex-col items-center;
+  @apply flex h-full w-full flex-col items-center;
 }
 
 .home-hero_section {
-  @apply w-full py-20 text-center flex flex-col items-center justify-center gap-6 ;
+  @apply flex w-full flex-col items-center justify-center gap-6 py-20 text-center;
 
   & > h1 {
-    @apply text-xl  md:text-3xl lg:text-5xl font-bold;
+    @apply text-xl font-bold md:text-3xl lg:text-5xl;
   }
 
   & > p {
-    @apply text-fg-muted text-xs ;
+    @apply text-fg-muted text-xs;
   }
-  & .home-hero_action_buttons{
-    @apply w-full flex items-center justify-center gap-4 mt-4;
+  & .home-hero_action_buttons {
+    @apply mt-4 flex w-full items-center justify-center gap-4;
   }
   & .home-hero_explore {
-    @apply bg-basebg-default border border-border-muted hover:bg-accent-subtle text-fg-default px-4 py-2 rounded-lg cursor-pointer;
+    @apply bg-basebg-default border-border-muted hover:bg-accent-subtle text-fg-default cursor-pointer rounded-lg border px-4 py-2;
   }
   & .home-hero_cta {
-    @apply bg-accent-fg hover:bg-accent-emphasis text-[#f8f8f8] px-4 py-2 rounded-lg cursor-pointer;
+    @apply bg-accent-fg hover:bg-accent-emphasis cursor-pointer rounded-lg px-4 py-2 text-[#f8f8f8];
   }
 }

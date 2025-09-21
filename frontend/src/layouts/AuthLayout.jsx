@@ -12,9 +12,7 @@ const AuthLayout = () => {
   if (isAuthenticated) return navigate(from, { replace: true })
   return (
     <div className="authLayout-main_container">
-      <div className="grid-pattrn">
-        {/* <div className="grid-pattrn-radial"></div> */}
-      </div>
+      <div className="grid-pattrn">{/* <div className="grid-pattrn-radial"></div> */}</div>
       <div className="authLayout-container">
         <div className="authLayout-navbar">
           <div className="authLayout-navbar_logo">
@@ -31,7 +29,7 @@ const AuthLayout = () => {
             </ul>
           </div>
         </div>
-        <div className="w-full h-full">
+        <div className="h-full w-full">
           <Outlet />
         </div>
         <div className="authLayout-footer">&copy; qodex. 2025 </div>

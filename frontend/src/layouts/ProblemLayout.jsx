@@ -19,27 +19,19 @@ const ProblemLayout = () => {
   }
 
   return (
-    <div className="mx-auto overflow-hidden h-screen w-full box-border bg-basebg-default text-fg-default">
-      <div className="px-8 pt-1.5 h-12 flex justify-between items-center">
+    <div className="bg-basebg-default text-fg-default mx-auto box-border h-screen w-full overflow-hidden">
+      <div className="flex h-12 items-center justify-between px-8 pt-1.5">
         <div>
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-1 cursor-pointer hover:text-fg-muted text-sm"
-          >
+          <button onClick={() => navigate(-1)} className="hover:text-fg-muted flex cursor-pointer items-center gap-1 text-sm">
             <ArrowLeft size={16} className="mt-0.5" /> Back
           </button>
         </div>
-        <div className="flex justify-center items-center gap-4">
+        <div className="flex items-center justify-center gap-4">
           <button
             onClick={handleSubmitClick}
-            className="flex items-center gap-1 bg-success-fg/80 px-2 py-1.5 rounded cursor-pointer hover:bg-success-emphasis text-sm"
+            className="bg-success-fg/80 hover:bg-success-emphasis flex cursor-pointer items-center gap-1 rounded px-2 py-1.5 text-sm"
           >
-            {isLoading ? (
-              <LoadingSpinner size={14} />
-            ) : (
-              <ArrowBigUpDash size={14} />
-            )}{" "}
-            Submit
+            {isLoading ? <LoadingSpinner size={14} /> : <ArrowBigUpDash size={14} />} Submit
           </button>
           {isAuthenticated && <UserPopover />}
         </div>

@@ -36,12 +36,4 @@ const getProblemSubmissions = async (problemId) => {
   return response
 }
 
-export {
-  getAllProblems,
-  getProblemDetails,
-  getProblemSubmissions,
-  getProblemCategory,
-  getProblemTags,
-  getProblemCompanies,
-  getProblemDifficulties,
-}
+export { getAllProblems, getProblemDetails, getProblemSubmissions, getProblemCategory, getProblemTags, getProblemCompanies, getProblemDifficulties }

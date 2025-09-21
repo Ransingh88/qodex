@@ -1,25 +1,25 @@
 @reference '@/index.css';
 
 .profile-main_container {
-  @apply w-full h-full bg-basebg-surface text-fg-default mt-4 flex flex-col lg:flex-row justify-center items-center gap-2;
+  @apply bg-basebg-surface text-fg-default mt-4 flex h-full w-full flex-col items-center justify-center gap-2 lg:flex-row;
 }
 
 .profile-profile_info {
-  @apply w-full lg:w-1/4 h-full border border-border-muted/30 rounded overflow-hidden;
+  @apply border-border-muted/30 h-full w-full overflow-hidden rounded border lg:w-1/4;
 }
 
 .user-info {
-  @apply w-full min-h-52;
+  @apply min-h-52 w-full;
 
   & .user-details {
-    @apply w-full lg:min-h-32 p-4 flex justify-start bg-basebg-surface items-end gap-4 overflow-hidden relative;
+    @apply bg-basebg-surface relative flex w-full items-end justify-start gap-4 overflow-hidden p-4 lg:min-h-32;
 
     & .user-avatar {
-      @apply w-16 h-16 text-2xl font-semibold rounded-full bg-indigo-900 text-gray-300 flex items-center justify-center relative cursor-pointer outline-2 outline-offset-2 outline-accent-emphasis/50;
+      @apply outline-accent-emphasis/50 relative flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-indigo-900 text-2xl font-semibold text-gray-300 outline-2 outline-offset-2;
     }
   }
 }
 
 .profile-performance {
-  @apply w-full lg:w-3/4 h-full border border-border-muted/30 rounded;
+  @apply border-border-muted/30 h-full w-full rounded border lg:w-3/4;
 }

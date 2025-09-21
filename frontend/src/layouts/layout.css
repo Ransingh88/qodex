@@ -1,18 +1,18 @@
 @reference "@/index.css";
 
 .authLayout-main_container {
-  @apply w-full h-screen bg-basebg-default text-fg-default relative;
+  @apply bg-basebg-default text-fg-default relative h-screen w-full;
 }
 
 .authLayout-container {
-  @apply w-full h-full flex flex-col items-center;
+  @apply flex h-full w-full flex-col items-center;
 }
 
 .authLayout-navbar {
-  @apply w-full h-32 flex items-center justify-between px-24;
+  @apply flex h-32 w-full items-center justify-between px-24;
 
   & .authLayout-navbar_logo {
-    @apply text-2xl font-head font-semibold tracking-tighter;
+    @apply font-head text-2xl font-semibold tracking-tighter;
   }
   & .authLayout-navbar_menus {
     @apply flex items-center justify-center gap-8;
@@ -20,20 +20,19 @@
     & > ul {
       @apply flex items-center justify-center gap-4 capitalize;
       & .authLayout-navbar_login {
-        @apply border border-border-muted hover:bg-accent-subtle px-4 py-2 rounded-lg;
+        @apply border-border-muted hover:bg-accent-subtle rounded-lg border px-4 py-2;
       }
       & .authLayout-navbar_signup {
-        @apply bg-accent-fg hover:bg-accent-emphasis text-[#f8f8f8] px-4 py-2 rounded-lg;
+        @apply bg-accent-fg hover:bg-accent-emphasis rounded-lg px-4 py-2 text-[#f8f8f8];
       }
     }
   }
 }
 
 .authLayout-footer {
-  @apply text-xs text-fg-muted font-head self-start p-8 lowercase;
+  @apply text-fg-muted font-head self-start p-8 text-xs lowercase;
 }
 
 .grid-pattrn {
-  @apply absolute -top-40 left-1/2 -translate-x-1/2  w-1/2 h-[500px] bg-[linear-gradient(var(--color-grid-pattrn)_1px,transparent_1px),linear-gradient(to_right,var(--color-grid-pattrn)_1px,transparent_1px)] 
-              bg-[size:35px_35px] opacity-30 mask-x-from-70% mask-x-to-90% mask-y-from-70% mask-y-to-100%;
+  @apply absolute -top-40 left-1/2 h-[500px] w-1/2 -translate-x-1/2 bg-[linear-gradient(var(--color-grid-pattrn)_1px,transparent_1px),linear-gradient(to_right,var(--color-grid-pattrn)_1px,transparent_1px)] mask-y-from-70% mask-y-to-100% mask-x-from-70% mask-x-to-90% bg-[size:35px_35px] opacity-30;
 }

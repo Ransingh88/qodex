@@ -1,35 +1,35 @@
 @reference '@/index.css';
 
 .navbar-main_container {
-  @apply text-fg-default w-full flex justify-center items-center fixed top-0 right-0 left-0 z-20 border-b;
+  @apply text-fg-default fixed top-0 right-0 left-0 z-20 flex w-full items-center justify-center border-b;
 }
 
 .navbar-container {
-  @apply h-full flex justify-between items-center;
+  @apply flex h-full items-center justify-between;
 }
 
 .navbar-left {
-  @apply flex justify-center items-center gap-12;
+  @apply flex items-center justify-center gap-12;
 
   & .navbar-logo {
-    @apply text-2xl font-head font-semibold tracking-tighter;
+    @apply font-head text-2xl font-semibold tracking-tighter;
   }
   & .navbar-menus {
-    @apply flex items-center justify-center gap-8 capitalize text-fg-muted;
+    @apply text-fg-muted flex items-center justify-center gap-8 capitalize;
 
     & > li {
       @apply relative;
     }
     & .navbar-active {
-      @apply before:absolute before:bottom-0 before:w-4 before:h-0.5 before:bg-accent-fg/80 before:rounded-lg;
+      @apply before:bg-accent-fg/80 before:absolute before:bottom-0 before:h-0.5 before:w-4 before:rounded-lg;
     }
   }
 }
 
 .navbar-right {
-  @apply flex justify-center items-center gap-8;
+  @apply flex items-center justify-center gap-8;
 
   & .navbar-login {
-    @apply bg-accent-fg hover:bg-accent-emphasis text-[#f8f8f8] px-4 py-2 rounded-lg;
+    @apply bg-accent-fg hover:bg-accent-emphasis rounded-lg px-4 py-2 text-[#f8f8f8];
   }
 }

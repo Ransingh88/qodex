@@ -18,12 +18,12 @@ const Login = () => {
   const from = location.state?.from?.pathname || "/"
   const { isAuthenticated } = useSelector((state) => state.auth)
 
-  const handleLogin = async () => {
-    const res = await run(() => loginUser(username, password))
+  const handleLogin = run(async () => {
+    const res = await loginUser(username, password)
     toast.success(res.data.message)
     dispatch(lg(res.data.data.user))
     navigate(from, { replace: true })
-  }
+  })
   return (
     <div className="login_main-container">
       <div className="login-container">
@@ -35,23 +35,11 @@ const Login = () => {
           <div className="login-form_body">
             <span className="form_input">
               <label>Email or Username</label>
-              <input
-                type="text"
-                placeholder="username@google.com"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
-                className=""
-              />
+              <input type="text" placeholder="username@google.com" onChange={(e) => setUsername(e.target.value)} value={username} className="" />
             </span>
             <span className="form_input">
               <label>Password</label>
-              <input
-                type="password"
-                placeholder="********"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                className=""
-              />
+              <input type="password" placeholder="********" onChange={(e) => setPassword(e.target.value)} value={password} className="" />
             </span>
             <span className="form_input-actions">
               <span>
@@ -60,11 +48,7 @@ const Login = () => {
               </span>
               <p>Forgot password?</p>
             </span>
-            <button
-              disabled={loading}
-              onClick={handleLogin}
-              className="form_button"
-            >
+            <button disabled={loading} onClick={handleLogin} className="form_button">
               {loading ? <LoadingSpinner /> : "Login"}
             </button>
           </div>

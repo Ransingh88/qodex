@@ -36,8 +36,8 @@ const FilterPopover = ({ icon, size = "default", children }) => {
   }, [isOpen])
 
   return (
-    <div ref={popoverRef} className={`relative ${sizeClass} rounded-full bg-basebg-surface flex justify-center items-center hover:bg-basebg-subtle`}>
-      <button onClick={togglePopover} className="h-full w-full flex justify-center items-center rounded-full cursor-pointer overflow-hidden">
+    <div ref={popoverRef} className={`relative ${sizeClass} bg-basebg-surface hover:bg-basebg-subtle flex items-center justify-center rounded-full`}>
+      <button onClick={togglePopover} className="flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full">
         {icon}
       </button>
       {isOpen && (
@@ -45,7 +45,7 @@ const FilterPopover = ({ icon, size = "default", children }) => {
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", bounce: 0.3 }}
-          className="absolute top-10 right-0 min-h-10 min-w-40 bg-basebg-surface text-fg-default rounded-2xl shadow-lg border border-border-default flex flex-col items-start justify-between overflow-hidden "
+          className="bg-basebg-surface text-fg-default border-border-default absolute top-10 right-0 flex min-h-10 min-w-40 flex-col items-start justify-between overflow-hidden rounded-2xl border shadow-lg"
         >
           <div className="w-full">{children}</div>
         </motion.div>

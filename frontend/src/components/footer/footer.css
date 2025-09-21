@@ -1,24 +1,24 @@
 @reference '@/index.css';
 
 .footer-main_container {
-  @apply w-full flex flex-col items-center justify-center bg-basebg-surface text-fg-default overflow-hidden;
+  @apply bg-basebg-surface text-fg-default flex w-full flex-col items-center justify-center overflow-hidden;
 }
 
 .footer-container {
-  @apply py-8 flex flex-col items-center justify-center gap-4;
+  @apply flex flex-col items-center justify-center gap-4 py-8;
 }
 
 .footer-body {
-  @apply w-full flex items-center justify-between;
+  @apply flex w-full items-center justify-between;
 
   & .footer-content {
     @apply flex flex-col gap-8 py-8 text-xs;
 
     & .logo {
-      @apply text-2xl font-head font-semibold tracking-tighter;
+      @apply font-head text-2xl font-semibold tracking-tighter;
     }
     & .footer-sitemap > ul {
-      @apply flex items-center gap-8 text-fg-muted font-semibold capitalize;
+      @apply text-fg-muted flex items-center gap-8 font-semibold capitalize;
     }
   }
 
@@ -26,31 +26,31 @@
     @apply flex flex-col gap-4 text-xs;
 
     & .footer-newslater_title {
-      @apply font-semibold pl-1;
+      @apply pl-1 font-semibold;
     }
 
     & .footer-newslater_form {
-      @apply w-full flex items-center gap-4;
+      @apply flex w-full items-center gap-4;
       & input {
-        @apply w-full px-4 py-2 text-xs rounded-lg border border-border-muted bg-basebg-default  text-fg-default placeholder:text-fg-muted focus:outline-none focus:border-accent-fg;
+        @apply border-border-muted bg-basebg-default text-fg-default placeholder:text-fg-muted focus:border-accent-fg w-full rounded-lg border px-4 py-2 text-xs focus:outline-none;
       }
       &::placeholder {
         @apply text-fg-muted text-xs;
       }
 
       & button {
-        @apply flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-accent-fg text-[#f8f8f8] hover:bg-accent-emphasis cursor-pointer;
+        @apply bg-accent-fg hover:bg-accent-emphasis flex cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2 text-[#f8f8f8];
       }
     }
   }
 }
 
 .footer-devider {
-  @apply h-0.25 w-full bg-border-muted;
+  @apply bg-border-muted h-0.25 w-full;
 }
 
 .footer-legal {
-  @apply w-full py-4 text-xs text-fg-muted flex justify-between items-center;
+  @apply text-fg-muted flex w-full items-center justify-between py-4 text-xs;
 
   & .footer-legal_copyright {
     @apply font-medium;
