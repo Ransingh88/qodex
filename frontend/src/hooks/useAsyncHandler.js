@@ -24,7 +24,6 @@ export function asyncHandler(
       // }
 
       const message = result?.data?.message || successMessage
-      console.log(message, "uhwerheurh")
       if ((result?.data?.success && message && onSuccess) || successMessage) {
         onSuccess(message)
       }
