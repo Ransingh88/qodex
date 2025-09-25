@@ -60,7 +60,7 @@ const Playlist = () => {
 
       <div>
         {isLoading ? (
-          <LoadingSpinner/>
+          <LoadingSpinner />
         ) : (
           playlists.map((playlist) => (
             <div
@@ -73,10 +73,21 @@ const Playlist = () => {
           ))
         )}
       </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Create Playlist">
-        <Input type="text" placeholder="Playlist Title" value={playlistTitle} onChange={(e) => setPlaylistTitle(e.target.value)} />
-        <Input type="text" placeholder="Playlist Description" value={playlistDescription} onChange={(e) => setPlaylistDescription(e.target.value)} />
-        <Button onClick={handleCreatePlaylist}>{loading ? "Creating..." : "Create"}</Button>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Create New Playlist">
+        <div className="flex flex-col gap-4 p-2">
+          <Input type="text" placeholder="Playlist Title" value={playlistTitle} onChange={(e) => setPlaylistTitle(e.target.value)} />
+          <Input
+            type="text"
+            placeholder="Playlist Description"
+            value={playlistDescription}
+            onChange={(e) => setPlaylistDescription(e.target.value)}
+            className="h-24"
+          />
+          <div className="flex justify-end gap-2 mt-4">
+            <Button color="secondary" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+            <Button onClick={handleCreatePlaylist}>{loading ? "Creating..." : "Create"}</Button>
+          </div>
+        </div>
       </Modal>
     </div>
   )
