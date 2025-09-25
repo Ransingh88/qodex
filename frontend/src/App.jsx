@@ -14,7 +14,7 @@ function App() {
       <ToastContainer
         theme={selectedTheme || "dark"}
         position="bottom-right"
-        autoClose={1500}
+        autoClose={2000}
         hideProgressBar
         newestOnTop
         closeOnClick

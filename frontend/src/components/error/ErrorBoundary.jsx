@@ -6,12 +6,12 @@ class ErrorBoundary extends Component {
     this.state = { hasError: false, errorMsg: "" }
   }
 
-  static getDerivedStateFormError(error) {
+  static getDerivedStateFromError(error) {
     return { hasError: true, errorMsg: error.message }
   }
 
-  componentDisCatch(error, errorInfo) {
-    console.log("App Crashed", error, errorInfo)
+  componentDidCatch(error, errorInfo) {
+    console.error("App Crashed :", error, errorInfo)
   }
 
   render() {
