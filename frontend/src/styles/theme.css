@@ -125,7 +125,7 @@
   --color-alpha-white: rgb(255 255 255);
   --color-alpha-black: rgb(0 0 0);
 
-  --color-brand-25: rgb(252 250 255);
+  /* --color-brand-25: rgb(252 250 255);
   --color-brand-50: rgb(249 245 255);
   --color-brand-100: rgb(244 235 255);
   --color-brand-200: rgb(233 215 254);
@@ -136,7 +136,20 @@
   --color-brand-700: rgb(105 65 198);
   --color-brand-800: rgb(83 56 158);
   --color-brand-900: rgb(66 48 125);
-  --color-brand-950: rgb(44 28 95);
+  --color-brand-950: rgb(44 28 95); */
+
+  --color-brand-25: rgb(250 250 255);
+  --color-brand-50: rgb(242 243 254);
+  --color-brand-100: rgb(229 231 252);
+  --color-brand-200: rgb(205 208 249);
+  --color-brand-300: rgb(173 178 243);
+  --color-brand-400: rgb(138 145 236);
+  --color-brand-500: rgb(108 116 222);
+  --color-brand-600: rgb(88 97 197); /* #5861c5 (main base) */
+  --color-brand-700: rgb(72 79 166);
+  --color-brand-800: rgb(58 64 133);
+  --color-brand-900: rgb(48 52 108);
+  --color-brand-950: rgb(30 32 70);
 
   --color-error-25: rgb(255 251 250);
   --color-error-50: rgb(254 243 242);
@@ -912,7 +925,7 @@
 @layer base {
   /* DARK MODE VARIABLES */
 
-  .dark-mode {
+  .dark {
     --color-alpha-white: rgb(12 14 18);
     --color-alpha-black: rgb(255 255 255);
 

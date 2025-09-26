@@ -1,6 +1,6 @@
 @import "tailwindcss";
 /* @import "./styles/global.css"; */
-/* @import "./styles/theme.css"; */
+@import "./styles/theme.css";
 @import "./themes/theme.css";
 
 :root {
@@ -69,6 +69,6 @@ body::-webkit-scrollbar {
 .lucide {
   /* color: #ffadff; */
   /* stroke-width: 2px; */
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
 }

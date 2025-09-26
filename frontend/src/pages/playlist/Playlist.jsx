@@ -73,19 +73,30 @@ const Playlist = () => {
           ))
         )}
       </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Create New Playlist">
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        subtitle="Create a new playlist to save your favorite tracks."
+        title="Create Playlist"
+        size="md"
+        iconPosition="center"
+      >
         <div className="flex flex-col gap-4 p-2">
           <Input type="text" placeholder="Playlist Title" value={playlistTitle} onChange={(e) => setPlaylistTitle(e.target.value)} />
           <Input
-            type="text"
+            type="textarea"
             placeholder="Playlist Description"
             value={playlistDescription}
             onChange={(e) => setPlaylistDescription(e.target.value)}
-            className="h-24"
+            className="h-20"
           />
-          <div className="flex justify-end gap-2 mt-4">
-            <Button color="secondary" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button onClick={handleCreatePlaylist}>{loading ? "Creating..." : "Create"}</Button>
+          <div className="mt-4 flex w-full justify-center gap-4">
+            <Button color="secondary" onClick={() => setIsModalOpen(false)} size="sm" width="full">
+              Cancel
+            </Button>
+            <Button onClick={handleCreatePlaylist} color="primary" size="sm" loading={loading} width="full">
+              {loading ? "Creating" : "Create"}
+            </Button>
           </div>
         </div>
       </Modal>
