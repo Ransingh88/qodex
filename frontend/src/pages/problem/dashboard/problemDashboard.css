@@ -1,7 +1,7 @@
 @reference '@/index.css';
 
 .problem_dashboard-main_container {
-  @apply bg-basebg-default text-fg-default box-border w-full;
+  @apply bg-primary text-primary box-border w-full;
 }
 
 .problem_dashboard-container {
@@ -12,7 +12,7 @@
   @apply flex h-screen w-64 min-w-32 flex-col gap-4 p-2;
 
   & .problem_dashboard-sidebar_section {
-    @apply bg-basebg-surface border-border-default hover:border-accent-fg/50 cursor-pointer rounded-lg border p-4 transition-all duration-100 ease-in-out;
+    @apply bg-secondary border-secondary hover:border-brand_alt cursor-pointer rounded-lg border p-4 transition-all duration-100 ease-in-out;
     & p {
       @apply text-fg-muted font-semibold;
     }

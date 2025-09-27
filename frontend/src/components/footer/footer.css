@@ -1,7 +1,7 @@
 @reference '@/index.css';
 
 .footer-main_container {
-  @apply bg-basebg-surface text-fg-default flex w-full flex-col items-center justify-center overflow-hidden;
+  @apply bg-secondary text-primary flex w-full flex-col items-center justify-center overflow-hidden;
 }
 
 .footer-container {
@@ -32,7 +32,7 @@
     & .footer-newslater_form {
       @apply flex w-full items-center gap-4;
       & input {
-        @apply border-border-muted bg-basebg-default text-fg-default placeholder:text-fg-muted focus:border-accent-fg w-full rounded-lg border px-4 py-2 text-xs focus:outline-none;
+        @apply border-border-muted bg-basebg-default text-primary placeholder:text-fg-muted focus:border-accent-fg w-full rounded-lg border px-4 py-2 text-xs focus:outline-none;
       }
       &::placeholder {
         @apply text-fg-muted text-xs;
@@ -46,7 +46,7 @@
 }
 
 .footer-devider {
-  @apply bg-border-muted h-0.25 w-full;
+  @apply bg-border-primary h-0.25 w-full;
 }
 
 .footer-legal {

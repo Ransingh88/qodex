@@ -6,10 +6,10 @@ const NotFound = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="bg-basebg-default text-fg-default relative flex h-screen w-full justify-center">
-      <div className="pointer-events-none absolute -top-40 left-1/2 z-0 h-[500px] w-1/2 -translate-x-1/2 bg-[linear-gradient(var(--color-grid-pattrn)_1px,transparent_1px),linear-gradient(to_right,var(--color-grid-pattrn)_1px,transparent_1px)] mask-y-from-70% mask-y-to-100% mask-x-from-70% mask-x-to-90% bg-[size:35px_35px] opacity-30"></div>
+    <div className="bg-primary text-primary relative flex h-screen w-full justify-center">
+      <div className="pointer-events-none absolute -top-40 left-1/2 z-0 h-[500px] w-1/2 -translate-x-1/2 bg-[linear-gradient(var(--color-border-primary)_1px,transparent_1px),linear-gradient(to_right,var(--color-border-primary)_1px,transparent_1px)] mask-y-from-70% mask-y-to-100% mask-x-from-70% mask-x-to-90% bg-[size:35px_35px] opacity-70"></div>
       <div className="z-1 flex h-full w-full flex-col items-center justify-start gap-6 px-24 pt-24">
-        <div className="bg-basebg-default border-border-muted flex items-center gap-2 rounded-lg border px-2 py-1 tracking-wide shadow">
+        <div className="bg-primary border-border-muted flex items-center gap-2 rounded-lg border px-2 py-1 tracking-wide shadow">
           <span className="bg-danger-fg h-2 w-2 rounded-full"></span>
           <p className="text-xs">404 error</p>
         </div>
@@ -20,7 +20,7 @@ const NotFound = () => {
         <div className="flex items-center justify-center gap-4">
           <button
             onClick={() => navigate(-1)}
-            className="border-border-muted hover:bg-accent-subtle bg-basebg-default text-fg-default flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2"
+            className="border-border-muted hover:bg-accent-subtle bg-primary text-primary flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2"
           >
             <MoveLeft size={18} className="mt-0.5" /> Go back
           </button>

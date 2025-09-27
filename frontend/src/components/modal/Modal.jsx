@@ -37,7 +37,6 @@ const Modal = ({
     error: "bg-error-secondary text-featured-icon-light-fg-error",
     success: "bg-success-secondary text-featured-icon-light-fg-success",
     warning: "bg-warning-secondary text-featured-icon-light-fg-warning",
-    info: "bg-info-secondary text-featured-icon-light-fg-info",
   }
 
   const iconPositionMap = {

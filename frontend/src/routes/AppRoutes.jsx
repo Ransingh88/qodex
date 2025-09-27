@@ -8,6 +8,7 @@ import Signup from "@/pages/auth/Signup"
 import Error from "@/pages/error/Error"
 import Home from "@/pages/home/Home"
 import Playlist from "@/pages/playlist/Playlist"
+import PlaylistDetails from "@/pages/playlist/PlaylistDetails"
 import ProblemDashboard from "@/pages/problem/dashboard/ProblemDashboard"
 import Problem from "@/pages/problem/Problem"
 import ProblemDetails from "@/pages/problem/ProblemDetails"
@@ -23,6 +24,7 @@ const AppRoutes = () => {
           <Route index element={<Problem />} />
           <Route path="study-plan" element={<div className="px-2">Study Plan</div>} />
           <Route path="playlist" element={<Playlist />} />
+          <Route path="playlist/:id" element={<PlaylistDetails />} />
         </Route>
         <Route path="*" element={<Error />} />
       </Route>

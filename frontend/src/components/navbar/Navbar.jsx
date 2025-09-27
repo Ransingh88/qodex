@@ -59,7 +59,7 @@ const Navbar = () => {
         height: isScrolled ? "4rem" : "6rem",
       }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className={`navbar-main_container ${isScrolled ? "bg-basebg-default border-border-default h-20" : "h-24 border-transparent"}`}
+      className={`navbar-main_container ${isScrolled ? "bg-primary border-primary h-20" : "h-24 border-transparent"}`}
     >
       <div className={`navbar-container container-guttered`}>
         <div className="navbar-left">

@@ -1,5 +1,6 @@
 import clsx from "clsx" // optional helper for conditional classNames
 import { Loader2 } from "lucide-react" // spinner icon (can use any)
+import { cloneElement } from "react"
 
 export default function Button({
   size = "sm",
@@ -13,7 +14,6 @@ export default function Button({
   isDisabled = false,
   loading = false,
   showTextWhileLoading = true,
-  // onClick,
   ...otherProps
 }) {
   const baseStyles =
@@ -57,7 +57,10 @@ export default function Button({
       {...otherProps}
     >
       {/* Leading icon */}
-      {/* {IconLeading && <IconLeading className={clsx("mr-2 h-5 w-5", loading && "opacity-0")} />} */}
+      {iconLeading &&
+        cloneElement(iconLeading, {
+          className: clsx("pointer-events-none size-5 shrink-0 transition-inherit-all", loading && "opacity-0", iconLeading.props.className),
+        })}
 
       {/* Loading spinner */}
       {loading && (
@@ -90,7 +93,10 @@ export default function Button({
       {(showTextWhileLoading || !loading) && <span className={clsx(loading && !showTextWhileLoading && "opacity-0")}>{children}</span>}
 
       {/* Trailing icon */}
-      {/* {IconTrailing && <IconTrailing className={clsx("ml-2 h-5 w-5", loading && "opacity-0")} />} */}
+      {iconTrailing &&
+        cloneElement(iconTrailing, {
+          className: clsx("pointer-events-none size-5 shrink-0 transition-inherit-all", loading && "opacity-0", iconTrailing.props.className),
+        })}
     </button>
   )
 }

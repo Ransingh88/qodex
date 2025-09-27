@@ -1,7 +1,7 @@
 @reference '@/index.css';
 
 .home-main_container {
-  @apply bg-basebg-default text-fg-default relative h-screen w-full;
+  @apply bg-primary text-primary relative h-screen w-full;
 }
 
 .home-container {

@@ -17,7 +17,7 @@ const Home = () => {
         blocks.push(
           <motion.div
             key={`${x}-${y}`}
-            className="bg-border-muted/60 absolute"
+            className="bg-border-primary absolute"
             style={{
               top: `${y * cellSize}px`,
               left: `${x * cellSize}px`,
@@ -41,7 +41,7 @@ const Home = () => {
   }
   return (
     <div className="home-main_container">
-      <div className="pointer-events-none absolute -top-50 left-1/2 z-0 h-full w-2/3 -translate-x-1/2 overflow-hidden bg-[linear-gradient(var(--color-grid-pattrn)_1px,transparent_1px),linear-gradient(to_right,var(--color-grid-pattrn)_1px,transparent_1px)] mask-y-from-60% mask-y-to-90% mask-x-from-70% mask-x-to-90% bg-[size:40px_40px] opacity-70">
+      <div className="pointer-events-none absolute -top-50 left-1/2 z-0 h-full w-2/3 -translate-x-1/2 overflow-hidden bg-[linear-gradient(var(--color-border-primary)_1px,transparent_1px),linear-gradient(to_right,var(--color-border-primary)_1px,transparent_1px)] mask-y-from-60% mask-y-to-90% mask-x-from-70% mask-x-to-90% bg-[size:40px_40px] opacity-70">
         {blocks}
       </div>
       <div className="home-container container-guttered z-10">

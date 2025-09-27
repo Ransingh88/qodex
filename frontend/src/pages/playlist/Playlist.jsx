@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react"
+import { Plus, Trash2 } from "lucide-react"
 import "./playlist.css"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -9,12 +9,14 @@ import { fetchPlaylist, fetchPlaylistStart } from "@/features/rtk/problem/playli
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { createPlaylist, deletePlaylist, getAllPlaylist } from "@/services/playlist.service"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
+import { Link } from "react-router"
 const Playlist = () => {
   const { playlists, isLoading } = useSelector((state) => state.playlist)
   const { isAuthenticated } = useSelector((state) => state.auth)
   const { run, loading } = useAsyncHandler()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [playlistToDelete, setPlaylistToDelete] = useState(null)
   const [playlistTitle, setPlaylistTitle] = useState("")
   const [playlistDescription, setPlaylistDescription] = useState("")
   const [refreshKey, setRefreshKey] = useState(0)
@@ -38,6 +40,7 @@ const Playlist = () => {
   const handleDeletePlaylist = run(async (playlistId) => {
     const res = await deletePlaylist(playlistId)
     setRefreshKey((prev) => prev + 1)
+    setPlaylistToDelete(null)
     return res
   })
 
@@ -45,39 +48,68 @@ const Playlist = () => {
     if (isAuthenticated) handleGetAllPlaylist()
   }, [isAuthenticated, refreshKey])
   return (
-    <div>
-      <h1>Playlist</h1>
-      <Button
-        size="md"
-        color="primary"
-        onClick={() => {
-          setIsModalOpen(true)
-        }}
-        IconLeading={<Plus />}
-      >
-        Create
-      </Button>
-
-      <div>
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : (
-          playlists.map((playlist) => (
-            <div
-              key={playlist._id}
-              className="bg-basebg-surface text-fg-default border-border-default mb-4 flex items-center justify-between rounded border p-4"
-            >
-              <h4>{playlist.title}</h4>
-              <button onClick={() => handleDeletePlaylist(playlist._id)}>delete</button>
+    <div className="mx-auto max-w-5/6 p-4">
+      <div className="mb-16 flex items-center justify-between">
+        <h1>Playlists</h1>
+        <Button
+          size="md"
+          color="secondary"
+          onClick={() => {
+            setIsModalOpen(true)
+          }}
+        >
+          Create Playlist
+        </Button>
+      </div>
+      <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-4">
+          <h5>Featured</h5>
+          <div className="flex flex-wrap gap-4">
+            <div className="bg-secondary border-secondary h-54 w-48 rounded-lg border shadow"></div>
+            <div className="bg-secondary border-secondary h-54 w-48 rounded-lg border shadow"></div>
+            <div className="bg-secondary border-secondary h-54 w-48 rounded-lg border shadow"></div>
+            <div className="bg-secondary border-secondary h-54 w-48 rounded-lg border shadow"></div>
+            <div className="bg-secondary border-secondary h-54 w-48 rounded-lg border shadow"></div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <h5>My Playlist</h5>
+          {isAuthenticated ? (
+            <div className="flex flex-wrap gap-4">
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : playlists.length > 0 ? (
+                playlists.map((playlist) => (
+                  <Link to={`/problems/playlist/${playlist._id}`} key={playlist._id}>
+                    <div className="bg-secondary text-secondary border-secondary flex h-28 w-72 items-start justify-between rounded-lg border p-4 shadow">
+                      <h5>{playlist.title}</h5>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          setPlaylistToDelete(playlist._id)
+                        }}
+                        className="text-error-primary hover:text-error-primary_hover cursor-pointer"
+                      >
+                        <Trash2 />
+                      </button>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <div className="text-tertiary">No playlist found</div>
+              )}
             </div>
-          ))
-        )}
+          ) : (
+            <div className="text-tertiary">Please login to view your playlists.</div>
+          )}
+        </div>
       </div>
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        subtitle="Create a new playlist to save your favorite tracks."
         title="Create Playlist"
+        subtitle="Create a new playlist to save your favorite tracks."
         size="md"
         iconPosition="center"
       >
@@ -96,6 +128,37 @@ const Playlist = () => {
             </Button>
             <Button onClick={handleCreatePlaylist} color="primary" size="sm" loading={loading} width="full">
               {loading ? "Creating" : "Create"}
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={!!playlistToDelete}
+        onClose={() => setPlaylistToDelete(null)}
+        title="Delete Playlist"
+        subtitle="Are you sure you want to delete this playlist?"
+        size="sm"
+        iconPosition="left"
+        modalIcon={<Trash2 />}
+        modalIconColor="error"
+      >
+        <div className="flex flex-col gap-4 p-2">
+          <p>This action cannot be undone.</p>
+          <div className="mt-4 flex w-full justify-center gap-4">
+            <Button color="secondary" onClick={() => setPlaylistToDelete(null)} size="sm" width="full">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                handleDeletePlaylist(playlistToDelete)
+              }}
+              color="primary-destructive"
+              size="sm"
+              loading={loading}
+              width="full"
+            >
+              {loading ? "Deleting" : "Delete"}
             </Button>
           </div>
         </div>

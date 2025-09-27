@@ -1,7 +1,7 @@
 @reference '@/index.css';
 
 .navbar-main_container {
-  @apply text-fg-default fixed top-0 right-0 left-0 z-20 flex w-full items-center justify-center border-b;
+  @apply text-primary fixed top-0 right-0 left-0 z-20 flex w-full items-center justify-center border-b;
 }
 
 .navbar-container {
@@ -15,13 +15,13 @@
     @apply font-head text-2xl font-semibold tracking-tighter;
   }
   & .navbar-menus {
-    @apply text-fg-muted flex items-center justify-center gap-8 capitalize;
+    @apply text-tertiary flex items-center justify-center gap-8 capitalize;
 
     & > li {
-      @apply relative;
+      @apply relative hover:text-tertiary_hover;
     }
     & .navbar-active {
-      @apply before:bg-accent-fg/80 before:absolute before:bottom-0 before:h-0.5 before:w-4 before:rounded-lg;
+      @apply before:bg-brand-solid before:absolute before:bottom-0 before:h-0.5 before:w-4 before:rounded-lg;
     }
   }
 }
