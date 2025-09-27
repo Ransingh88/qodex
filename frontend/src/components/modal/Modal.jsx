@@ -19,7 +19,7 @@ const Modal = ({
   iconPosition = "left", // left, center
 }) => {
   const base = "relative w-full overflow-hidden rounded-2xl bg-primary text-primary shadow-xl max-w-100 z-10"
-  const backdrop = "opacity-100 absolute inset-0 bg-primary_alt/30 backdrop-blur-xs"
+  const backdrop = "opacity-100 absolute inset-0 bg-fg-secondary/20 backdrop-blur-xs"
 
   const sizeMap = {
     sm: "max-w-100",

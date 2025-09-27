@@ -1,7 +1,7 @@
 import { ChevronRight, Trash2 } from "lucide-react"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import {useNavigate, useParams } from "react-router"
+import { Link, useNavigate, useParams } from "react-router"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import { fetchPlaylist, fetchPlaylistStart } from "@/features/rtk/problem/playlistSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
@@ -50,8 +50,10 @@ const PlaylistDetails = () => {
                 <LoadingSpinner />
               ) : playlist.problems?.length > 0 ? (
                 playlist.problems.map((problem) => (
-                  <div className="bg-secondary border-secondary w-full rounded-lg border px-4 py-3 shadow">
-                    <p className="text-secondary text-sm">{problem}</p>
+                  <div key={problem} className="bg-secondary border-secondary w-full rounded-lg border px-4 py-3 shadow">
+                    <Link to={`/problem/${problem}`}>
+                      <p className="text-secondary text-sm">{problem}</p>
+                    </Link>
                   </div>
                 ))
               ) : (

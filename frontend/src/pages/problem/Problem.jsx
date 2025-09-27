@@ -10,11 +10,13 @@ import {
   FunnelX,
   Star,
 } from "lucide-react"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import "./problem.css"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router"
+import Button from "@/components/button/Button"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
+import Modal from "@/components/modal/Modal"
 import FilterPopover from "@/components/popover/FilterPopover"
 import { clearProblemDetails, fetchProblems } from "@/features/rtk/problem/problemSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
@@ -22,11 +24,14 @@ import { getAllProblems, getProblemCategory, getProblemCompanies, getProblemDiff
 import dsa from "../../assets/images/dsa.png"
 import jsbanner from "../../assets/images/js30dayschallenge.png"
 import tointerviewq from "../../assets/images/tointerviewq.png"
+import { addProblemToPlaylist, getAllPlaylist } from "@/services/playlist.service"
+import { fetchPlaylist, fetchPlaylistStart } from "@/features/rtk/problem/playlistSlice"
 
 const Problem = () => {
   const { run, loading } = useAsyncHandler()
   const { problems } = useSelector((state) => state.problem)
   const { user, isAuthenticated } = useSelector((state) => state.auth)
+  const { playlists } = useSelector((state) => state.playlist)
   const dispatch = useDispatch()
 
   const [filters, setFilters] = useState()
@@ -35,6 +40,10 @@ const Problem = () => {
   // const [isSortOpen, setIsSortOpen] = useState(false)
   const [sortOrder, setSortOrder] = useState("asc")
   const [sortBy, setSortBy] = useState("createdAt")
+
+  const [selectedProblems, setSelectedProblems] = useState([])
+  const [isAddPlaylistModalOpen, setIsAddPlaylistModalOpen] = useState(false)
+  const [playlistId, setPlaylistId] = useState("")
 
   const sortOptions = [
     {
@@ -86,9 +95,30 @@ const Problem = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc")
   }
 
+  const handleToggleProblem = (problemId) => {
+    if (selectedProblems.includes(problemId)) {
+      setSelectedProblems(selectedProblems.filter((id) => id !== problemId))
+    } else {
+      setSelectedProblems([...selectedProblems, problemId])
+    }
+  }
+
   // const handleFilter = (filter) => {
   //   setFilters({ ...filters, ...filter })
   // }
+
+  const handleGetAllPlaylist = run(async () => {
+    dispatch(fetchPlaylistStart())
+    const res = await getAllPlaylist()
+    dispatch(fetchPlaylist(res.data.data))
+  })
+
+  const handleAddToPlaylist = run(async (playlistId, problems) => {
+    const res = await addProblemToPlaylist(playlistId, problems)
+    setIsAddPlaylistModalOpen(false)
+    setSelectedProblems([])
+    console.log(res)
+  })
 
   useEffect(() => {
     fetchFilters()
@@ -96,8 +126,17 @@ const Problem = () => {
 
   useEffect(() => {
     getAllProblem(filters)
+    handleGetAllPlaylist()
     dispatch(clearProblemDetails())
   }, [filters, dispatch])
+
+  const mainCheckboxRef = useRef(null)
+
+  useEffect(() => {
+    if (mainCheckboxRef.current) {
+      mainCheckboxRef.current.indeterminate = selectedProblems.length > 0 && selectedProblems.length < problems.length
+    }
+  }, [selectedProblems, problems.length])
 
   return (
     <div className="problem-container">
@@ -124,6 +163,16 @@ const Problem = () => {
                 {" "}
                 <FunnelX size={14} /> Clear Filters
               </button>
+            )}
+            {selectedProblems.length > 1 && (
+              <Button
+                color="secondary"
+                onClick={() => {
+                  setIsAddPlaylistModalOpen(true)
+                }}
+              >
+                <Star size={14} /> Add {selectedProblems.length} to Playlist
+              </Button>
             )}
           </div>
           <div className="problem-filter">
@@ -219,53 +268,112 @@ const Problem = () => {
             </div>
           ) : (
             <>
+              {/* Main checkbox for select all/deselect all */}
+              <div className="mb-2 flex items-center">
+                <input
+                  ref={mainCheckboxRef}
+                  type="checkbox"
+                  className="accent-accent-fg border-border-default mr-3 h-4 w-4 rounded border"
+                  checked={problems.length > 0 && selectedProblems.length === problems.length}
+                  onChange={() => {
+                    if (selectedProblems.length === problems.length) {
+                      setSelectedProblems([])
+                    } else {
+                      setSelectedProblems(problems.map((p) => p._id))
+                    }
+                  }}
+                  title="Select all problems"
+                />
+                <span className="text-fg-muted text-xs">Select All</span>
+              </div>
               {problems.map((problem, index) => (
-                <Link to={`/problem/${problem._id}`} key={index}>
-                  <div className="problem-item">
-                    <div className="problem-item-left">
-                      <span className={`problem-item-check`}>
-                        {isAuthenticated && problem.solvedBy.includes(user._id) ? <Check size={14} /> : ""}
-                      </span>
-                      <p className="problem-item-index">{index + 1}.</p>
-                      <p className="problem-item-title">{problem.title}</p>
-                    </div>
-                    <div className="problem-item-right">
-                      <div
-                        className={`bg-basebg-default flex items-center gap-1 rounded-lg border px-2 py-1 tracking-wide shadow ${
-                          problem.difficulty == "easy"
-                            ? "border-success-fg/50"
-                            : problem.difficulty == "medium"
-                              ? "border-warning-fg/50"
-                              : "border-danger-fg/50"
-                        }`}
-                      >
-                        <span
-                          className={`h-1 w-1 rounded-full ${
-                            problem.difficulty == "easy" ? "bg-success-fg" : problem.difficulty == "medium" ? "bg-warning-fg" : "bg-danger-fg"
-                          }`}
-                        ></span>
-                        <p
-                          className={`text-xxs ${
-                            problem.difficulty == "easy" ? "text-success-fg" : problem.difficulty == "medium" ? "text-warning-fg" : "text-danger-fg"
+                <div key={problem._id} className="flex items-center">
+                  {/* Checkbox for bulk/single add to playlist */}
+                  <input
+                    type="checkbox"
+                    className="accent-accent-fg border-primary mr-3 h-3 w-2.5 rounded border hover:cursor-pointer"
+                    checked={selectedProblems.includes(problem._id)}
+                    onChange={() => handleToggleProblem(problem._id)}
+                    title="Select for playlist"
+                  />
+                  <Link to={`/problem/${problem._id}`} className="flex-1">
+                    <div className="problem-item">
+                      <div className="problem-item-left">
+                        <span className={`problem-item-check`}>
+                          {isAuthenticated && problem.solvedBy.includes(user._id) ? <Check size={14} /> : ""}
+                        </span>
+                        <p className="problem-item-index">{index + 1}.</p>
+                        <p className="problem-item-title">{problem.title}</p>
+                      </div>
+                      <div className="problem-item-right">
+                        <div
+                          className={`bg-basebg-default flex items-center gap-1 rounded-lg border px-2 py-1 tracking-wide shadow ${
+                            problem.difficulty == "easy"
+                              ? "border-success-fg/50"
+                              : problem.difficulty == "medium"
+                                ? "border-warning-fg/50"
+                                : "border-danger-fg/50"
                           }`}
                         >
-                          {problem.difficulty.length > 4 ? `${problem.difficulty.slice(0, 3)}.` : problem.difficulty}
-                        </p>
+                          <span
+                            className={`h-1 w-1 rounded-full ${
+                              problem.difficulty == "easy" ? "bg-success-fg" : problem.difficulty == "medium" ? "bg-warning-fg" : "bg-danger-fg"
+                            }`}
+                          ></span>
+                          <p
+                            className={`text-xxs ${
+                              problem.difficulty == "easy" ? "text-success-fg" : problem.difficulty == "medium" ? "text-warning-fg" : "text-danger-fg"
+                            }`}
+                          >
+                            {problem.difficulty.length > 4 ? `${problem.difficulty.slice(0, 3)}.` : problem.difficulty}
+                          </p>
+                        </div>
+                        <button className="problem-item-more text-fg-muted hover:text-fg-default" title="Add to favorites">
+                          <Star size={14} />
+                        </button>
+                        <button className="problem-item-more">
+                          <Ellipsis size={14} />
+                        </button>
                       </div>
-                      <button className="problem-item-more text-fg-muted hover:text-fg-default" title="Add to favorites">
-                        <Star size={14} />
-                      </button>
-                      <button className="problem-item-more">
-                        <Ellipsis size={14} />
-                      </button>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               ))}
             </>
           )}
         </div>
       </div>
+      <Modal isOpen={isAddPlaylistModalOpen} onClose={() => setIsAddPlaylistModalOpen(false)} title="Add to Playlist">
+        <select
+          name=""
+          id=""
+          className="border-border-default bg-basebg-surface2 text-fg-default focus:border-accent-fg w-full rounded-lg border px-3 py-2 outline-none"
+          value={playlistId}
+          onChange={(e) => setPlaylistId(e.target.value)}
+        >
+          <option value="" disabled selected>
+            Select Playlist
+          </option>
+          {playlists &&
+            playlists.map((playlist) => (
+              <option key={playlist._id} value={playlist._id}>
+                {playlist.title}
+              </option>
+            ))}
+        </select>
+
+        <Button className="mt-4 w-full" onClick={() => setIsAddPlaylistModalOpen(false)}>
+          Cancel
+        </Button>
+        <Button
+          className="mt-4 w-full"
+          onClick={() => {
+            handleAddToPlaylist(playlistId, selectedProblems)
+          }}
+        >
+          Add to Playlist
+        </Button>
+      </Modal>
       {/* <div className="problem-right_sidebar">
         <p>Top Companies</p>
         {filterData.tags &&
