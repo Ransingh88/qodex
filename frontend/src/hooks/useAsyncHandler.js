@@ -23,7 +23,7 @@ export function asyncHandler(
       //     return { data: null, error: new Error("No return value from function") }
       // }
 
-      const message = result?.data?.message || successMessage
+      const message = result?.data?.message || result?.message || successMessage
       if ((result?.data?.success && message && onSuccess) || successMessage) {
         onSuccess(message)
       }

@@ -5,6 +5,7 @@ const initialState = {
   problemDetails: {},
   problemOutput: {},
   problemSubmissions: [],
+  selectedProblems: [],
   isLoading: false,
   error: null,
 }
@@ -48,6 +49,22 @@ const problemSlice = createSlice({
       state.problemOutput = action.payload
       state.isLoading = false
     },
+    addSelectedProblem(state, action) {
+      if (!state.selectedProblems.includes(action.payload)) {
+        if (Array.isArray(action.payload)) {
+          state.selectedProblems = [...action.payload]
+          return
+        }
+
+        state.selectedProblems.push(action.payload)
+      }
+    },
+    removeSelectedProblem(state, action) {
+      state.selectedProblems = state.selectedProblems.filter((id) => id !== action.payload)
+    },
+    clearSelectedProblems(state) {
+      state.selectedProblems = []
+    },
   },
 })
 
@@ -61,6 +78,9 @@ export const {
   executeProblems,
   fetchProblemSubmissionsStart,
   fetchProblemSubmissions,
+  addSelectedProblem,
+  removeSelectedProblem,
+  clearSelectedProblems,
 } = problemSlice.actions
 
 export default problemSlice.reducer

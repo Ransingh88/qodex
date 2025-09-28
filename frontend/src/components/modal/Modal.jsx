@@ -72,8 +72,14 @@ const Modal = ({
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center">
         {/* Backdrop */}
-        <motion.div className={clsx(backdrop)} onClick={onClose} />
-
+        <motion.div
+          className={clsx(backdrop)}
+          onClick={onClose}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        />
         {/* Modal Box */}
         <motion.div
           className={clsx(base, sizeMap[size], className)}

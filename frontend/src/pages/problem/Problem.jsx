@@ -17,21 +17,25 @@ import { Link } from "react-router"
 import Button from "@/components/button/Button"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import Modal from "@/components/modal/Modal"
+import AddPlaylistModal from "@/components/playlist/AddPlaylistModal"
 import FilterPopover from "@/components/popover/FilterPopover"
-import { clearProblemDetails, fetchProblems } from "@/features/rtk/problem/problemSlice"
+import {
+  addSelectedProblem,
+  clearProblemDetails,
+  clearSelectedProblems,
+  fetchProblems,
+  removeSelectedProblem,
+} from "@/features/rtk/problem/problemSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { getAllProblems, getProblemCategory, getProblemCompanies, getProblemDifficulties, getProblemTags } from "@/services/problem.service"
 import dsa from "../../assets/images/dsa.png"
 import jsbanner from "../../assets/images/js30dayschallenge.png"
 import tointerviewq from "../../assets/images/tointerviewq.png"
-import { addProblemToPlaylist, getAllPlaylist } from "@/services/playlist.service"
-import { fetchPlaylist, fetchPlaylistStart } from "@/features/rtk/problem/playlistSlice"
 
 const Problem = () => {
   const { run, loading } = useAsyncHandler()
-  const { problems } = useSelector((state) => state.problem)
+  const { problems, selectedProblems } = useSelector((state) => state.problem)
   const { user, isAuthenticated } = useSelector((state) => state.auth)
-  const { playlists } = useSelector((state) => state.playlist)
   const dispatch = useDispatch()
 
   const [filters, setFilters] = useState()
@@ -41,9 +45,7 @@ const Problem = () => {
   const [sortOrder, setSortOrder] = useState("asc")
   const [sortBy, setSortBy] = useState("createdAt")
 
-  const [selectedProblems, setSelectedProblems] = useState([])
   const [isAddPlaylistModalOpen, setIsAddPlaylistModalOpen] = useState(false)
-  const [playlistId, setPlaylistId] = useState("")
 
   const sortOptions = [
     {
@@ -97,9 +99,9 @@ const Problem = () => {
 
   const handleToggleProblem = (problemId) => {
     if (selectedProblems.includes(problemId)) {
-      setSelectedProblems(selectedProblems.filter((id) => id !== problemId))
+      dispatch(removeSelectedProblem(problemId))
     } else {
-      setSelectedProblems([...selectedProblems, problemId])
+      dispatch(addSelectedProblem(problemId))
     }
   }
 
@@ -107,18 +109,11 @@ const Problem = () => {
   //   setFilters({ ...filters, ...filter })
   // }
 
-  const handleGetAllPlaylist = run(async () => {
-    dispatch(fetchPlaylistStart())
-    const res = await getAllPlaylist()
-    dispatch(fetchPlaylist(res.data.data))
-  })
-
-  const handleAddToPlaylist = run(async (playlistId, problems) => {
-    const res = await addProblemToPlaylist(playlistId, problems)
-    setIsAddPlaylistModalOpen(false)
-    setSelectedProblems([])
-    console.log(res)
-  })
+  // const handleGetAllPlaylist = run(async () => {
+  //   dispatch(fetchPlaylistStart())
+  //   const res = await getAllPlaylist()
+  //   dispatch(fetchPlaylist(res.data.data))
+  // })
 
   useEffect(() => {
     fetchFilters()
@@ -126,7 +121,6 @@ const Problem = () => {
 
   useEffect(() => {
     getAllProblem(filters)
-    handleGetAllPlaylist()
     dispatch(clearProblemDetails())
   }, [filters, dispatch])
 
@@ -277,9 +271,9 @@ const Problem = () => {
                   checked={problems.length > 0 && selectedProblems.length === problems.length}
                   onChange={() => {
                     if (selectedProblems.length === problems.length) {
-                      setSelectedProblems([])
+                      dispatch(clearSelectedProblems())
                     } else {
-                      setSelectedProblems(problems.map((p) => p._id))
+                      dispatch(addSelectedProblem(problems.map((p) => p._id)))
                     }
                   }}
                   title="Select all problems"
@@ -343,37 +337,7 @@ const Problem = () => {
           )}
         </div>
       </div>
-      <Modal isOpen={isAddPlaylistModalOpen} onClose={() => setIsAddPlaylistModalOpen(false)} title="Add to Playlist">
-        <select
-          name=""
-          id=""
-          className="border-border-default bg-basebg-surface2 text-fg-default focus:border-accent-fg w-full rounded-lg border px-3 py-2 outline-none"
-          value={playlistId}
-          onChange={(e) => setPlaylistId(e.target.value)}
-        >
-          <option value="" disabled selected>
-            Select Playlist
-          </option>
-          {playlists &&
-            playlists.map((playlist) => (
-              <option key={playlist._id} value={playlist._id}>
-                {playlist.title}
-              </option>
-            ))}
-        </select>
-
-        <Button className="mt-4 w-full" onClick={() => setIsAddPlaylistModalOpen(false)}>
-          Cancel
-        </Button>
-        <Button
-          className="mt-4 w-full"
-          onClick={() => {
-            handleAddToPlaylist(playlistId, selectedProblems)
-          }}
-        >
-          Add to Playlist
-        </Button>
-      </Modal>
+      <AddPlaylistModal isOpen={isAddPlaylistModalOpen} onClose={() => setIsAddPlaylistModalOpen(false)} />
       {/* <div className="problem-right_sidebar">
         <p>Top Companies</p>
         {filterData.tags &&

@@ -39,6 +39,7 @@ import {
   fetchProblemSubmissionsStart,
   fetchProblemSubmissions,
   fetchProblemDetailsStart,
+  addSelectedProblem,
 } from "@/features/rtk/problem/problemSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { useCodeEditor } from "@/hooks/useCodeEditor"
@@ -46,6 +47,7 @@ import { analyzeCodeComplexity } from "@/services/ai.servise"
 import { executeCode } from "@/services/execution.service"
 import { getProblemDetails, getProblemSubmissions } from "@/services/problem.service"
 import Submission from "./submission/Submission"
+import AddPlaylistModal from "@/components/playlist/AddPlaylistModal"
 
 const ProblemDetails = () => {
   const { id } = useParams()
@@ -58,6 +60,7 @@ const ProblemDetails = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
   const { problemDetails, problemOutput, isLoading } = useSelector((state) => state.problem)
 
+  const [addToPlayListModalOpen, setAddToPlaylistModalOpen] = useState(false)
   const [isLeftOpen, setIsLeftOpen] = useState(true)
   const [isCodeOpen, setIsCodeOpen] = useState(true)
   const [isTestOpen, setIsTestOpen] = useState(true)
@@ -203,6 +206,11 @@ const ProblemDetails = () => {
     console.log(ress)
   })
 
+  const handleAddToPlaylist = () => {
+    dispatch(addSelectedProblem(problemDetails._id))
+    setAddToPlaylistModalOpen(true)
+  }
+
   const rightOpenCount = (isCodeOpen ? 1 : 0) + (isTestOpen ? 1 : 0)
 
   const codeHeight = useMemo(() => {
@@ -325,11 +333,12 @@ const ProblemDetails = () => {
                     >
                       {problemDetails?.difficulty}
                     </span>
-                    <button className="cursor-pointer">
+                    <button className="cursor-pointer" onClick={handleAddToPlaylist}>
                       <Bookmark size={18} />
                     </button>
                   </div>
                 </div>
+                <AddPlaylistModal isOpen={addToPlayListModalOpen} onClose={() => setAddToPlaylistModalOpen(false)} />
                 <span className="text-xxs border-border-default bg-basebg-surface2 text-fg-default/50 rounded border px-1 py-0.5 font-medium capitalize">
                   AskedBy:{" "}
                   {problemDetails.askedBy &&
