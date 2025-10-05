@@ -31,6 +31,7 @@ import { Link, useOutletContext, useParams } from "react-router"
 import { toast } from "react-toastify"
 import CodeEditor from "@/components/editor/CodeEditor"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
+import AddPlaylistModal from "@/components/playlist/AddPlaylistModal"
 import { LANGUAGES } from "@/constants/constant"
 import {
   fetchProblemDetails,
@@ -47,7 +48,6 @@ import { analyzeCodeComplexity } from "@/services/ai.servise"
 import { executeCode } from "@/services/execution.service"
 import { getProblemDetails, getProblemSubmissions } from "@/services/problem.service"
 import Submission from "./submission/Submission"
-import AddPlaylistModal from "@/components/playlist/AddPlaylistModal"
 
 const ProblemDetails = () => {
   const { id } = useParams()
@@ -202,8 +202,7 @@ const ProblemDetails = () => {
 
   const handleAnalyzeCodeComplexity = run(async () => {
     const ress = await analyzeCodeComplexity(codes, currentLanguage, problemDetails.description)
-    setAnalysis(ress.data)
-    console.log(ress)
+    setAnalysis(JSON.parse(ress.data))
   })
 
   const handleAddToPlaylist = () => {
@@ -638,18 +637,18 @@ const ProblemDetails = () => {
           )}
           {activeOutputTab.type === "complexity" && (
             <div className="problemDetails_desc h-[calc(100%-2rem)] overflow-auto">
-              {problemDetails ? (
+              {analysis.timeComplexity ? (
                 <div className="p-2">
-                  <p className="font-code text-sm">Time Complexity: {problemDetails?.complexity?.time || "Not Available"}</p>
-                  <p className="font-code text-sm">Space Complexity: {problemDetails?.complexity?.space || "Not Available"}</p>
-                  <button
+                  {/* <button
                     onClick={handleAnalyzeCodeComplexity}
                     className="border-border-default hover:bg-basebg-surface flex cursor-pointer items-center gap-1 rounded border px-2 py-1"
                   >
                     <Sparkles size={14} />
                     Analyze
-                  </button>
-                  <p>{analysis.stringify}</p>
+                  </button> */}
+                  <p>timeComplexity: {analysis?.timeComplexity}</p>
+                  <p>spaceComplexity: {analysis?.spaceComplexity}</p>
+                  <p>explanation: {analysis?.explanation}</p>
                 </div>
               ) : (
                 <div className="text-fg-muted mt-5 flex items-center justify-center">

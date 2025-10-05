@@ -65,11 +65,26 @@ const Playlist = () => {
         <div className="flex flex-col gap-4">
           <h5>Featured</h5>
           <div className="flex flex-wrap gap-4">
-            <div className="bg-secondary border-secondary h-54 w-48 rounded-lg border shadow"></div>
-            <div className="bg-secondary border-secondary h-54 w-48 rounded-lg border shadow"></div>
-            <div className="bg-secondary border-secondary h-54 w-48 rounded-lg border shadow"></div>
-            <div className="bg-secondary border-secondary h-54 w-48 rounded-lg border shadow"></div>
-            <div className="bg-secondary border-secondary h-54 w-48 rounded-lg border shadow"></div>
+            <div className="bg-secondary border-secondary flex h-54 w-48 flex-col items-center justify-center rounded-lg border p-2 shadow">
+              <span className="font-bold">Top DSA</span>
+              <span className="text-tertiary text-center text-xs">Best playlists for Data Structures & Algorithms</span>
+            </div>
+            <div className="bg-secondary border-secondary flex h-54 w-48 flex-col items-center justify-center rounded-lg border p-2 shadow">
+              <span className="font-bold">Frontend Mastery</span>
+              <span className="text-tertiary text-center text-xs">Curated playlists for frontend development</span>
+            </div>
+            <div className="bg-secondary border-secondary flex h-54 w-48 flex-col items-center justify-center rounded-lg border p-2 shadow">
+              <span className="font-bold">Interview Prep</span>
+              <span className="text-tertiary text-center text-xs">Ace your interviews with these playlists</span>
+            </div>
+            <div className="bg-secondary border-secondary flex h-54 w-48 flex-col items-center justify-center rounded-lg border p-2 shadow">
+              <span className="font-bold">JavaScript 30</span>
+              <span className="text-tertiary text-center text-xs">30 days of JavaScript coding challenges</span>
+            </div>
+            <div className="bg-secondary border-secondary flex h-54 w-48 flex-col items-center justify-center rounded-lg border p-2 shadow">
+              <span className="font-bold">System Design</span>
+              <span className="text-tertiary text-center text-xs">Playlists to master system design concepts</span>
+            </div>
           </div>
         </div>
         <div className="flex flex-col gap-4">
@@ -109,7 +124,7 @@ const Playlist = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="Create Playlist"
-        subtitle="Create a new playlist to save your favorite tracks."
+        subtitle={<span className="block w-full text-center">Create a new playlist to save your favorite tracks.</span>}
         size="md"
         iconPosition="center"
       >

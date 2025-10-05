@@ -31,6 +31,8 @@ import { getAllProblems, getProblemCategory, getProblemCompanies, getProblemDiff
 import dsa from "../../assets/images/dsa.png"
 import jsbanner from "../../assets/images/js30dayschallenge.png"
 import tointerviewq from "../../assets/images/tointerviewq.png"
+import { Badge } from "@/components/badge/Badge"
+import Checkbox from "@/components/input/Checkbox"
 
 const Problem = () => {
   const { run, loading } = useAsyncHandler()
@@ -165,7 +167,7 @@ const Problem = () => {
                   setIsAddPlaylistModalOpen(true)
                 }}
               >
-                <Star size={14} /> Add {selectedProblems.length} to Playlist
+                Add {selectedProblems.length} to Playlist
               </Button>
             )}
           </div>
@@ -264,7 +266,7 @@ const Problem = () => {
             <>
               {/* Main checkbox for select all/deselect all */}
               <div className="mb-2 flex items-center">
-                <input
+                {/* <input
                   ref={mainCheckboxRef}
                   type="checkbox"
                   className="accent-accent-fg border-border-default mr-3 h-4 w-4 rounded border"
@@ -277,51 +279,48 @@ const Problem = () => {
                     }
                   }}
                   title="Select all problems"
+                /> */}
+                <Checkbox
+                  label="Select All"
+                  indeterminate={selectedProblems.length > 0 && selectedProblems.length < problems.length}
+                  checked={problems.length > 0 && selectedProblems.length === problems.length}
+                  onChange={() => {
+                    if (selectedProblems.length === problems.length) {
+                      dispatch(clearSelectedProblems())
+                    } else {
+                      dispatch(addSelectedProblem(problems.map((p) => p._id)))
+                    }
+                  }}
                 />
-                <span className="text-fg-muted text-xs">Select All</span>
               </div>
               {problems.map((problem, index) => (
-                <div key={problem._id} className="flex items-center">
+                <div key={problem._id} className="flex items-center gap-2">
                   {/* Checkbox for bulk/single add to playlist */}
-                  <input
+                  {/* <input
                     type="checkbox"
                     className="accent-accent-fg border-primary mr-3 h-3 w-2.5 rounded border hover:cursor-pointer"
                     checked={selectedProblems.includes(problem._id)}
                     onChange={() => handleToggleProblem(problem._id)}
                     title="Select for playlist"
-                  />
+                  /> */}
+                  <Checkbox checked={selectedProblems.includes(problem._id)} onChange={() => handleToggleProblem(problem._id)} />
                   <Link to={`/problem/${problem._id}`} className="flex-1">
                     <div className="problem-item">
                       <div className="problem-item-left">
-                        <span className={`problem-item-check`}>
-                          {isAuthenticated && problem.solvedBy.includes(user._id) ? <Check size={14} /> : ""}
-                        </span>
+                        {isAuthenticated && (
+                          <span className={`problem-item-check`}>{problem.solvedBy.includes(user._id) ? <Check size={14} /> : ""}</span>
+                        )}
                         <p className="problem-item-index">{index + 1}.</p>
                         <p className="problem-item-title">{problem.title}</p>
                       </div>
                       <div className="problem-item-right">
-                        <div
-                          className={`bg-basebg-default flex items-center gap-1 rounded-lg border px-2 py-1 tracking-wide shadow ${
-                            problem.difficulty == "easy"
-                              ? "border-success-fg/50"
-                              : problem.difficulty == "medium"
-                                ? "border-warning-fg/50"
-                                : "border-danger-fg/50"
-                          }`}
+                        <Badge
+                          withDot={true}
+                          dotColor={problem.difficulty == "easy" ? "success" : problem.difficulty == "medium" ? "warning" : "error"}
                         >
-                          <span
-                            className={`h-1 w-1 rounded-full ${
-                              problem.difficulty == "easy" ? "bg-success-fg" : problem.difficulty == "medium" ? "bg-warning-fg" : "bg-danger-fg"
-                            }`}
-                          ></span>
-                          <p
-                            className={`text-xxs ${
-                              problem.difficulty == "easy" ? "text-success-fg" : problem.difficulty == "medium" ? "text-warning-fg" : "text-danger-fg"
-                            }`}
-                          >
-                            {problem.difficulty.length > 4 ? `${problem.difficulty.slice(0, 3)}.` : problem.difficulty}
-                          </p>
-                        </div>
+                          {problem.difficulty == "easy" ? "Easy" : problem.difficulty == "medium" ? "Med." : "Hard"}
+                        </Badge>
+
                         <button className="problem-item-more text-fg-muted hover:text-fg-default" title="Add to favorites">
                           <Star size={14} />
                         </button>

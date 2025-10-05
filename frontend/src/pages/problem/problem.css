@@ -56,10 +56,10 @@
   }
 
   & .problem-list {
-    @apply border-border-default flex flex-col rounded-lg border;
+    @apply flex flex-col gap-2;
 
     & .problem-item {
-      @apply border-border-default hover:bg-accent-subtle/20 flex cursor-pointer items-center justify-between border-b px-4 py-2 transition-all duration-100 ease-in-out;
+      @apply bg-secondary text-secondary border-secondary hover:bg-secondary_hover flex w-full items-center justify-between rounded-lg border px-4 py-2 shadow transition-all duration-100 ease-in-out;
     }
 
     & .problem-item-left {

@@ -11,6 +11,7 @@ const PlaylistDetails = () => {
   const { id } = useParams()
   const { playlists } = useSelector((state) => state.playlist)
   const { isAuthenticated } = useSelector((state) => state.auth)
+  const { problems } = useSelector((state) => state.problem)
   const [playlist, setPlaylist] = useState({})
 
   const dispatch = useDispatch()
@@ -49,13 +50,16 @@ const PlaylistDetails = () => {
               {loading ? (
                 <LoadingSpinner />
               ) : playlist.problems?.length > 0 ? (
-                playlist.problems.map((problem) => (
-                  <div key={problem} className="bg-secondary border-secondary w-full rounded-lg border px-4 py-3 shadow">
-                    <Link to={`/problem/${problem}`}>
-                      <p className="text-secondary text-sm">{problem}</p>
-                    </Link>
-                  </div>
-                ))
+                playlist.problems.map((problemId) => {
+                  const problemObj = problems.find((p) => p._id === problemId)
+                  return (
+                    <div key={problemId} className="bg-secondary border-secondary w-full rounded-lg border px-4 py-3 shadow">
+                      <Link to={`/problem/${problemId}`}>
+                        <p className="text-secondary text-sm">{problemObj ? problemObj.title : problemId}</p>
+                      </Link>
+                    </div>
+                  )
+                })
               ) : (
                 <div className="text-tertiary flex justify-center text-center">
                   <p>No problem found, add some to your playlist</p>
