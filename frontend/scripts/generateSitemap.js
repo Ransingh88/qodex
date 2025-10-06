@@ -1,19 +1,14 @@
 // scripts/generate-sitemap.js
 import fs from "fs"
-import path from "path"
+import { Readable } from "stream"
+import { SitemapStream, streamToPromise } from "sitemap"
 
-// Get your site URL from env or fallback
-const SITE_URL = process.env.SITE_URL || "https://qodex.co.in"
-
-// List your frontend routes (add more as needed)
+const hostname = process.env.SITE_URL || "https://qodex.co.in"
 const staticRoutes = [
   "/",
   "/about",
+  "/pricing",
   "/contact",
-  "/login",
-  "/register",
-  "/privacy-policy",
-  "/terms",
   "/problems",
   "/problem",
   "/explore",
@@ -21,33 +16,30 @@ const staticRoutes = [
   "/study-plan",
   "/playlist",
   "/profile",
+  "/login",
+  "/signup",
+  // Add any other static pages here
 ]
 
-// Create sitemap XML content
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${staticRoutes
-  .map((route) => {
-    return `
-  <url>
-    <loc>${SITE_URL}${route}</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>${route === "/" ? "1.0" : "0.7"}</priority>
-  </url>`
-  })
-  .join("")}
-</urlset>`
+async function generate() {
+  const links = staticRoutes.map((path) => ({
+    url: path,
+    changefreq: "weekly",
+    priority: 0.8,
+    lastmod: new Date().toISOString(),
+  }))
 
-// Define where to save the sitemap
-const publicPath = path.resolve("public")
-const sitemapPath = path.join(publicPath, "sitemap.xml")
+  const stream = new SitemapStream({ hostname })
+  const xmlData = await streamToPromise(Readable.from(links).pipe(stream))
 
-// Ensure /public exists
-if (!fs.existsSync(publicPath)) {
-  fs.mkdirSync(publicPath)
+  // Ensure 'public' folder exists
+  if (!fs.existsSync("./public")) fs.mkdirSync("./public")
+  fs.writeFileSync("./public/sitemap.xml", xmlData.toString())
+
+  console.log(`✅ sitemap.xml generated with ${links.length} URLs`)
 }
 
-// Write the sitemap file
-fs.writeFileSync(sitemapPath, sitemap, "utf8")
-console.log(`✅ Sitemap generated at: ${sitemapPath}`)
+generate().catch((err) => {
+  console.error(err)
+  process.exit(1)
+})
