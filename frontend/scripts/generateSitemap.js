@@ -2,10 +2,6 @@
 import fs from "fs"
 import path from "path"
 
-// Load environment variables (if using .env)
-import dotenv from "dotenv"
-dotenv.config()
-
 // Get your site URL from env or fallback
 const SITE_URL = process.env.SITE_URL || "https://qodex.co.in"
 
