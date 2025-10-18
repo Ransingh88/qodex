@@ -53,7 +53,7 @@ const UserPopover = ({ logoutFn }) => {
               <p className="text-fg-muted text-sm font-light">{user?.email}</p>
             </div>
             <div className="flex flex-col p-2">
-              <Link to="/profile">
+              <Link to="/settings/profile">
                 <div className="hover:bg-secondary_hover flex cursor-pointer items-center gap-4 rounded-lg px-2 py-2">
                   <CircleUser size={16} className="mt-0.5" />
                   Profile
@@ -65,9 +65,11 @@ const UserPopover = ({ logoutFn }) => {
               <div className="hover:bg-secondary_hover flex cursor-pointer items-center gap-4 rounded-lg px-2 py-2">
                 <CreditCard size={16} className="mt-0.5" /> Subscription
               </div>
-              <div className="hover:bg-secondary_hover flex cursor-pointer items-center gap-4 rounded-lg px-2 py-2">
-                <Settings size={16} className="mt-0.5" /> Settinga
-              </div>
+              <Link to="/settings">
+                <div className="hover:bg-secondary_hover flex cursor-pointer items-center gap-4 rounded-lg px-2 py-2">
+                  <Settings size={16} className="mt-0.5" /> Settings
+                </div>
+              </Link>
             </div>
           </div>
           <div className="w-full">
