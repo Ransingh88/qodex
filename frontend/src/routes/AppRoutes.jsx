@@ -19,7 +19,7 @@ import Password from "@/pages/setting/Password"
 import StudyPlan from "@/pages/studyplan/StudyPlan"
 import StudyPlanDetails from "@/pages/studyplan/StudyPlanDetails"
 import ProtectedRoute from "./ProtectedRoute"
-import Dashboard from "@/pages/dashboard/DAshboard"
+import Dashboard from "@/pages/dashboard/Dashboard"
 
 const AppRoutes = () => {
   return (
