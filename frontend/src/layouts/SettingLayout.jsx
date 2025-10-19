@@ -1,9 +1,9 @@
 import Input from "@/components/input/Input"
 import { NavLink, Outlet } from "react-router"
 
-const Setting = () => {
+const SettingLayout = () => {
   const settingMenus = [
-    { label: "My Details", url: "/settings/mydetails" },
+    { label: "My Details", url: "/settings" },
     { label: "Profile", url: "/settings/profile" },
     { label: "Password", url: "/settings/password" },
     { label: "Account", url: "/settings/Account" },
@@ -27,6 +27,7 @@ const Setting = () => {
             <div className="flex flex-col gap-1 font-semibold">
               {settingMenus.map((menu, index) => (
                 <NavLink
+                  end={menu.url === "/settings"}
                   key={index}
                   to={menu.url}
                   className={({ isActive }) =>
@@ -49,4 +50,4 @@ const Setting = () => {
   )
 }
 
-export default Setting
+export default SettingLayout
