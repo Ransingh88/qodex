@@ -40,6 +40,16 @@ const Navbar = ({ borderVisible = false }) => {
       url: "/contest",
       protected: false,
     },
+    {
+      label: "dashboard",
+      url: "/dashboard",
+      protected: true,
+    },
+    {
+      label: "leaderboard",
+      url: "/leaderboard",
+      protected: true,
+    },
   ]
 
   useEffect(() => {
@@ -67,13 +77,15 @@ const Navbar = ({ borderVisible = false }) => {
             <Link to="/">qodex.</Link>
           </div>
           <ul className="navbar-menus">
-            {menus.map((menu, i) => (
-              <li key={i}>
-                <NavLink to={menu.url} className={({ isActive, isPending }) => (isPending ? "navbar-pending" : isActive ? "navbar-active" : "")}>
-                  {menu.label}
-                </NavLink>
-              </li>
-            ))}
+            {menus.map((menu, i) =>
+              menu.protected && !isAuthenticated ? null : (
+                <li key={i}>
+                  <NavLink to={menu.url} className={({ isActive, isPending }) => (isPending ? "navbar-pending" : isActive ? "navbar-active" : "")}>
+                    {menu.label}
+                  </NavLink>
+                </li>
+              )
+            )}
           </ul>
         </div>
         <div className="navbar-right">
