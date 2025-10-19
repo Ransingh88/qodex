@@ -1,5 +1,5 @@
-import Input from "@/components/input/Input"
 import { NavLink, Outlet } from "react-router"
+import Input from "@/components/input/Input"
 
 const SettingLayout = () => {
   const settingMenus = [

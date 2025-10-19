@@ -7,6 +7,8 @@ import PublicLayout from "@/layouts/PublicLayout"
 import SettingLayout from "@/layouts/SettingLayout"
 import Login from "@/pages/auth/Login"
 import Signup from "@/pages/auth/Signup"
+import Dashboard from "@/pages/dashboard/Dashboard"
+import Problems from "@/pages/dashboard/Problems"
 import Error from "@/pages/error/Error"
 import Home from "@/pages/home/Home"
 import Playlist from "@/pages/playlist/Playlist"
@@ -19,7 +21,6 @@ import Password from "@/pages/setting/Password"
 import StudyPlan from "@/pages/studyplan/StudyPlan"
 import StudyPlanDetails from "@/pages/studyplan/StudyPlanDetails"
 import ProtectedRoute from "./ProtectedRoute"
-import Dashboard from "@/pages/dashboard/Dashboard"
 
 const AppRoutes = () => {
   return (
@@ -50,6 +51,12 @@ const AppRoutes = () => {
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
+            <Route path="admin" element={<>Admin</>} />
+            <Route path="users" element={<>Users</>} />
+            <Route path="problems" element={<Problems />}>
+              <Route index element={<>Problems</>} />
+              <Route path="create" element={<>Create</>} />
+            </Route>
           </Route>
           <Route path="/settings" element={<SettingLayout />}>
             <Route index element={<>Setting</>} />
