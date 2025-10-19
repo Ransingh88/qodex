@@ -20,6 +20,11 @@
   --font-DMSans: "DM Sans";
   --font-Manrope: "Manrope";
   --font-Firacode: "Fira Code";
+
+  --toastify-color-light: var(--color-bg-secondary);
+  --toastify-color-dark: var(--color-bg-secondary);
+  --toastify-text-color-light: var(--color-text-secondary);
+  --toastify-text-color-dark: var(--color-text-secondary);
 }
 
 body::-webkit-scrollbar {
@@ -71,4 +76,7 @@ body::-webkit-scrollbar {
   /* stroke-width: 2px; */
   width: 16px;
   height: 16px;
+}
+.Toastify__toast {
+  border: 0.5px solid var(--border-color-secondary);
 }
