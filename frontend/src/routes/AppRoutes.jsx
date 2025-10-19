@@ -18,6 +18,7 @@ import Setting from "@/pages/setting/Setting"
 import StudyPlan from "@/pages/studyplan/StudyPlan"
 import StudyPlanDetails from "@/pages/studyplan/StudyPlanDetails"
 import ProtectedRoute from "./ProtectedRoute"
+import Password from "@/pages/setting/Password"
 
 const AppRoutes = () => {
   return (
@@ -49,6 +50,7 @@ const AppRoutes = () => {
         <Route element={<ProtectedLayout />}>
           <Route path="/settings" element={<Setting />}>
             <Route path="profile" element={<Profile />} />
+            <Route path="password" element={<Password />} />
           </Route>
         </Route>
       </Route>

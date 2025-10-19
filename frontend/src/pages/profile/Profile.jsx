@@ -1,14 +1,51 @@
-import React from "react"
-import { useSelector } from "react-redux"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import "./profile.css"
 // import { Pencil } from "lucide-react"
 import ava1 from "@/assets/images/avatar/olivia-rhye.jpeg"
 import { Badge } from "@/components/badge/Badge"
 import Button from "@/components/button/Button"
 import Input from "@/components/input/Input"
+import { useAsyncHandler } from "@/hooks/useAsyncHandler"
+import { getUserDetails, updateUserProfile } from "@/services/user.service"
+import { fetchUserDetails, fetchUserDetailsStart } from "@/features/rtk/auth/authSlice"
+import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 
 const Profile = () => {
-  const { user } = useSelector((state) => state.auth)
+  const { user, isLoading } = useSelector((state) => state.auth)
+  const [username, setUsername] = useState("")
+  const [fullName, setFullName] = useState("")
+  const [email, setEmail] = useState("")
+
+  const { loading, run } = useAsyncHandler()
+  const dispatch = useDispatch()
+
+  const handleSaveProfile = run(
+    async () => {
+      await updateUserProfile({ fullName, username, email })
+      const response = await getUserDetails()
+      console.log(response, "---")
+      dispatch(fetchUserDetailsStart())
+      dispatch(fetchUserDetails(response.data.data.user))
+    },
+    { successMessage: "Profile updated successfully!" }
+  )
+
+  const handleCancel = () => {
+    setUsername(user.username)
+    setFullName(user.fullName)
+    setEmail(user.email)
+  }
+
+  useEffect(() => {
+    setUsername(user.username)
+    setFullName(user.fullName)
+    setEmail(user.email)
+  }, [user])
+
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
   return (
     <div>
       <div className="relative mb-36">
@@ -30,8 +67,12 @@ const Profile = () => {
               <p className="text-secondary">{user.email}</p>
             </span>
             <span className="flex gap-4">
-              <Button color="secondary">Cancel</Button>
-              <Button>Save</Button>
+              <Button color="secondary" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button loading={loading} onClick={handleSaveProfile}>
+                {loading ? "Saving..." : "Save"}
+              </Button>
             </span>
           </div>
         </div>
@@ -41,7 +82,7 @@ const Profile = () => {
           <p>Username*</p>
         </span>
         <span className="w-2/6">
-          <Input value={user.username} placeholder="Username" />
+          <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
         </span>
       </div>
       <div className="border-secondary flex items-center justify-start gap-4 border-t px-4 py-8">
@@ -49,7 +90,7 @@ const Profile = () => {
           <p>Fullname*</p>
         </span>
         <span className="w-2/6">
-          <Input value={user.fullName} placeholder="Fullname" />
+          <Input value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Fullname" />
         </span>
       </div>
       <div className="border-secondary flex items-center justify-start gap-4 border-t px-4 py-8">
@@ -57,7 +98,7 @@ const Profile = () => {
           <p>Email*</p>
         </span>
         <span className="w-2/6">
-          <Input value={user.email} placeholder="Username" />
+          <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Username" />
         </span>
       </div>
       <div className="border-secondary flex items-center justify-start gap-4 border-t px-4 py-8">

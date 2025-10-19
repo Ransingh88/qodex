@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import "./layout.css"
 import { useSelector } from "react-redux"
 import { Link, Outlet, useLocation, useNavigate } from "react-router"
@@ -9,7 +9,10 @@ const AuthLayout = () => {
   const location = useLocation()
   const from = location.state?.from?.pathname || "/"
   const { isAuthenticated } = useSelector((state) => state.auth)
-  if (isAuthenticated) return navigate(from, { replace: true })
+
+  useEffect(() => {
+    if (isAuthenticated) navigate(from, { replace: true })
+  })
   return (
     <div className="authLayout-main_container">
       <div className="grid-pattrn">{/* <div className="grid-pattrn-radial"></div> */}</div>

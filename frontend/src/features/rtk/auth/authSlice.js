@@ -29,9 +29,18 @@ const authSlice = createSlice({
     setAuthLoading: (state) => {
       state.isLoading = true
     },
+    fetchUserDetailsStart: (state) => {
+      state.isLoading = true
+      state.error = null
+    },
+    fetchUserDetails: (state, action) => {
+      state.user = action.payload
+      state.isAuthenticated = true
+      state.isLoading = false
+    },
   },
 })
 
-export const { login, logout, setAuth, setAuthLoading } = authSlice.actions
+export const { login, logout, setAuth, setAuthLoading, fetchUserDetailsStart, fetchUserDetails } = authSlice.actions
 
 export default authSlice.reducer
