@@ -19,8 +19,8 @@ export function asyncHandler(
 
       // 🚨 Warn if no result
       // if (result === undefined) {
-      //     console.warn("[asyncHandler Warning]: The wrapped function did not return anything.")
-      //     return { data: null, error: new Error("No return value from function") }
+      //   console.warn("[asyncHandler Warning]: The wrapped function did not return anything.")
+      //   return { data: null, error: new Error("No return value from function") }
       // }
 
       const message = result?.data?.message || result?.message || successMessage

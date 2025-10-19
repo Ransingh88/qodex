@@ -1,21 +1,24 @@
 import { Route, Routes } from "react-router"
 import AuthLayout from "@/layouts/AuthLayout"
-import DashboardLayout from "@/layouts/DashboardLayout"
+// import DashboardLayout from "@/layouts/DashboardLayout"
 import ProblemLayout from "@/layouts/ProblemLayout"
+import ProtectedLayout from "@/layouts/ProtectedLayout"
 import PublicLayout from "@/layouts/PublicLayout"
 import Login from "@/pages/auth/Login"
 import Signup from "@/pages/auth/Signup"
 import Error from "@/pages/error/Error"
 import Home from "@/pages/home/Home"
 import Playlist from "@/pages/playlist/Playlist"
-import StudyPlan from "@/pages/studyplan/StudyPlan"
-import StudyPlanDetails from "@/pages/studyplan/StudyPlanDetails"
 import PlaylistDetails from "@/pages/playlist/PlaylistDetails"
 import ProblemDashboard from "@/pages/problem/dashboard/ProblemDashboard"
 import Problem from "@/pages/problem/Problem"
 import ProblemDetails from "@/pages/problem/ProblemDetails"
 import Profile from "@/pages/profile/Profile"
+import Setting from "@/pages/setting/Setting"
+import StudyPlan from "@/pages/studyplan/StudyPlan"
+import StudyPlanDetails from "@/pages/studyplan/StudyPlanDetails"
 import ProtectedRoute from "./ProtectedRoute"
+import Password from "@/pages/setting/Password"
 
 const AppRoutes = () => {
   return (
@@ -43,8 +46,12 @@ const AppRoutes = () => {
 
       {/* Protected routes */}
       <Route element={<ProtectedRoute />}>
-        <Route element={<DashboardLayout />}>
-          <Route path="/profile" element={<Profile />} />
+        {/* <Route element={<DashboardLayout />}></Route> */}
+        <Route element={<ProtectedLayout />}>
+          <Route path="/settings" element={<Setting />}>
+            <Route path="profile" element={<Profile />} />
+            <Route path="password" element={<Password />} />
+          </Route>
         </Route>
       </Route>
     </Routes>
