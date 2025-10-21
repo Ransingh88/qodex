@@ -21,6 +21,8 @@ import Password from "@/pages/setting/Password"
 import StudyPlan from "@/pages/studyplan/StudyPlan"
 import StudyPlanDetails from "@/pages/studyplan/StudyPlanDetails"
 import ProtectedRoute from "./ProtectedRoute"
+import Admin from "@/pages/dashboard/Admin"
+import CreateProblem from "@/pages/dashboard/problems/CreateProblem"
 
 const AppRoutes = () => {
   return (
@@ -51,11 +53,11 @@ const AppRoutes = () => {
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
-            <Route path="admin" element={<>Admin</>} />
+            <Route path="admin" element={<Admin />} />
             <Route path="users" element={<>Users</>} />
             <Route path="problems" element={<Problems />}>
               <Route index element={<>Problems</>} />
-              <Route path="create" element={<>Create</>} />
+              <Route path="create" element={<CreateProblem />} />
             </Route>
           </Route>
           <Route path="/settings" element={<SettingLayout />}>

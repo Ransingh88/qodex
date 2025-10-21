@@ -50,3 +50,35 @@ int main() {
     template: `import java.util.Scanner;\n\npublic class Main {\n    public static int addTwoNumbers(int a, int b) {\n        // Write your code here\n        // Return the sum of a and b\n        return a + b;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.println(addTwoNumbers(a, b));\n    }\n}`,
   },
 }
+
+export const ROUTES = {
+  ROOT: "/",
+  PROBLEMS: {
+    ROOT: "/problems",
+    PROBLEM: "/problem/:id",
+  },
+  EXPLORE: "/explore",
+  CONTEST: "/contest",
+  DASHBOARD: {
+    ROOT: "/dashboard",
+    OVERVIEW: "/dashboard/overview",
+  },
+  ADMIN: {
+    ROOT: "/admin",
+    USERS: {
+      ROOT: "/admin/users",
+      CREATE: "/admin/users/create",
+      EDIT: "/admin/users/edit/:id",
+    },
+    PROBLEMS: {
+      ROOT: "/admin/problems",
+      CREATE: "/admin/problems/create",
+      EDIT: "/admin/problems/edit/:id",
+    },
+  },
+  SETTINGS: {
+    ROOT: "/settings",
+    PROFILE: "/settings/profile",
+    PASSWORD: "/settings/password",
+  },
+}

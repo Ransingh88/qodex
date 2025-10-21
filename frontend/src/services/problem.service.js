@@ -36,4 +36,9 @@ const getProblemSubmissions = async (problemId) => {
   return response
 }
 
-export { getAllProblems, getProblemDetails, getProblemSubmissions, getProblemCategory, getProblemTags, getProblemCompanies, getProblemDifficulties }
+const createProblem = async (payload) => {
+  const response = await API.post("/problem/create", payload)
+  return response
+}
+
+export { getAllProblems, getProblemDetails, getProblemSubmissions, getProblemCategory, getProblemTags, getProblemCompanies, getProblemDifficulties, createProblem }
