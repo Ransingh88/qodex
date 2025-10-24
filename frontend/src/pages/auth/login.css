@@ -1,7 +1,7 @@
 @reference '../../index.css';
 
 .login_main-container {
-  @apply bg-basebg-default text-fg-default font-head flex h-full w-full items-center justify-center gap-4 p-4;
+  @apply bg-primary text-primary font-head flex h-full w-full items-center justify-center gap-4 p-4;
 }
 
 .login-container {

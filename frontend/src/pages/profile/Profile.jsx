@@ -53,7 +53,7 @@ const Profile = () => {
         <div className="absolute -bottom-32 left-0 z-1 flex w-full items-center gap-4">
           <div className="bg-primary border-secondary h-40 w-40 rounded-full border p-2">
             <div className="overflow-hidden rounded-full">
-              <img src={ava1} alt="" className="h-full w-full object-cover" />
+              <img src={user.avatar || ava1} alt="" className="h-full w-full object-cover" />
             </div>
           </div>
           <div className="flex flex-1 items-start justify-between">
@@ -107,7 +107,7 @@ const Profile = () => {
         </span>
         <span className="w-2/6">
           <div className="h-16 w-16 overflow-hidden rounded-full">
-            <img src={ava1} alt="" className="h-full w-full object-cover" />
+            <img src={user.avatar || ava1} alt="" className="h-full w-full object-cover" />
           </div>
         </span>
       </div>

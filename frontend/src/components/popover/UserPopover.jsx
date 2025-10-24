@@ -38,7 +38,7 @@ const UserPopover = ({ logoutFn }) => {
       className="bg-brand-secondary text-featured-icon-light-fg-brand outline-brand_alt relative z-10 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full outline-2 outline-offset-2"
     >
       <button onClick={togglePopover} className="h-10 w-10 cursor-pointer overflow-hidden rounded-full">
-        {user?.fullName[0]?.toUpperCase()}
+        {user?.avatar ? <img src={user?.avatar} alt="" className="h-full w-full object-cover" /> : user?.fullName[0]?.toUpperCase()}
       </button>
       {isOpen && (
         <motion.div
