@@ -40,7 +40,7 @@ const Password = () => {
             onChange={(e) => {
               setCurrentPassword(e.target.value)
             }}
-            placeholder="Username"
+            placeholder="Current password"
           />
         </span>
         <span className="w-1/3">
@@ -50,7 +50,7 @@ const Password = () => {
             onChange={(e) => {
               setNewPassword(e.target.value)
             }}
-            placeholder="Username"
+            placeholder="New password"
           />
         </span>
         <span className="w-1/3">
@@ -60,7 +60,7 @@ const Password = () => {
             onChange={(e) => {
               setConfirmNewPassword(e.target.value)
             }}
-            placeholder="Username"
+            placeholder="Confirm new password"
           />
         </span>
       </div>

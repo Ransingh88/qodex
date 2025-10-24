@@ -5,16 +5,21 @@ import {
   CalendarDays,
   ChartNoAxesCombined,
   Check,
-  Ellipsis,
+  EllipsisVertical,
   Funnel,
   FunnelX,
+  SquarePen,
   Star,
+  Trash2,
 } from "lucide-react"
 import React, { useEffect, useRef, useState } from "react"
 import "./problem.css"
 import { useDispatch, useSelector } from "react-redux"
-import { Link } from "react-router"
+import { Link, NavLink, useLocation } from "react-router"
+import { Badge } from "@/components/badge/Badge"
 import Button from "@/components/button/Button"
+import Checkbox from "@/components/input/Checkbox"
+import Input from "@/components/input/Input"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import Modal from "@/components/modal/Modal"
 import AddPlaylistModal from "@/components/playlist/AddPlaylistModal"
@@ -27,18 +32,21 @@ import {
   removeSelectedProblem,
 } from "@/features/rtk/problem/problemSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
-import { getAllProblems, getProblemCategory, getProblemCompanies, getProblemDifficulties, getProblemTags } from "@/services/problem.service"
-import dsa from "../../assets/images/dsa.png"
-import jsbanner from "../../assets/images/js30dayschallenge.png"
-import tointerviewq from "../../assets/images/tointerviewq.png"
-import { Badge } from "@/components/badge/Badge"
-import Checkbox from "@/components/input/Checkbox"
+import {
+  deleteProblem,
+  getAllProblems,
+  getProblemCategory,
+  getProblemCompanies,
+  getProblemDifficulties,
+  getProblemTags,
+} from "@/services/problem.service"
 
-const Problem = () => {
+const Problem = ({ showAddPlaylist = true, showSolvedCheck = true, showFevorite = true, showActionBtns = false }) => {
   const { run, loading } = useAsyncHandler()
   const { problems, selectedProblems } = useSelector((state) => state.problem)
   const { user, isAuthenticated } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
+  const location = useLocation()
 
   const [filters, setFilters] = useState()
   const [filterData, setFilterData] = useState({})
@@ -46,8 +54,10 @@ const Problem = () => {
   // const [isSortOpen, setIsSortOpen] = useState(false)
   const [sortOrder, setSortOrder] = useState("asc")
   const [sortBy, setSortBy] = useState("createdAt")
+  const [problemDeleteId, setProblemDeleteId] = useState(null)
 
   const [isAddPlaylistModalOpen, setIsAddPlaylistModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
   const sortOptions = [
     {
@@ -107,21 +117,18 @@ const Problem = () => {
     }
   }
 
-  // const handleFilter = (filter) => {
-  //   setFilters({ ...filters, ...filter })
-  // }
-
-  // const handleGetAllPlaylist = run(async () => {
-  //   dispatch(fetchPlaylistStart())
-  //   const res = await getAllPlaylist()
-  //   dispatch(fetchPlaylist(res.data.data))
-  // })
+  const handleDeleteProblem = run(async (problemId) => {
+    await deleteProblem(problemId)
+    setIsDeleteModalOpen(false)
+    getAllProblem(filters)
+  })
 
   useEffect(() => {
     fetchFilters()
   }, [])
 
   useEffect(() => {
+    console.log(location.pathname)
     getAllProblem(filters)
     dispatch(clearProblemDetails())
   }, [filters, dispatch])
@@ -138,41 +145,34 @@ const Problem = () => {
     <div className="problem-container">
       <div className="problem-content">
         <div className="problem-courses">
-          {/* <div className="problem-courses_card">Problems</div>
-          <div className="problem-courses_card">Contests</div>
-          <div className="problem-courses_card">Solutions</div> */}
-          <div className="problem-courses_card">
-            <img src={jsbanner} alt="" className="h-full w-full scale-125 object-cover" />
-          </div>
-          <div className="problem-courses_card">
-            <img src={tointerviewq} alt="" className="h-full w-full scale-150 object-cover" />
-          </div>
-          <div className="problem-courses_card">
-            <img src={dsa} alt="" className="h-full w-full scale-150 object-cover" />
-          </div>
+          <div className="bg-primary text-primary border-primary flex h-36 w-72 items-center justify-center rounded-lg border">Problems</div>
+          <div className="bg-primary text-primary border-primary flex h-36 w-72 items-center justify-center rounded-lg border">Contests</div>
+          <div className="bg-primary text-primary border-primary flex h-36 w-72 items-center justify-center rounded-lg border">Solutions</div>
         </div>
-        <div className="problem-header">
-          <div className="problem-search_box">
-            <input type="search" placeholder="add two numbers..." className="" value={searchText} onChange={handleSearch} />
-            {filters && (
-              <button onClick={() => setFilters()} className="problem-search_box_clear">
-                {" "}
-                <FunnelX size={14} /> Clear Filters
-              </button>
-            )}
-            {selectedProblems.length > 1 && (
-              <Button
-                color="secondary"
-                onClick={() => {
-                  setIsAddPlaylistModalOpen(true)
-                }}
-              >
-                Add {selectedProblems.length} to Playlist
-              </Button>
-            )}
-          </div>
-          <div className="problem-filter">
-            <FilterPopover icon={<ArrowDownUp size={14} />}>
+        <div className="border-primary mb-4 flex items-center justify-between border-b py-4">
+          <h2 className="flex gap-2">Problems {selectedProblems.length > 0 && <Badge className="mt-1">{selectedProblems.length} selected</Badge>}</h2>
+          <div className="flex w-1/4 items-center justify-end gap-2">
+            <div className="flex items-center gap-2">
+              {filters && (
+                <Button color="secondary" onClick={() => setFilters()}>
+                  <span className="flex items-center gap-2">
+                    <FunnelX size={14} /> Clear Filters
+                  </span>
+                </Button>
+              )}
+              {selectedProblems.length > 1 && (
+                <Button
+                  color="secondary"
+                  onClick={() => {
+                    setIsAddPlaylistModalOpen(true)
+                  }}
+                >
+                  Add to Playlist
+                </Button>
+              )}
+            </div>
+            <Input placeholder="Search problem" className="w-64" value={searchText} onChange={handleSearch} />
+            <FilterPopover icon={<ArrowDownUp size={14} title="Sort Problems" />}>
               <div className="w-64">
                 <div className="border-border-default m-1 rounded-xl border px-3 py-4 text-center shadow">
                   <p className="font-semibold">Sort By</p>
@@ -257,6 +257,17 @@ const Problem = () => {
             </FilterPopover>
           </div>
         </div>
+        <div className="">
+          <div className="border-secondary mb-4 flex items-center justify-between rounded-xl border p-0.5">
+            <div className="flex flex-wrap gap-1 font-semibold">
+              {filterData?.tags?.map((menu, index) => (
+                <Button color="tertiary" key={index} className="bg-secondary text-sm">
+                  {menu}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
         <div className="problem-list">
           {loading ? (
             <div>
@@ -304,10 +315,10 @@ const Problem = () => {
                     title="Select for playlist"
                   /> */}
                   <Checkbox checked={selectedProblems.includes(problem._id)} onChange={() => handleToggleProblem(problem._id)} />
-                  <Link to={`/problem/${problem._id}`} className="flex-1">
+                  <Link to={`${location.pathname}/${problem._id}`} className="flex-1">
                     <div className="problem-item">
                       <div className="problem-item-left">
-                        {isAuthenticated && (
+                        {isAuthenticated && showSolvedCheck && (
                           <span className={`problem-item-check`}>{problem.solvedBy.includes(user._id) ? <Check size={14} /> : ""}</span>
                         )}
                         <p className="problem-item-index">{index + 1}.</p>
@@ -321,11 +332,37 @@ const Problem = () => {
                           {problem.difficulty == "easy" ? "Easy" : problem.difficulty == "medium" ? "Med." : "Hard"}
                         </Badge>
 
-                        <button className="problem-item-more text-fg-muted hover:text-fg-default" title="Add to favorites">
-                          <Star size={14} />
-                        </button>
+                        {showFevorite && (
+                          <button className="problem-item-more text-fg-muted hover:text-fg-default" title="Add to favorites">
+                            <Star size={14} />
+                          </button>
+                        )}
+                        {showActionBtns && (
+                          <>
+                            <button className="problem-item-more">
+                              <SquarePen size={14} />
+                            </button>
+                            <button
+                              className="problem-item-more hover:text-error-primary_hover"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                setProblemDeleteId(problem._id)
+                                setIsDeleteModalOpen(true)
+                              }}
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </>
+                        )}
                         <button className="problem-item-more">
-                          <Ellipsis size={14} />
+                          <EllipsisVertical
+                            size={14}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                            }}
+                          />
                         </button>
                       </div>
                     </div>
@@ -349,6 +386,33 @@ const Problem = () => {
             </span>
           ))}
       </div> */}
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        title="Are you sure you want to delete this problem?"
+        subtitle="This action cannot be undone."
+        size="md"
+        modalIconColor="error"
+        modalIcon={<Trash2 />}
+        iconPosition="center"
+      >
+        <div className="mt-4 flex w-full justify-center gap-4">
+          <Button color="secondary" onClick={() => setIsDeleteModalOpen(false)} size="sm" width="full">
+            Cancel
+          </Button>
+          <Button
+            color="primary-destructive"
+            size="sm"
+            width="full"
+            loading={loading}
+            onClick={() => {
+              handleDeleteProblem(problemDeleteId)
+            }}
+          >
+            {loading ? "Deleting" : "Delete"}
+          </Button>
+        </div>
+      </Modal>
     </div>
   )
 }

@@ -41,4 +41,9 @@ const createProblem = async (payload) => {
   return response
 }
 
-export { getAllProblems, getProblemDetails, getProblemSubmissions, getProblemCategory, getProblemTags, getProblemCompanies, getProblemDifficulties, createProblem }
+const deleteProblem = async (problemId) => {
+  const response = await API.delete(`/problem/delete/${problemId}`)
+  return response
+}
+
+export { getAllProblems, getProblemDetails, getProblemSubmissions, getProblemCategory, getProblemTags, getProblemCompanies, getProblemDifficulties, createProblem, deleteProblem }

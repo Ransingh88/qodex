@@ -1,7 +1,8 @@
 import { motion } from "motion/react"
 import React, { useEffect, useRef, useState } from "react"
+import Button from "../button/Button"
 
-const FilterPopover = ({ icon, size = "default", children }) => {
+const FilterPopover = ({ icon, size = "default", title, children }) => {
   const [isOpen, setIsOpen] = useState(false)
   const popoverRef = useRef(null)
 
@@ -37,9 +38,13 @@ const FilterPopover = ({ icon, size = "default", children }) => {
 
   return (
     <div ref={popoverRef} className={`relative ${sizeClass} bg-basebg-surface hover:bg-basebg-subtle flex items-center justify-center rounded-full`}>
-      <button onClick={togglePopover} className="flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full">
-        {icon}
-      </button>
+      <Button
+        color="secondary"
+        onClick={togglePopover}
+        className="flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full"
+      >
+        {icon} {title && <span className="sr-only">{title}</span>}
+      </Button>
       {isOpen && (
         <motion.div
           initial={{ opacity: 0, scale: 0 }}

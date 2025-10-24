@@ -1,10 +1,10 @@
 import { useState } from "react"
 import Button from "@/components/button/Button"
+import Dropdown from "@/components/input/Dropdown"
 import Input from "@/components/input/Input"
+import Textarea from "@/components/input/Textarea"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { createProblem } from "@/services/problem.service"
-import Textarea from "@/components/input/Textarea"
-import Dropdown from "@/components/input/Dropdown"
 
 const LANGUAGES = ["JAVASCRIPT", "PYTHON", "JAVA", "C++", "C"]
 
@@ -129,7 +129,7 @@ const CreateProblem = () => {
   })
 
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-8 p-4">
       <div>
         <h5>Create Problem</h5>
       </div>

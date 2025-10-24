@@ -11,8 +11,7 @@ const DashboardLayout = () => {
   const settingMenus = [
     { label: "Overview", url: "/dashboard" },
     { label: "Admin", url: "/dashboard/admin" },
-    { label: "Users", url: "/dashboard/users" },
-    { label: "Problems", url: "/dashboard/problems" },
+    { label: "Leaderboard", url: "/dashboard/leaderboard" },
   ]
 
   return (
