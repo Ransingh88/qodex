@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router"
+import Unauthorized from "@/components/error/Unauthorized"
 import AuthLayout from "@/layouts/AuthLayout"
 import DashboardLayout from "@/layouts/DashboardLayout"
 import ProblemLayout from "@/layouts/ProblemLayout"
@@ -7,8 +8,11 @@ import PublicLayout from "@/layouts/PublicLayout"
 import SettingLayout from "@/layouts/SettingLayout"
 import Login from "@/pages/auth/Login"
 import Signup from "@/pages/auth/Signup"
+import Admin from "@/pages/dashboard/Admin"
 import Dashboard from "@/pages/dashboard/Dashboard"
-import Problems from "@/pages/dashboard/Problems"
+import AllProblems from "@/pages/dashboard/problems/AllProblems"
+import CreateProblem from "@/pages/dashboard/problems/CreateProblem"
+import Problems from "@/pages/dashboard/problems/Problems"
 import Error from "@/pages/error/Error"
 import Home from "@/pages/home/Home"
 import Playlist from "@/pages/playlist/Playlist"
@@ -34,6 +38,7 @@ const AppRoutes = () => {
           <Route path="playlist" element={<Playlist />} />
           <Route path="playlist/:id" element={<PlaylistDetails />} />
         </Route>
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<Error />} />
       </Route>
 
@@ -42,7 +47,7 @@ const AppRoutes = () => {
         <Route path="signup" element={<Signup />} />
       </Route>
 
-      <Route path="/problem" element={<ProblemLayout />}>
+      <Route path="/problems" element={<ProblemLayout />}>
         <Route path=":id" element={<ProblemDetails />} />
       </Route>
 
@@ -51,12 +56,6 @@ const AppRoutes = () => {
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
-            <Route path="admin" element={<>Admin</>} />
-            <Route path="users" element={<>Users</>} />
-            <Route path="problems" element={<Problems />}>
-              <Route index element={<>Problems</>} />
-              <Route path="create" element={<>Create</>} />
-            </Route>
           </Route>
           <Route path="/settings" element={<SettingLayout />}>
             <Route index element={<>Setting</>} />
@@ -65,6 +64,23 @@ const AppRoutes = () => {
           </Route>
         </Route>
       </Route>
+      {/* Protected routes end */}
+      {/* Admin routes start */}
+      <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+        <Route element={<ProtectedLayout />}>
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="admin" element={<Admin />}>
+              <Route path="users" element={<>Users</>} />
+              <Route path="problems" element={<Problems />}>
+                <Route index element={<AllProblems />} />
+                <Route path="create" element={<CreateProblem />} />
+              </Route>
+            </Route>
+          </Route>
+        </Route>
+      </Route>
+      {/* Admin routes end */}
     </Routes>
   )
 }

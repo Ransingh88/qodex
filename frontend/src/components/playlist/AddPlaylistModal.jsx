@@ -41,7 +41,7 @@ const AddPlaylistModal = ({ onClose, isOpen }) => {
         <select
           name=""
           id=""
-          className="border-border-default bg-basebg-surface2 text-fg-default focus:border-accent-fg w-full rounded-lg border px-3 py-2 outline-none"
+          className="border-primary bg-secondary text-secondary focus:border-accent-fg w-full rounded-lg border px-3 py-2 outline-none"
           value={playlistId}
           onChange={(e) => setPlaylistId(e.target.value)}
         >

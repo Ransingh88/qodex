@@ -21,13 +21,13 @@
     & .problem-search_box {
       @apply flex items-center gap-2;
 
-      & input {
+      /* & input {
         @apply border-border-muted bg-basebg-default text-fg-default placeholder:text-fg-muted focus:border-accent-fg rounded-lg border px-4 py-2 text-sm focus:outline-none;
 
         &::placeholder {
           @apply text-fg-muted text-xs;
         }
-      }
+      } */
     }
 
     & .problem-search_box_clear {
