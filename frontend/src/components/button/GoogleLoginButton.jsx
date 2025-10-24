@@ -12,7 +12,7 @@ const GoogleLoginButton = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const from = location.state?.from?.pathname || "/"
-  const { run } = useAsyncHandler()
+  const { run, loading } = useAsyncHandler()
 
   const handleSuccess = run(async (credentialResponse) => {
     const token = credentialResponse?.credential || credentialResponse?.access_token
@@ -32,10 +32,10 @@ const GoogleLoginButton = () => {
   return (
     <>
       {/* <GoogleLogin onSuccess={handleSuccess} onError={() => toast.error("Google login failed")} /> */}
-      <Button color="secondary" className="w-full" onClick={() => login()}>
+      <Button loading={loading} color="secondary" className="w-full" onClick={() => login()}>
         <span className="flex items-center justify-center">
           <img src="/google-icon-logo-svgrepo-com.svg" alt="" className="mr-2 h-4 w-4" />
-          Sign in with Google
+          {loading ? "Signing in..." : "Sign in with Google"}
         </span>
       </Button>
     </>
