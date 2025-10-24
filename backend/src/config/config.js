@@ -10,3 +10,5 @@ export const REFRESH_TOKEN_EXPIRY = process.env.REFRESH_TOKEN_EXPIRY
 export const JUDGE0_API_URL = process.env.JUDGE0_SULU_API_URL
 export const JUDGE0_SULU_API_URL = process.env.JUDGE0_SULU_API_URL
 export const JUDGE0_SULU_API_KEY = process.env.JUDGE0_SULU_API_KEY
+export const GOOGLE_CLIENT_ID =
+  process.env.GOOGLE_CLIENT_ID || "769357637738-t141j5md0cvv7f6hdtiv5ks3qujnbggg.apps.googleusercontent.com"

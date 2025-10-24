@@ -17,9 +17,16 @@ const loginUser = async (email, password) => {
   return response
 }
 
+const loginWithGoogle = async (token) => {
+  const response = await API.post("/auth/google", {
+    token,
+  })
+  return response
+}
+
 const logoutUser = async () => {
   const response = await API.get("/auth/logout")
   return response
 }
 
-export { registerUser, loginUser, logoutUser }
+export { registerUser, loginUser, logoutUser, loginWithGoogle }

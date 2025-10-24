@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
     },
     role: {
       type: String,
@@ -39,6 +38,9 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     avatar: {
+      type: String,
+    },
+    googleId: {
       type: String,
     },
   },

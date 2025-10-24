@@ -5,6 +5,7 @@ import { User } from "../models/user.model.js"
 import { trimSpaces } from "../utils/trimSpaces.js"
 import { REFRESH_TOKEN_SECRET } from "../config/config.js"
 import jwt from "jsonwebtoken"
+// import { OAuth2Client } from "google-auth-library"
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
@@ -118,6 +119,85 @@ const login = asyncHandler(async (req, res) => {
     )
 })
 
+// const google_client = new OAuth2Client(GOOGLE_CLIENT_ID)
+const loginGoogle = asyncHandler(async (req, res) => {
+  const { token } = req.body
+
+  if (!token) {
+    throw new APIError(400, "missing token")
+  }
+
+  // const ticket = await google_client.verifyIdToken({
+  //   idToken: token,
+  //   audience: GOOGLE_CLIENT_ID,
+  // })
+
+  // const payload = ticket.getPayload()
+
+  const googleRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  const payload = await googleRes.json()
+
+  const googleId = payload.sub
+  const email = payload.email
+  const fullName = payload.name
+  const username = payload?.given_name[0].toLowerCase() + payload?.family_name.toLowerCase()
+  const avatar = payload.picture
+  const email_verified = payload.email_verified
+
+  if (!email || !email_verified) {
+    throw new APIError(400, "Google account email not available or not verifieds")
+  }
+
+  // 1) Find by googleId
+  let user = await User.findOne({ googleId })
+
+  if (!user) {
+    // 2) Find by email
+    const existingByEmail = await User.findOne({ email })
+
+    if (existingByEmail) {
+      // Link accounts: save googleId to that user or ask user to confirm in UI to link.
+      existingByEmail.googleId = googleId
+      existingByEmail.avatar = existingByEmail.avatar || avatar
+      existingByEmail.fullName = existingByEmail.fullName || fullName
+      user = await existingByEmail.save()
+    } else {
+      // 3) Create a new user
+      user = await User.create({
+        username: trimSpaces(username).toLowerCase(),
+        email: trimSpaces(email).toLowerCase(),
+        fullName: trimSpaces(fullName),
+        googleId,
+        avatar,
+      })
+    }
+  }
+
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
+
+  const createdUser = await User.findById(user._id).select("-password -refreshToken")
+
+  const cookieOptions = {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  }
+
+  res
+    .status(200)
+    .cookie("accessToken", accessToken, cookieOptions)
+    .cookie("refreshToken", refreshToken, cookieOptions)
+    .json(
+      new APIResponse(200, "logged in successfully", {
+        user: createdUser,
+        accessToken,
+        refreshToken,
+      })
+    )
+})
+
 const logout = asyncHandler(async (req, res) => {
   const user = req.user
 
@@ -159,4 +239,4 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     .json(new APIResponse(200, "Access token refreshed successfully"))
 })
 
-export { register, login, logout, refreshAccessToken }
+export { register, login, logout, refreshAccessToken, loginGoogle }

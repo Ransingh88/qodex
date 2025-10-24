@@ -3,6 +3,8 @@ import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useLocation, useNavigate } from "react-router"
 import { toast } from "react-toastify"
+import Button from "@/components/button/Button"
+import GoogleLoginButton from "@/components/button/GoogleLoginButton"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import { login as lg } from "@/features/rtk/auth/authSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
@@ -53,8 +55,11 @@ const Login = () => {
             </button>
           </div>
           <div className="login-social">
-            <button className="social-login_button">Sign in with Google</button>
-            <button className="social-login_button">Sign in with Github</button>
+            {/* <button className="social-login_button">Sign in with Google</button> */}
+            <GoogleLoginButton />
+            <Button color="secondary" className="w-full font-normal">
+              Sign in with Github
+            </Button>
           </div>
           <div className="login-form_links">
             <p>
