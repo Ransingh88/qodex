@@ -1,6 +1,8 @@
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
+import { getAllowedOrigins } from "./config/corsConfig.js"
+
 // import { CORS_ORIGIN } from "./config/config.js"
 // import dotenv from "dotenv"
 
@@ -50,7 +52,6 @@ import executionRouter from "./routers/execution.route.js"
 import submissionRouter from "./routers/submission.route.js"
 import playlistRouter from "./routers/playlist.route.js"
 import aiRouter from "./routers/ai.route.js"
-import { getAllowedOrigins } from "./config/corsConfig.js"
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", userRouter)

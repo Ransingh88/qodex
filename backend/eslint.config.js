@@ -23,6 +23,8 @@ export default defineConfig([
       // "prettier/prettier": "warn",
       "no-console": "warn",
       "no-process-exit": "off",
+      "no-unused-vars": "warn",
+      "no-undef": "warn",
     },
   },
   configPrettier,
