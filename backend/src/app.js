@@ -1,11 +1,7 @@
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
-// import { CORS_ORIGIN } from "./config/config.js"
-// import dotenv from "dotenv"
-
-// dotenv.config()
-// dotenv.config({ path: "./.env" })
+import { getAllowedOrigins } from "./config/corsConfig.js"
 
 export const app = express()
 const allowedOrigins = getAllowedOrigins()
@@ -14,11 +10,23 @@ const allowedOrigins = getAllowedOrigins()
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, origin)
-      } else {
-        callback(new Error("Not allowed by CORS"))
+      // Allow requests with no origin (like mobile apps, curl requests, etc)
+      if (!origin) {
+        return callback(null, true)
       }
+
+      // If wildcard is allowed, accept all origins
+      if (allowedOrigins.includes("*")) {
+        return callback(null, true)
+      }
+
+      // Check if the origin is in our allowed list
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, origin)
+      }
+
+      // Origin not allowed
+      callback(new Error("Not allowed by CORS"))
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
@@ -50,7 +58,6 @@ import executionRouter from "./routers/execution.route.js"
 import submissionRouter from "./routers/submission.route.js"
 import playlistRouter from "./routers/playlist.route.js"
 import aiRouter from "./routers/ai.route.js"
-import { getAllowedOrigins } from "./config/corsConfig.js"
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", userRouter)
