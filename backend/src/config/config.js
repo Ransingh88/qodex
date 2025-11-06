@@ -1,14 +1,13 @@
 export const MONGODB_URI = process.env.MONGODB_URI
 export const DB_NAME = "qodex"
 export const PORT = process.env.PORT || 8000
-export const CORS_ORIGIN = process.env.CORS_ORIGIN || "*"
+export const CORS_ORIGIN = process.env.CORS_ORIGIN
 export const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET
 export const ACCESS_TOKEN_EXPIRY = process.env.ACCESS_TOKEN_EXPIRY
 export const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET
 export const REFRESH_TOKEN_EXPIRY = process.env.REFRESH_TOKEN_EXPIRY
 // export const JUDGE0_API_URL = process.env.JUDGE0_API_URL || "http://localhost:2358"
-export const JUDGE0_API_URL = process.env.JUDGE0_SULU_API_URL
-export const JUDGE0_SULU_API_URL = process.env.JUDGE0_SULU_API_URL
-export const JUDGE0_SULU_API_KEY = process.env.JUDGE0_SULU_API_KEY
-export const GOOGLE_CLIENT_ID =
-  process.env.GOOGLE_CLIENT_ID || "769357637738-t141j5md0cvv7f6hdtiv5ks3qujnbggg.apps.googleusercontent.com"
+export const JUDGE0_API_URL = process.env.JUDGE0_RAPID_API_URL
+export const RAPID_API_HOST = process.env.RAPID_API_HOST
+export const RAPID_API_KEY = process.env.RAPID_API_KEY
+export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
