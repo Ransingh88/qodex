@@ -12,6 +12,7 @@ import Admin from "@/pages/dashboard/Admin"
 import Dashboard from "@/pages/dashboard/Dashboard"
 import AllProblems from "@/pages/dashboard/problems/AllProblems"
 import CreateProblem from "@/pages/dashboard/problems/CreateProblem"
+import DashboardProblemDetails from "@/pages/dashboard/problems/ProblemDetails"
 import Problems from "@/pages/dashboard/problems/Problems"
 import Error from "@/pages/error/Error"
 import Home from "@/pages/home/Home"
@@ -75,6 +76,7 @@ const AppRoutes = () => {
               <Route path="problems" element={<Problems />}>
                 <Route index element={<AllProblems />} />
                 <Route path="create" element={<CreateProblem />} />
+                <Route path=":id" element={<DashboardProblemDetails />} />
               </Route>
             </Route>
           </Route>

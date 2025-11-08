@@ -15,7 +15,7 @@ import {
 import React, { useEffect, useRef, useState } from "react"
 import "./problem.css"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, NavLink, useLocation } from "react-router"
+import { Link, NavLink, useLocation, useNavigate } from "react-router"
 import { Badge } from "@/components/badge/Badge"
 import Button from "@/components/button/Button"
 import Checkbox from "@/components/input/Checkbox"
@@ -58,6 +58,8 @@ const Problem = ({ showAddPlaylist = true, showSolvedCheck = true, showFevorite 
 
   const [isAddPlaylistModalOpen, setIsAddPlaylistModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+
+  const navigate = useNavigate()
 
   const sortOptions = [
     {
@@ -339,7 +341,14 @@ const Problem = ({ showAddPlaylist = true, showSolvedCheck = true, showFevorite 
                         )}
                         {showActionBtns && (
                           <>
-                            <button className="problem-item-more">
+                            <button
+                              className="problem-item-more"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                navigate(`${problem._id}`)
+                              }}
+                            >
                               <SquarePen size={14} />
                             </button>
                             <button
