@@ -2,14 +2,14 @@ import { Plus, Trash2 } from "lucide-react"
 import "./playlist.css"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router"
 import Button from "@/components/button/Button"
 import Input from "@/components/input/Input"
+import LoadingSpinner from "@/components/loaders/LoadingSpinner"
 import Modal from "@/components/modal/Modal"
 import { fetchPlaylist, fetchPlaylistStart } from "@/features/rtk/problem/playlistSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { createPlaylist, deletePlaylist, getAllPlaylist } from "@/services/playlist.service"
-import LoadingSpinner from "@/components/loaders/LoadingSpinner"
-import { Link } from "react-router"
 const Playlist = () => {
   const { playlists, isLoading } = useSelector((state) => state.playlist)
   const { isAuthenticated } = useSelector((state) => state.auth)

@@ -35,9 +35,17 @@ const getProblemSubmissions = async (problemId) => {
   const response = await API.get(`/submission/problem/${problemId}`)
   return response
 }
+const getSolvedProblem = async () => {
+  const response = await API.get(`/problem/getSolvedProblems`)
+  return response
+}
 
 const createProblem = async (payload) => {
   const response = await API.post("/problem/create", payload)
+  return response
+}
+const updateProblem = async (problemId, payload) => {
+  const response = await API.patch(`/problem/update/${problemId}`, payload)
   return response
 }
 
@@ -46,4 +54,16 @@ const deleteProblem = async (problemId) => {
   return response
 }
 
-export { getAllProblems, getProblemDetails, getProblemSubmissions, getProblemCategory, getProblemTags, getProblemCompanies, getProblemDifficulties, createProblem, deleteProblem }
+export {
+  getAllProblems,
+  getProblemDetails,
+  getProblemSubmissions,
+  getProblemCategory,
+  getProblemTags,
+  getProblemCompanies,
+  getProblemDifficulties,
+  getSolvedProblem,
+  createProblem,
+  updateProblem,
+  deleteProblem,
+}
