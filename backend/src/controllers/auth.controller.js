@@ -3,8 +3,10 @@ import { APIError } from "../utils/APIError.js"
 import { APIResponse } from "../utils/APIResponse.js"
 import { User } from "../models/user.model.js"
 import { trimSpaces } from "../utils/trimSpaces.js"
-import { REFRESH_TOKEN_SECRET } from "../config/config.js"
+import { BASE_URL, PORT, REFRESH_TOKEN_SECRET } from "../config/config.js"
 import jwt from "jsonwebtoken"
+import crypto from "crypto"
+import sendEmail from "../utils/sendEmail.js"
 // import { OAuth2Client } from "google-auth-library"
 
 const generateAccessAndRefreshToken = async (userId) => {
@@ -38,11 +40,14 @@ const register = asyncHandler(async (req, res) => {
     throw new APIError(400, "User already exists with this email or username")
   }
 
+  const verificationToken = crypto.randomBytes(32).toString("hex")
+
   const user = await User.create({
     username: trimSpaces(username).toLowerCase(),
     email: trimSpaces(email).toLowerCase(),
     fullName: trimSpaces(fullName),
     password: password,
+    verificationToken,
   })
 
   if (!user) {
@@ -50,32 +55,29 @@ const register = asyncHandler(async (req, res) => {
     throw new APIError(500, "User registration failed")
   }
 
-  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
+  // const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
 
-  const createdUser = await User.findById(user._id).select("-password -refreshToken")
+  const createdUser = await User.findById(user._id).select("-password")
 
   if (!createdUser) {
     res.status(500)
     throw new APIError(500, "something went wrong while registering the user")
   }
 
-  const cookieOptions = {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-  }
+  const verificationUrl = `${BASE_URL}:${PORT}/api/v1/auth/verifyEmail/${verificationToken}`
 
-  res
-    .status(201)
-    .cookie("accessToken", accessToken, cookieOptions)
-    .cookie("refreshToken", refreshToken, cookieOptions)
-    .json(
-      new APIResponse(201, "User registered successfully", {
-        user: createdUser,
-        accessToken,
-        refreshToken,
-      })
-    )
+  const { data, error } = await sendEmail("verifyemail", {
+    VERIFICATION_URL: verificationUrl,
+    TO_EMAIL: createdUser.email,
+  })
+
+  res.status(201).json(
+    new APIResponse(201, "User registered successfully", {
+      user: createdUser,
+      emailResponse: data,
+      emailError: error,
+    })
+  )
 })
 
 const login = asyncHandler(async (req, res) => {

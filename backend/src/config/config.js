@@ -1,4 +1,5 @@
 export const MONGODB_URI = process.env.MONGODB_URI
+export const BASE_URL = process.env.BASE_URL
 export const DB_NAME = "qodex"
 export const PORT = process.env.PORT || 8000
 export const CORS_ORIGIN = process.env.CORS_ORIGIN
@@ -11,3 +12,4 @@ export const JUDGE0_API_URL = process.env.JUDGE0_RAPID_API_URL
 export const RAPID_API_HOST = process.env.RAPID_API_HOST
 export const RAPID_API_KEY = process.env.RAPID_API_KEY
 export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+export const RESEND_API_KEY = process.env.RESEND_API_KEY
