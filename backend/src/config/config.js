@@ -1,5 +1,6 @@
 export const MONGODB_URI = process.env.MONGODB_URI
 export const BASE_URL = process.env.BASE_URL
+export const FRONTEND_URL = process.env.FRONTEND_URL
 export const DB_NAME = "qodex"
 export const PORT = process.env.PORT || 8000
 export const CORS_ORIGIN = process.env.CORS_ORIGIN

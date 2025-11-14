@@ -3,7 +3,7 @@ import { APIError } from "../utils/APIError.js"
 import { APIResponse } from "../utils/APIResponse.js"
 import { User } from "../models/user.model.js"
 import { trimSpaces } from "../utils/trimSpaces.js"
-import { BASE_URL, PORT, REFRESH_TOKEN_SECRET } from "../config/config.js"
+import { BASE_URL, FRONTEND_URL, PORT, REFRESH_TOKEN_SECRET } from "../config/config.js"
 import jwt from "jsonwebtoken"
 import crypto from "crypto"
 import sendEmail from "../utils/sendEmail.js"
@@ -107,6 +107,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
 
   const { data, error } = await sendEmail("welcome", {
     USER_NAME: createdUser.fullName,
+    TO_EMAIL: createdUser.email,
   })
 
   const cookieOptions = {
@@ -115,14 +116,14 @@ const verifyEmail = asyncHandler(async (req, res) => {
     sameSite: "none",
   }
 
-  const redirectTo = `${BASE_URL}:${PORT}`
+  const redirectTo = FRONTEND_URL || `${BASE_URL}:${PORT}`
 
   return res
     .status(302)
     .cookie("accessToken", accessToken, cookieOptions)
     .cookie("refreshToken", refreshToken, cookieOptions)
-    .json(new APIResponse(302, "Email verified successfully", { emailResponse: data, emailError: error }))
     .redirect(redirectTo)
+    .json(new APIResponse(302, "Email verified successfully", { emailResponse: data, emailError: error }))
 })
 
 const login = asyncHandler(async (req, res) => {
@@ -198,7 +199,7 @@ const loginGoogle = asyncHandler(async (req, res) => {
   const email_verified = payload.email_verified
 
   if (!email || !email_verified) {
-    throw new APIError(400, "Google account email not available or not verifieds")
+    throw new APIError(400, "Google account email not available or not verified")
   }
 
   // 1) Find by googleId
@@ -222,13 +223,19 @@ const loginGoogle = asyncHandler(async (req, res) => {
         fullName: trimSpaces(fullName),
         googleId,
         avatar,
+        isVerified: email_verified,
+      })
+
+      await sendEmail("welcome", {
+        USER_NAME: fullName,
+        TO_EMAIL: email,
       })
     }
   }
 
   const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
 
-  const createdUser = await User.findById(user._id).select("-password -refreshToken")
+  const createdUser = await User.findById(user._id).select("-password -refreshToken -googleId")
 
   const cookieOptions = {
     httpOnly: true,
