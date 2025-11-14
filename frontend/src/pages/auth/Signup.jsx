@@ -1,13 +1,12 @@
 import "./signup.css"
+import { MoveLeft } from "lucide-react"
 import { useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router"
 import { toast } from "react-toastify"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner"
-import { login as lg } from "@/features/rtk/auth/authSlice"
 import { useAsyncHandler } from "@/hooks/useAsyncHandler"
 import { registerUser } from "@/services/auth.service"
-import { ArrowLeft, MoveLeft } from "lucide-react"
 
 const Signup = () => {
   const { run, loading } = useAsyncHandler()
@@ -20,7 +19,6 @@ const Signup = () => {
   const [isEmailContinue, setEmailContinue] = useState(false)
   const { fullname, username, email, password } = formData
 
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const { isAuthenticated } = useSelector((state) => state.auth)
 
@@ -40,10 +38,9 @@ const Signup = () => {
     setEmailContinue(false)
   }
 
-  const handleLogin = run(async () => {
+  const handleRegister = run(async () => {
     const res = await registerUser(formData)
     toast.success(res.data.message)
-    dispatch(lg(res.data.data.user))
     navigate("/")
   })
   if (isAuthenticated) return navigate("/")
@@ -97,7 +94,7 @@ const Signup = () => {
                   <button disabled={loading} onClick={handleBack} className="form_button-back">
                     <MoveLeft size={18} /> Back
                   </button>
-                  <button disabled={loading} onClick={handleLogin} className="form_button">
+                  <button disabled={loading} onClick={handleRegister} className="form_button">
                     {loading ? <LoadingSpinner /> : "Signup"}
                   </button>
                 </div>
