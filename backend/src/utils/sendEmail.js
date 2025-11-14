@@ -5,12 +5,13 @@ const resend = new Resend(RESEND_API_KEY)
 
 const sendEmail = async (templateId, emailData) => {
   const { data, error } = await resend.emails.send({
-    from: "qodex <no-reply@qodex.co.in>",
+    from: "Qodex <support@qodex.co.in>",
     to: [emailData.TO_EMAIL],
     template: {
       id: templateId,
       variables: {
-        VERIFICATION_URL: emailData.VERIFICATION_URL,
+        USER_NAME: emailData?.USER_NAME,
+        VERIFICATION_URL: emailData?.VERIFICATION_URL,
       },
     },
   })

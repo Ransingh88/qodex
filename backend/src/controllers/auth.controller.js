@@ -55,9 +55,7 @@ const register = asyncHandler(async (req, res) => {
     throw new APIError(500, "User registration failed")
   }
 
-  // const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
-
-  const createdUser = await User.findById(user._id).select("-password")
+  const createdUser = await User.findById(user._id).select("-password -verificationToken")
 
   if (!createdUser) {
     res.status(500)
@@ -67,6 +65,7 @@ const register = asyncHandler(async (req, res) => {
   const verificationUrl = `${BASE_URL}:${PORT}/api/v1/auth/verifyEmail/${verificationToken}`
 
   const { data, error } = await sendEmail("verifyemail", {
+    USER_NAME: createdUser.fullName,
     VERIFICATION_URL: verificationUrl,
     TO_EMAIL: createdUser.email,
   })
@@ -78,6 +77,52 @@ const register = asyncHandler(async (req, res) => {
       emailError: error,
     })
   )
+})
+
+const verifyEmail = asyncHandler(async (req, res) => {
+  const token = req.params.token
+
+  if (!token) {
+    throw new APIError(400, "Invalid token")
+  }
+
+  const user = await User.findOne({ verificationToken: token })
+
+  if (!user) {
+    throw new APIError(404, "Invalid link")
+  }
+
+  user.isVerified = true
+  user.verificationToken = undefined
+  await user.save()
+
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
+
+  const createdUser = await User.findById(user._id).select("-password -refreshToken")
+
+  if (!createdUser) {
+    res.status(500)
+    throw new APIError(500, "something went wrong while registering the user")
+  }
+
+  const { data, error } = await sendEmail("welcome", {
+    USER_NAME: createdUser.fullName,
+  })
+
+  const cookieOptions = {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  }
+
+  const redirectTo = `${BASE_URL}:${PORT}`
+
+  return res
+    .status(302)
+    .cookie("accessToken", accessToken, cookieOptions)
+    .cookie("refreshToken", refreshToken, cookieOptions)
+    .json(new APIResponse(302, "Email verified successfully", { emailResponse: data, emailError: error }))
+    .redirect(redirectTo)
 })
 
 const login = asyncHandler(async (req, res) => {
@@ -96,6 +141,10 @@ const login = asyncHandler(async (req, res) => {
   const isPasswordCorrect = await user.isPasswordCorrect(password)
   if (!isPasswordCorrect) {
     throw new APIError(401, "Invalid credentials")
+  }
+
+  if (!user.isVerified) {
+    throw new APIError(400, "Email not verified, please verify your email.")
   }
 
   const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
@@ -241,4 +290,4 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     .json(new APIResponse(200, "Access token refreshed successfully"))
 })
 
-export { register, login, logout, refreshAccessToken, loginGoogle }
+export { register, login, logout, refreshAccessToken, loginGoogle, verifyEmail }
