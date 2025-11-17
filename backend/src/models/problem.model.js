@@ -58,7 +58,8 @@ const problemSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      default: null,
+      // required: true,
     },
     bonus: {
       description: String,
